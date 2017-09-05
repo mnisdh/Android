@@ -1,0 +1,13 @@
+
+public class HelloMain {
+	// 접근제한자 리턴타입 함수명(String 파라미터){
+	// public
+	// private
+	// protected
+	// (default)
+	// }
+	// java -c HelloMain.class a b c 1 22
+	public static void main(String[] args){
+		System.out.println("Hello Java!!!");
+	}
+}

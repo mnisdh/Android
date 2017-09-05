@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;CalcChange&apos; to &apos;Change&apos;&#x0A;- Original project: &apos;Change&apos;&#x0A;- Original element: &apos;CalcChange&apos;&#x0A;- Renamed element: &apos;Change&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;CalcChange&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{CalcChange.java[CalcChange" matchStrategy="1" name="Change" qualified="false" references="true" similarDeclarations="false" stamp="1504580407710" textual="false" version="1.0"/>
+</session>

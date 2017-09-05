@@ -1,0 +1,18 @@
+
+public class CalcChange {
+	int[] changeArray = {5000, 1000, 500, 100, 50, 10};
+	
+	public void calc(int pay, int buy){
+		int result = pay - buy;
+		
+		System.out.printf("총거스름돈 : %,d원%n", result);
+		
+		for(int change : changeArray){
+			System.out.printf("%d원 : %d개%n", change, result / change);
+			result %= change;
+		}
+		
+	}
+	
+	
+}

@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class ChangeMain {
+	public static void main(String[] args){
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("지불금액 : ");
+		int num1 = scanner.nextInt();
+		System.out.println("구입금액 : ");
+		int num2 = scanner.nextInt();
+		
+		calc(num1, num2);
+		
+	}
+	
+	public static void calc(int money, int price){
+		int change = money - price;
+		System.out.println("총거스름돈 : " + change +"원");
+		
+		int result = change / 5000;
+		change -= result * 5000;
+		System.out.println("오천원 : " + result +"개");
+		
+		result = change / 1000;
+		change -= result * 1000;
+		System.out.println("천원 : " + result +"개");
+		
+		result = change / 500;
+		change -= result * 500;
+		System.out.println("오백원 : " + result +"개");
+		
+		result = change / 100;
+		change -= result * 100;
+		System.out.println("백원 : " + result +"개");
+		
+		result = change / 50;
+		change -= result * 50;
+		System.out.println("오십원 : " + result +"개");
+		
+		result = change / 10;
+		change -= result * 10;
+		System.out.println("십원 : " + result +"개");
+	}
+}

@@ -1,0 +1,48 @@
+
+public class CalcChange {
+	int[] changeArray = {5000, 1000, 500, 100, 50, 10};
+	
+	public void calc(int pay, int buy){
+		
+		int result = pay - buy;
+		
+		System.out.printf("총거스름돈 : %,d원%n", result);
+		
+		for(int change : changeArray){
+			System.out.printf("%d : %d개%n", change, result / change);
+			result %= change;
+		}
+		
+	}
+	
+	
+	
+	public void aaaaa(int money, int price){
+		int change = money - price;
+		System.out.printf("총거스름돈 : %,d원%n", change);
+
+		int result = change / 5000;
+		change -= result * 5000; // change %= 5000; 과동일함
+		System.out.printf("오천원 : %d개%n", result);
+		
+		result = change / 1000;
+		change -= result * 1000;
+		System.out.printf("천원 : %d개%n", result);
+		
+		result = change / 500;
+		change -= result * 500;
+		System.out.printf("오백원 : %d개%n", result);
+		
+		result = change / 100;
+		change -= result * 100;
+		System.out.printf("백원 : %d개%n", result);
+		
+		result = change / 50;
+		change -= result * 50;
+		System.out.printf("오십원 : %d개%n", result);
+		
+		result = change / 10;
+		change -= result * 10;
+		System.out.printf("십원 : %d개%n", result);
+	}
+}

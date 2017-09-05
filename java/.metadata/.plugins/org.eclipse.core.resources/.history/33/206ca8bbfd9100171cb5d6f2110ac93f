@@ -1,0 +1,11 @@
+
+public class TestMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Test test = new Test();
+		//test.run1("A", 5);
+		test.run6("A", 5);
+	}
+
+}

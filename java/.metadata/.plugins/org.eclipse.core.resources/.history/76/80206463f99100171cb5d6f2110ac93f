@@ -1,0 +1,23 @@
+
+public class Test {
+	// 입력 1 : 타입이 String인 마크가 되는 문자열
+	// 입력 2 : 출력할 줄 수
+	
+	// a
+	// aa
+	// aaa
+	// aaaa
+	// aaaaa
+	
+	// run("a", 5);
+	public void run1(String mark, int lines){
+		
+		for(int i = 0; i < lines; i++){
+			for(int j = 0; j < i + 1; j++){
+				System.out.print(mark);
+			}
+			System.out.println("");
+		}
+		
+	}
+}

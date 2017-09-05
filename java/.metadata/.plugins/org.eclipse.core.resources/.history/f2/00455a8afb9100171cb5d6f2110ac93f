@@ -1,0 +1,73 @@
+
+public class Test {
+	// 입력 1 : 타입이 String인 마크가 되는 문자열
+	// 입력 2 : 출력할 줄 수
+	
+	// a
+	// aa
+	// aaa
+	// aaaa
+	// aaaaa
+	
+	// run("a", 5);
+	
+	private void printMark(String mark, int count){
+		for(int i = 0; i < count; i++){
+			System.out.print(mark);
+		}
+	}
+	
+	public void run1(String mark, int lines){
+		for(int i = 0; i < lines; i++){
+			printMark(mark, i + 1);
+			
+			System.out.println("");
+		}
+	}
+	
+	public void run2(String mark, int lines){
+		for(int i = 0; i < lines; i++){
+			printMark(" ", lines - (i + 1));
+			printMark(mark, i + 1);
+			System.out.println("");
+		}
+	}
+	
+	public void run3(String mark, int lines){
+		
+		int nextMarkCount = 0;
+		for(int i = 0; i < lines; i++){
+			printMark(" ", lines - (i + 1));
+			printMark(mark, i + 1);
+			printMark(mark, nextMarkCount);
+			System.out.println("");
+			
+			nextMarkCount++;
+		}
+	}
+	
+	public void run4(String mark, int lines){
+		boolean useNextMark = false;
+		for(int i = 0; i < lines; i++){
+			printMark(" ", lines - (i + 1));
+			printMark(mark, 1);
+			printMark(" ", i * 2 - 1);
+			if(useNextMark) printMark(mark, 1);
+			System.out.println("");
+			
+			useNextMark = true;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

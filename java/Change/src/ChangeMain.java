@@ -1,0 +1,50 @@
+import java.util.Scanner;
+
+public class ChangeMain {
+	public static void main(String[] args){
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("지불금액 : ");
+		int num1 = scanner.nextInt();
+		System.out.print("구입금액 : ");
+		int num2 = scanner.nextInt();
+		
+		//반복문 사용한 코드
+		Change change = new Change();
+		change.calc(num1, num2);
+		
+		//반복문 사용안한 코드
+		//ChangeMain cMain = new ChangeMain();
+		//cMain.calc(num1, num2);
+		
+	}
+	
+	public void calc(int money, int price){
+		int change = money - price;
+		System.out.printf("총거스름돈 : %,d원%n", change);
+
+		int result = change / 5000;
+		change -= result * 5000; // change %= 5000; 과동일함
+		System.out.printf("오천원 : %d개%n", result);
+		
+		result = change / 1000;
+		change -= result * 1000;
+		System.out.printf("천원 : %d개%n", result);
+		
+		result = change / 500;
+		change -= result * 500;
+		System.out.printf("오백원 : %d개%n", result);
+		
+		result = change / 100;
+		change -= result * 100;
+		System.out.printf("백원 : %d개%n", result);
+		
+		result = change / 50;
+		change -= result * 50;
+		System.out.printf("오십원 : %d개%n", result);
+		
+		result = change / 10;
+		change -= result * 10;
+		System.out.printf("십원 : %d개%n", result);
+	}
+}

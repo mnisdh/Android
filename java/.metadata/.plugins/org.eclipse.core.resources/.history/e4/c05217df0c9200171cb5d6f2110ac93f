@@ -1,0 +1,33 @@
+
+public class TestMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Test test = new Test();
+		System.out.println("--------------------------------------");
+		test.run1("A", 5);
+		System.out.println("--------------------------------------");
+		test.run2("A", 5);
+		System.out.println("--------------------------------------");
+		test.run3("A", 5);
+		System.out.println("--------------------------------------");
+		test.run4("A", 5);
+		System.out.println("--------------------------------------");
+		test.run5("A", 5);
+		System.out.println("--------------------------------------");
+		test.run6("A", 5);
+		System.out.println("--------------------------------------");
+		test.run7("A", 5);
+		System.out.println("--------------------------------------");
+		test.run8("A", 5);
+		System.out.println("--------------------------------------");
+		test.run9("X", 5);
+		System.out.println("--------------------------------------");
+		test.run10("A", 5);
+		System.out.println("--------------------------------------");
+		test.run11("A", 7);
+		System.out.println("--------------------------------------");
+		test.run12("A", 6);
+	}
+
+}

@@ -1,0 +1,120 @@
+
+/**
+ * 흐름제어
+ * @author daeho
+ *
+ */
+public class ControlFlow {
+	// 조건문
+	// if switch
+	public void checkIf(){
+		int a = 10;
+		int b = 5;
+		
+		if(a > b){
+			//a가 b보다 크면 실행되는 영역
+			System.out.println("a가 b보다 큽니다.");
+		}else if(a == b){
+			//a와 b가 같으면 실행되는 영역
+		}else{
+			//그외 조건일때 실행되는 영역
+		}
+		
+	}
+	
+	public void checkSwitch(){
+		int a = 10;
+		
+		switch(a){
+		case 5:
+			System.out.println("a의 값이 5입니다.");
+		    break; //break가 없을시 아래코드까지 실행되므로 예외사항아닐시엔 항상 넣을것
+		case 10:
+			System.out.println("a의 값이 10입니다.");
+			break;
+		}
+	}
+	
+	/**
+	 * 반복문
+	 * 배열의 인덱스는 0부터시작함
+	 */
+	public void checkFor(){
+		int[] array = {1, 2, 3, 4, 5, 6, 7};
+		//array[0] == 1
+		//array[1] == 2
+		
+		//일반적인 for문
+		//for(시작값; 조건; 증감값)
+		for(int i = 0; i < array.length; i++){
+			System.out.println(array[i]);
+		}
+		/* result
+		 * 1
+		 * 2
+		 * 3
+		 * 4
+		 * 5
+		 * 6
+		 * 7
+		 */
+		
+		//for(꺼낼타입 변수명 : 꺼낼배열)  향상된 for
+		for(int item : array){
+			System.out.println(item);
+		}
+		/* result
+		 * 1
+		 * 2
+		 * 3
+		 * 4
+		 * 5
+		 * 6
+		 * 7
+		 */
+	}
+	
+	/**
+	 * 반복문
+	 * 반복이 가능한 if문
+	 */
+	public void checkWhile(){
+		int[] array = {1, 2, 3, 4, 5, 6, 7};
+		
+		int count = 0; // 시작값
+		
+		// while(조건식)  false가 될때까지 실행
+		while(count < array.length){ // 종료값
+			System.out.println(array[count]);
+			count++; // 증감값
+		}
+	}
+	
+	/**
+	 * While은 조건식 체크후 동작하지만 Do While은 do블럭 실행후 조건식을 체크하므로
+	 * do블럭은 반드시 1번은 실행되는 방식
+	 */
+	public void checkDoWhile(){
+		int[] array = {1, 2, 3, 4, 5, 6, 7};
+		
+		int count = 0;
+		
+		do{
+			System.out.println(array[count]);
+			count++; // 증감값
+		}
+		while(count < array.length);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

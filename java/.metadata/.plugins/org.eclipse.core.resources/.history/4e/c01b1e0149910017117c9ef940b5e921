@@ -1,0 +1,29 @@
+
+public class HelloMain {
+	// 접근제한자 리턴타입 함수명(String 파라미터){
+	// public
+	// private
+	// protected
+	// (default)
+	// }
+	// java -c HelloMain.class a b c 1 22
+	public static void main(String[] args){
+		//System.out.println("Hello Java!!!");
+		
+		int a = 2 + 3;
+		int b = 2 - 3;
+		int c = 2 * 3;
+		int d = 2 / 3;
+		int e = 5 % 3;
+		int f = 10 % 3;
+		double dou = 5.0 % 4.2;
+		
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(c);
+		System.out.println(d);
+		System.out.println(e);
+		System.out.println(f);
+		System.out.println(dou);
+	}
+}

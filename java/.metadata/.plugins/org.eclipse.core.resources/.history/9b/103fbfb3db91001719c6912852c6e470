@@ -1,0 +1,17 @@
+import java.util.Scanner;
+
+public class ChangeMain {
+	public static void main(String[] args){
+		Scanner scanner = new Scanner();
+		
+		System.out.print("지불금액 : ");
+		int num1 = scanner.nextInt();
+		System.out.println("구입금액 : ");
+		int num2 = scanner.nextInt();
+		
+		
+		System.out.println(num1);
+		System.out.println(num2);
+	}
+	
+}
