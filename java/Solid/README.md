@@ -1,7 +1,9 @@
 # OOP_Solid
 	OOP 설계에 대해서 알아봅니다
- - OOP란 Object Oriented Programming 의 약자로 객체지향 프로그래밍이라함
- - 객체지향 : 속성과 기능이 묶인 하나의 객체(Class) 단위로 프로그램을 설계 구현하는것
+ 	- OOP란 Object Oriented Programming 의 약자로 객체지향 프로그래밍이라함
+ 	- 객체지향 : 속성과 기능이 묶인 하나의 객체(Class) 단위로 프로그램을 설계 구현하는것
+[BasicSyntax 기본적인 문법.pdf]( https://github.com/mnisdh/Android/tree/master/java/Solid/pdf/002_01_BasicSyntax기본적인문법.pdf)  
+[Class와 Object에 대한 이해.pdf](https://github.com/mnisdh/Android/tree/master/java/Solid/pdf/004_Class와Object에대한이해.pdf)
 
 ## SRP - Single Responsibility Principle
 	단일 책임의 원칙

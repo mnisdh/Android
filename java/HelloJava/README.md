@@ -1,19 +1,20 @@
 # Github에 Java기초
 
-## Java
-- 메소드 구조
->
-> 접근제한자 리턴타입 함수명(파라미터타입 파라미터) {  
-> public  
-> private  
-> protected  
-> (default)  
-> }  
->
-> 파라미터 사용 : java -c HelloMain.class a b c 1 22
+## 메소드 구조
+```
+접근제한자 리턴타입 함수명(파라미터타입 파라미터) {  
+public  
+private  
+protected  
+(default)  
+}  
 
-- 변수 다루는 법 - [소스코드](https://github.com/mnisdh/Github/blob/master/src/Sub.java)
-- 연산 테스트
+파라미터 사용 : java -c HelloMain.class a b c 1 22
+```
+
+## 변수 다루는 법 - [소스코드](https://github.com/mnisdh/Github/blob/master/src/Sub.java)
+
+## 연산 테스트
 ```java
 /**
 	 * 연산테스트 메소드
@@ -37,7 +38,7 @@
 	}
 ```
 
-- 주석 종류
+## 주석 종류
 > // 내용  
 >
 > /* 내용 */  
