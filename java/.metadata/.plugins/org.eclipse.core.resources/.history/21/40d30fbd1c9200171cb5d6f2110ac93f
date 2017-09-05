@@ -6,7 +6,7 @@
  * @author daeho
  *
  */
-public class Change implements Design.IChange, Design.IChangePrint {
+public class Change implements Design.IChange, Design.IChangeMove {
 	int[] changeArray = {5000, 1000, 500, 100, 50, 10};
 	
 	/**
@@ -32,9 +32,14 @@ public class Change implements Design.IChange, Design.IChangePrint {
 		}	
 	}
 	
-	@Override
-	public void print(String flag, int count){
+	private void print(String flag, int count){
 		System.out.printf("%d원 : %d개%n", flag, count);
 	}
 
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		// 구현단의 코드를 작성
+		
+	}
 }

@@ -1,0 +1,5 @@
+package Design;
+
+public interface IChangeMove {
+	public void print(String flag, int count);
+}
