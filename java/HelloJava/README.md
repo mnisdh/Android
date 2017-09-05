@@ -12,7 +12,7 @@ protected
 파라미터 사용 : java -c HelloMain.class a b c 1 22
 ```
 
-## 변수 다루는 법 - [소스코드](https://github.com/mnisdh/Github/blob/master/src/Sub.java)
+## 변수 다루는 법 - [소스코드](https://github.com/mnisdh/Android/blob/master/java/HelloJava/src/Sub.java)
 
 ## 연산 테스트
 ```java
