@@ -11,3 +11,9 @@
 
 4. [TestControlFlow](https://github.com/mnisdh/Android/tree/master/java/TestControlFlow)
 	> 조건문, 반복문을 사용한 문자열 출력 테스트
+
+5. [Algorithm](https://github.com/mnisdh/Android/tree/master/java/Algorithm)
+  > 숫자계산, Math / Random 관련, 로또번호 생성기 연습
+
+6. [String](https://github.com/mnisdh/Android/tree/master/java/String)
+  > String Api, 스트링을 활용한 알고리즘 문제풀이(Anagram)
