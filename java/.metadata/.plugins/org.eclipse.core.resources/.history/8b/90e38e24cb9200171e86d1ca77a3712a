@@ -1,0 +1,93 @@
+import java.util.Random;
+
+public class AlgoMath {
+	/**
+	 * 아나그램 알고리즘
+	 * 두개의 문자열 입력을 받아서 두 개의 관계가
+	 * 아나그램 관계인지 확인하는 프로그램을 개발하세요
+	 * listen == silent
+	 * cat == act
+	 * was it a cat i saw == was it a cat i saw
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public boolean checkAnagram(String a, String b){
+		if(a.length() != b.length()) return false;
+		
+		for(String str : a.split("")) {
+			if(b.indexOf(str) < 0) return false;
+			if(getCount(a, str) != getCount(b, str)) return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * a에서 b의 갯수 반환
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public int getCount(String a, String b){
+		int result = 0;
+		
+		for(String str : a.split("")) if(str.equals(b)) result++;
+		
+		return result;
+	}
+	
+	/**
+	 * 로또번호 생성기
+	 * @return
+	 */
+	public int[] getLottoNumber(){
+		int[] result = new int[6];
+		Random random = new Random();
+		
+		for(int i = 0; i < 6; i++) {
+			int num = 0;
+			do{
+				num = random.nextInt(45) + 1;
+			}while(existNum(result, num));
+			
+			result[i] = num;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * nums에 num이 포함된 여부확인
+	 * @param nums
+	 * @param num
+	 * @return
+	 */
+	private boolean existNum(int[] nums, int num){
+		for(int item : nums) if(item == num) return true;
+		
+		return false;
+	}
+	
+	public void testMath(){
+		// 절대값 구하기
+		int a = Math.abs(-123);
+		
+		// 반올림
+		long b = Math.round(123.5);
+		
+		// 올림
+		double c = Math.ceil(123.4);
+		
+		// 내림
+		double d = Math.floor(123.5);
+		
+		Math.random(); // 0보다 크가나 같고 1보다 작은 실수를 리턴
+		
+		Random random = new Random();
+		// 1부터 100사이의 랜덤한 숫자 가져오기
+		random.nextInt(100); // 0 ~ 99사이의 정수가 리턴
+		int r = random.nextInt(100) + 1; // 1~ 100사이의 정수가 리턴
+	}
+}

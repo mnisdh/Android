@@ -1,0 +1,27 @@
+
+public class AlgoMain {
+
+	public static void main(String[] args) {
+		
+		AlgoMain aMain = new AlgoMain();
+		
+		long result = aMain.sum(100);
+		System.out.println(result);
+	}
+	
+	/**
+	 * 1 ~ max 까지 더하는 함수
+	 * @param max
+	 * @return
+	 */
+	public long sum(int max){
+		long sum = 0;
+		
+		for(int i = 1; i <= max; i++){
+			sum += i;
+		}
+		
+		return sum;
+	}
+
+}

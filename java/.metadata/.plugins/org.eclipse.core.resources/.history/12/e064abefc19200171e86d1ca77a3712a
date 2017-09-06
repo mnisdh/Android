@@ -1,0 +1,54 @@
+
+public class AlgoMain {
+
+	public static void main(String[] args) {
+		AlgoMain aMain = new AlgoMain();
+		System.out.println(aMain.sum(1000000000L));
+		System.out.println(aMain.sumEven(6));
+		System.out.println(aMain.sumOdd(6));
+		
+		AlgoCountNumber aCountNumber = new AlgoCountNumber();
+		System.out.println(aCountNumber.count(10000, 8));
+		System.out.println(aCountNumber.count(11, 1));
+	}
+	
+	/**
+	 * 1 ~ max 까지 더하는 함수
+	 * @param max
+	 * @return
+	 */
+	public long sum(long max){
+		long sum = (max + 1) * max / 2;
+		//for(int i = 1; i <= max; i++) sum += i;
+		
+		return sum;
+	}
+
+	/**
+	 * 1 ~ max 까지 홀수만 더하는 함수(홀수갯수의 제곱)
+	 * @param max
+	 * @return
+	 */
+	public long sumOdd(long max){
+		long count = 0;
+		if(max % 2 == 1) max++; 
+		
+		count = max / 2;
+		
+		return count * count;
+	}
+	
+	/**
+	 * 1 ~ max 까지 짝수만 더하는 함수(짝수갯수의 제곱 + 짝수갯수)
+	 * @param max
+	 * @return
+	 */
+	public long sumEven(long max){
+		long count = 0;
+		if(max % 2 == 1) max--; 
+		
+		count = max / 2;
+		
+		return count * count + count;
+	}
+}

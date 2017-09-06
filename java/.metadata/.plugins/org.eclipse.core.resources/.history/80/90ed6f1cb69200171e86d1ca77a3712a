@@ -1,0 +1,10 @@
+
+public class StringApi {
+	
+	public void test(){
+		String a = "String Test";
+		
+		//길이
+		System.out.println(a.length());
+	}
+}
