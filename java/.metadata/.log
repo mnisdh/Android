@@ -2193,3 +2193,129 @@ java.lang.StringIndexOutOfBoundsException: String index out of range: 13
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:673)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:610)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1519)
+!SESSION 2017-09-07 22:06:26.974 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/daeho/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/daeho/.eclipse_keyring
+
+!ENTRY org.eclipse.osgi 2 0 2017-09-07 22:06:54.810
+!MESSAGE While loading class "org.eclipse.egit.ui.internal.ConfigurationChecker$1$1", thread "Thread[Worker-1,5,main]" timed out waiting (5004ms) for thread "Thread[main,6,main]" to finish starting bundle "org.eclipse.egit.ui_4.6.1.201703071140-r [276]". To avoid deadlock, thread "Thread[Worker-1,5,main]" is proceeding but "org.eclipse.egit.ui.internal.ConfigurationChecker$1$1" may not be fully initialized.
+!STACK 0
+org.osgi.framework.BundleException: Unable to acquire the state change lock for the module: osgi.identity; type="osgi.bundle"; version:Version="4.6.1.201703071140-r"; osgi.identity="org.eclipse.egit.ui"; singleton:="true" [id=276] STARTED [STARTED]
+	at org.eclipse.osgi.container.Module.lockStateChange(Module.java:337)
+	at org.eclipse.osgi.container.Module.start(Module.java:401)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:470)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:529)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:325)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:345)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:423)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:372)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:364)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:161)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at org.eclipse.egit.ui.internal.ConfigurationChecker$1.run(ConfigurationChecker.java:45)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: java.util.concurrent.TimeoutException: Timeout after waiting 5 seconds to acquire the lock.
+	at org.eclipse.osgi.container.Module.lockStateChange(Module.java:334)
+	... 13 more
+Root exception:
+java.util.concurrent.TimeoutException: Timeout after waiting 5 seconds to acquire the lock.
+	at org.eclipse.osgi.container.Module.lockStateChange(Module.java:334)
+	at org.eclipse.osgi.container.Module.start(Module.java:401)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:470)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:529)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:325)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:345)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:423)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:372)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:364)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:161)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at org.eclipse.egit.ui.internal.ConfigurationChecker$1.run(ConfigurationChecker.java:45)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.net 1 0 2017-09-07 22:06:57.356
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-07 22:07:34.393
+!MESSAGE Exception caught during execution of command '[git, --version]' in '/usr/bin', return code '1', error message 'xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+'
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-09-07 22:07:44.708
+!MESSAGE An internal error occurred during: "Load https://github.com/meysholdt/Xpect/raw/master/org.xpect.releng/Xpect.setup".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.getSettingDelegate(EStructuralFeatureImpl.java:845)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eSettingDelegate(BasicEObjectImpl.java:1565)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eDynamicIsSet(BasicEObjectImpl.java:1275)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eIsSet(BasicEObjectImpl.java:1257)
+	at org.eclipse.oomph.base.impl.ModelElementImpl.eIsSet(ModelElementImpl.java:209)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eIsSet(BasicEObjectImpl.java:1241)
+	at org.eclipse.emf.ecore.util.EContentsEList$FeatureIteratorImpl.hasNext(EContentsEList.java:437)
+	at org.eclipse.emf.ecore.util.EContentsEList$FeatureIteratorImpl.next(EContentsEList.java:595)
+	at org.eclipse.emf.common.util.AbstractTreeIterator.next(AbstractTreeIterator.java:133)
+	at org.eclipse.oomph.setup.internal.core.util.ResourceMirror$LoadJob.visit(ResourceMirror.java:275)
+	at org.eclipse.oomph.setup.internal.core.util.ResourceMirror$LoadJob.perform(ResourceMirror.java:246)
+	at org.eclipse.oomph.util.WorkerPool$Worker.run(WorkerPool.java:428)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-09-07 22:07:44.878
+!MESSAGE An internal error occurred during: "Load https://github.com/meysholdt/Xpect/raw/master/org.xpect.releng/Xpect.setup".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.getSettingDelegate(EStructuralFeatureImpl.java:845)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eSettingDelegate(BasicEObjectImpl.java:1565)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eDynamicIsSet(BasicEObjectImpl.java:1275)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eIsSet(BasicEObjectImpl.java:1257)
+	at org.eclipse.oomph.base.impl.ModelElementImpl.eIsSet(ModelElementImpl.java:209)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eIsSet(BasicEObjectImpl.java:1241)
+	at org.eclipse.emf.ecore.util.EContentsEList$FeatureIteratorImpl.hasNext(EContentsEList.java:437)
+	at org.eclipse.emf.ecore.util.EContentsEList$FeatureIteratorImpl.next(EContentsEList.java:595)
+	at org.eclipse.emf.common.util.AbstractTreeIterator.next(AbstractTreeIterator.java:133)
+	at org.eclipse.oomph.setup.internal.core.util.ResourceMirror$LoadJob.visit(ResourceMirror.java:275)
+	at org.eclipse.oomph.setup.internal.core.util.ResourceMirror$LoadJob.perform(ResourceMirror.java:246)
+	at org.eclipse.oomph.util.WorkerPool$Worker.run(WorkerPool.java:428)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-09-07 22:07:44.947
+!MESSAGE An internal error occurred during: "Resolver".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.getSettingDelegate(EStructuralFeatureImpl.java:845)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eSettingDelegate(BasicEObjectImpl.java:1565)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1027)
+	at org.eclipse.oomph.base.impl.ModelElementImpl.eGet(ModelElementImpl.java:157)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1011)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1003)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:998)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:147)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.perform(ProxyResolver.java:129)
+	at org.eclipse.oomph.util.WorkerPool$Worker.run(WorkerPool.java:428)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-09-07 22:07:45.483
+!MESSAGE An internal error occurred during: "Resolver".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.getSettingDelegate(EStructuralFeatureImpl.java:845)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eSettingDelegate(BasicEObjectImpl.java:1565)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1027)
+	at org.eclipse.oomph.base.impl.ModelElementImpl.eGet(ModelElementImpl.java:157)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1011)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:1003)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eGet(BasicEObjectImpl.java:998)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:147)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.visit(ProxyResolver.java:219)
+	at org.eclipse.oomph.setup.internal.core.util.ProxyResolver$ResolveJob.perform(ProxyResolver.java:129)
+	at org.eclipse.oomph.util.WorkerPool$Worker.run(WorkerPool.java:428)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)

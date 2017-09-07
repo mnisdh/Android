@@ -1,14 +1,40 @@
+import java.util.Arrays;
 
 public class TestMain {
 
 	public static void main(String[] args) {
-		System.out.println(test("a"));
+		int[] inputArray = new int[]{3, 6, -2, -5, 7, 3};
+		System.out.println(test(inputArray));
 	}
 
-	public static boolean test(String inputString){
-		String tempStr = new StringBuffer(inputString).reverse().toString();
+	/*
+	 * For inputArray = [3, 6, -2, -5, 7, 3], the output should be
+		adjacentElementsProduct(inputArray) = 21.
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	public static int test(int[] inputArray){
 		
-		return inputString.equals(tempStr);
+		int[] sortArray = inputArray.clone();
+		
+		Arrays.sort(sortArray);
+		
+		
+		int maxVal = sortArray[sortArray.length - 1];
+		
+		boolean isCalc = false;
+		for(int i : inputArray){
+			if(isCalc) return maxVal * i;
+			
+			if(maxVal == i) isCalc = true;
+		}
+		
+		
+		
+		return 0;
 	}
 
 }
