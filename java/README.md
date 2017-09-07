@@ -17,3 +17,9 @@
 
 6. [String](https://github.com/mnisdh/Android/tree/master/java/String)
   > String Api, 스트링을 활용한 알고리즘 문제풀이(Anagram)
+
+7. [Collection](https://github.com/mnisdh/Android/tree/master/java/Collection)
+  > Array, List, Set, Map 설명
+
+8. [Memo](https://github.com/mnisdh/Android/tree/master/java/Memo)
+  > MVC 패턴설명, MVC패턴 적용한 텍스트 저장하는 시스템 연습
