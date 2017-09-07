@@ -1,0 +1,125 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * 출력 -> System.out.print
+ * 입력 -> Scanner(System.in)
+ * 
+ * @author daeho
+ *
+ */
+public class MemoMain {
+	ArrayList<Memo> list = new ArrayList<>();
+	
+	public static void main(String[] args) {
+		MemoMain mMain = new MemoMain();
+		
+		// 입력을 받아서 처리하는 도구
+		Scanner scanner = new Scanner(System.in);
+		
+		String command = "";
+		while(!command.equals("exit")){
+			
+			System.out.println("--------------- 명령어를 입력하세요 ---------------");
+			System.out.println("l - list : 목록보기");
+			System.out.println("c - create : 데이터 입력모드로 전환");
+			System.out.println("r - read : 데이터 읽기모드로 전환");
+			System.out.println("u - update : 데이터 수정모드로 전환");
+			System.out.println("d - delete : 데이터 삭제모드로 전환");
+			System.out.println("exit - 종료");
+			System.out.println("----------------------------------------------");
+			
+			command = scanner.nextLine(); // 엔터키가 입력될때까지 대기
+			
+			// 명령어 분기처리
+			switch(command){
+			case "l":
+				mMain.showList();
+				break;
+			case "c":
+				mMain.create(scanner);
+				break;
+			case "r":
+				break;
+			case "u":
+				break;
+			case "d":
+				break;
+			}
+		}
+		
+		System.out.println("시스템이 종료되었습니다.");
+	}
+	
+	/**
+	 * list 저장소를 반복문을 돌면서 한줄씩 출력
+	 */
+	public void showList(){
+		int no = 1;
+		for(Memo memo : list){
+			System.out.print("No : " + no);
+			System.out.print(" | Author : " + memo.name);
+			System.out.println(" | Content : " + memo.content);
+			
+			no++;
+		}
+	}
+	
+	/**
+	 * 키보드 입력을 받는 함수
+	 */
+	public void create(Scanner scanner){
+		System.out.println("이름을 입력하세요 : ");
+		String name = scanner.nextLine();
+		System.out.println("내용을 입력하세요 : ");
+		String content = scanner.nextLine();
+		
+		System.out.println("-------- 입력결과 --------");
+		System.out.println("이름 : " + name);
+		System.out.println("내용 : " + content);
+		
+		//새로운 메모객체 생성하여 list에 추가
+		Memo memo = new Memo(name, content);
+		memo.datetime = System.currentTimeMillis();
+		
+		
+		list.add(memo);
+	}
+	
+}
+
+/**
+ * 개별글 한개 한개를 저장하는 클래스
+ * @author daeho
+ *
+ */
+class Memo{
+	String no;
+	String name;
+	String content;
+	long datetime;
+	
+	Memo(String name, String content){
+		this.name = name;
+		this.content = content;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

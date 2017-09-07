@@ -1,0 +1,16 @@
+
+public class TestMain {
+
+	public static void main(String[] args) {
+		System.out.println(centuryFromYear(2017) + "");
+	}
+
+	public static int centuryFromYear(int year) {
+		
+		System.out.println(Math.ceil(year/100));
+		return 0;
+		//return Integer.parseInt(Math.ceil(year/100)+"");
+	
+	}
+
+}

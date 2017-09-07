@@ -1,0 +1,20 @@
+import java.util.Scanner;
+
+/**
+ * 출력 -> System.out.print
+ * 입력 -> Scanner(System.in)
+ * @author daeho
+ *
+ */
+public class MemoMain {
+
+	public static void main(String[] args) {
+		// 입력을 받아서 처리하는 도구
+		Scanner scanner = new Scanner(System.in);
+		
+		String str = scanner.nextLine();
+		
+		System.out.println(str);
+	}
+	
+}

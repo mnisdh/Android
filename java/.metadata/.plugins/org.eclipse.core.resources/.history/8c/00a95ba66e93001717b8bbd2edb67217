@@ -1,0 +1,32 @@
+package com.shindaeho.collection;
+
+public class CollectionMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		CollectionMain cMain = new CollectionMain();
+		cMain.checkArray();
+	}
+	
+	public void checkArray(){
+		// 선언
+		// 타입[] 이름 = new 타입[배열공간크기];
+		// 기본형인 int, long 등은 공간을 할당하는 것만으로
+		// 기본값으로 0이 할당이됨
+		int[] intArray = new int[10];
+		System.out.println(intArray[7]);
+		
+		Item[] itemArray = new Item[10];
+		System.out.println(itemArray[7]);
+		
+		
+		
+	}
+}
+
+class Item{
+	private String myName = "대호";
+	public String getMyName(){
+		return myName;
+	}
+}

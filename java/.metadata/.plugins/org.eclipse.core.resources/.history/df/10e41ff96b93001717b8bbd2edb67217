@@ -1,0 +1,16 @@
+
+public class TestMain {
+
+	public static void main(String[] args) {
+		System.out.println(centuryFromYear(2001) + "");
+	}
+
+	public static int centuryFromYear(int year) {
+		
+		double dYear = Math.ceil(year/10) * 10;
+		System.out.println(dYear + "");
+		return (int)Math.ceil(dYear/100);
+	
+	}
+
+}
