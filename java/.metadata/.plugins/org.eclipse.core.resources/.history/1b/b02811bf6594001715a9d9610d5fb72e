@@ -1,0 +1,97 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.ArrayList;
+
+/**
+ * 데이터를 저장하는 저장소를 관리하는 클래스
+ * 
+ * @author daeho
+ *
+ */
+public class ModelWithDB {
+	Connection conn = null;
+	/**
+	 * new 하는 순간 실행됨 (생성자)
+	 */
+	public ModelWithDB(){
+		// 특정 컴퓨터를 찾기위한 주소 체계
+		// 아이피 = 213.12.142.132
+		// url = naver.com
+		//
+		// 특정 프로그램에 할당되는 세부 번지
+		// port = 1 ~ 6만번대
+		//        2000번대 밑은 이미 표준으로 사용되고 있다.
+		//
+		// 소켓 : 아이피 + 포트
+		
+		// 표준 프로토콜
+		// http://아이피(주소) : 포트(80)
+		
+		// 특정 프로그램에 액세스 하기위한 주소체계
+		// 프로토콜이름 :// 아이피(주소) : 포트
+		
+		String url = "jdbc:mysql://localhost:3306/memo";
+		
+		// ("데이터베이스주소","아이디","비밀번호")
+		try{
+			Class.forName("com.mysql.jdbc.Driver"); //드라이버를 동적으로 로드
+			DriverManager.getConnection(url, "root", "root");
+			
+			System.out.println("접속되었습니다");
+		}catch(Exception ex){
+			System.out.println("접속실패");
+			ex.printStackTrace();
+		}
+	}
+	
+	
+	
+	private void checkCount(){
+		
+	}
+	
+	private int getCount(){
+		return 0;
+	}
+	
+	private void updateCount(int i){
+		
+	}
+	
+	public ArrayList<Memo> getList(){
+		return null;
+	}
+	
+	/**
+	 * list에 memo 추가
+	 * @param memo
+	 */
+	public void create(Memo memo){
+		
+	}
+	
+	/**
+	 * list의 memo 삭제
+	 * @param memo
+	 */
+	public void delete(Memo memo){
+		
+	}
+	
+	/**
+	 * list의 memo 수정
+	 * @param memo
+	 */
+	public void update(Memo memo){
+	
+	}
+	
+	/**
+	 * list에서 no같은 memo 가져오기
+	 * @param no
+	 * @return
+	 */
+	public Memo getMemo(int no){
+		return null;
+	}
+}

@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Control {
-	public void process(Model model, View view) {
+	public void process(ModelWithDB model, View view) {
 		// view의 scanner 불러다가 사용
 		Scanner scanner = view.getScanner();
 		

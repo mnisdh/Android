@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class MemoMain {
 	
 	public static void main(String[] args) {
-		Model model = new Model();
+		ModelWithDB model = new ModelWithDB();
 		View view = new View();
 		Control control = new Control();
 		control.process(model, view);
