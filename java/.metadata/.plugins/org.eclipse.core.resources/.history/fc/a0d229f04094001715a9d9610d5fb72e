@@ -1,0 +1,114 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+
+/**
+ * 데이터를 저장하는 저장소를 관리하는 클래스
+ * 
+ * @author daeho
+ *
+ */
+public class Model {
+	private final String COLUMN_SEP = "::";
+	private final String DB_DIR = "/Users/daeho/Documents/android/java/database";
+	private final String DB_FILE = "memo.txt";
+	private File database = null;
+	
+	// 전체 메모를 저장하는 저장소
+	ArrayList<Memo> list = new ArrayList<>();
+	int count = 0;
+	
+	/**
+	 * new 하는 순간 실행됨 (생성자)
+	 */
+	public Model(){
+		File dir = new File(DB_DIR);
+		if(!dir.exists()) dir.mkdirs(); // 경로상에 디렉토리가 없으면 자동생성
+		
+		File file = new File(DB_DIR + File.separator + DB_FILE);
+		if(!file.exists()) { // 경로상에 파일이 없으면 자동생성
+			try{
+				file.createNewFile();
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		
+		database = file;
+	}
+	
+	/**
+	 * list에 memo 추가
+	 * @param memo
+	 */
+	public void create(Memo memo){
+		memo.setNo(++count);
+		
+		// memo 객체의 내용을 파일에 쓴다
+		FileOutputStream fos = null;
+		
+		//try with문법 ( ) 안의 객체는 문법종료 후 자동으로 close해줌
+		//try(FileOutputStream fos = new FileOutputStream(database, true);)
+		try{
+			// 1. 쓰는 스트림을 연다
+			fos = new FileOutputStream(database, true);
+			
+			// 2. 스트림 중간처리를 함(인코딩 변경 등....)
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			
+			// 3. 버퍼처리
+			BufferedWriter bw = new BufferedWriter(osw);
+			
+			// 저장할 내용을 구분자로 분리하여 한줄의 문자열로 바꾼다
+			String str = memo.getNo() + COLUMN_SEP;
+			str = memo.getName() + COLUMN_SEP;
+			str = memo.getContent() + COLUMN_SEP;
+			str = memo.getDatetimeLong() + "\n";
+			
+			bw.append(str);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			// 스트림이 생성되기전에 오류가 발생할 수 있으므로 null 체크 필요
+			if(fos != null){
+				try {
+					fos.close();
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		
+		
+		list.add(memo);
+		
+		
+	}
+	
+	/**
+	 * list의 memo 삭제
+	 * @param memo
+	 */
+	public void delete(Memo memo){
+		list.remove(memo);
+	}
+	
+	/**
+	 * list에서 no같은 memo 가져오기
+	 * @param no
+	 * @return
+	 */
+	public Memo getMemo(int no){
+		// iNo와 같은 값을 가진 Memo의 list index를 반환
+		for(int i = 0; i < list.size(); i++){
+			Memo memo = list.get(i);
+			if(memo.getNo() == no) return memo;
+		}
+		
+		return null;
+	}
+}

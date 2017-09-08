@@ -52,6 +52,9 @@ public class Memo {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		return sdf.format(datetime);
 	}
+	public void setDatetime(long datetime){this.datetime = datetime;} 
+	public long getDatetimeLong() {return datetime;}
+	
 	
 	/**
 	 * 내용 업데이트
