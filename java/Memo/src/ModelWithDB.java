@@ -57,19 +57,6 @@ public class ModelWithDB {
 		return null;
 	}
 	
-	
-	private void checkCount(){
-		
-	}
-	
-	private int getCount(){
-		return 0;
-	}
-	
-	private void updateCount(int i){
-		
-	}
-	
 	public ArrayList<Memo> getList(){
 		
 		ArrayList<Memo> list = new ArrayList<Memo>();
@@ -139,7 +126,32 @@ public class ModelWithDB {
 	 * @param memo
 	 */
 	public void delete(Memo memo){
+		// 1. 데이터베이스 연결
+		Connection conn = getConnection();
+		if(conn ==null) return;
 		
+		// 2. 쿼리를 실행
+		try{
+			// 2.1 쿼리 생성
+			String sql = " delete from memo where no = " + memo.getNo();
+			
+			System.out.println(sql);
+			
+			// 2.2 쿼리를 실행 가능한 상태로 만들어준다
+			Statement stmt = conn.createStatement();
+			// 2.3 delete 쿼리를 실행
+			stmt.execute(sql);	
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}finally{
+			try{
+				// 3. 데이터베이스 연결해제
+				conn.close();
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -147,7 +159,30 @@ public class ModelWithDB {
 	 * @param memo
 	 */
 	public void update(Memo memo){
-	
+		// 1. 데이터베이스 연결
+		Connection conn = getConnection();
+		if(conn ==null) return;
+				
+		// 2. 쿼리를 실행
+		try{
+			// 2.1 쿼리 생성
+			String sql = " update memo set name = ?, context = ?, datetime =? where no = ?";
+					
+			// 2.2 쿼리를 실행 가능한 상태로 만들어준다
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			// 2.3 물음표에 값을 세팅
+			pstmt.setString(1, memo.getName());
+			pstmt.setString(2, memo.getContent());
+			pstmt.setTimestamp(3, new Timestamp( System.currentTimeMillis()));
+			pstmt.setInt(4, memo.getNo());
+			// 2.4 쿼리를 실행
+			pstmt.executeUpdate();
+					
+			// 3. 데이터베이스 연결해제
+			conn.close();	
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
 	/**
@@ -172,7 +207,7 @@ public class ModelWithDB {
 			while(rs.next()){
 				Memo memo = new Memo(rs.getString("name"), rs.getString("content"));
 				memo.setNo(rs.getInt("no"));
-				memo.setDatetime(rs.getLong("datetime"));
+				memo.setDatetime(rs.getTimestamp("datetime").getTime());
 				
 				return memo;
 			}	
