@@ -2,7 +2,7 @@
 
 ## String Api
 ### 스트링 함수
-1.length - 문자열의 길이를 구한다  
+1. length - 문자열의 길이를 구한다  
 
 ```Java
 String a = "String/Test";
