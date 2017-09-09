@@ -134,6 +134,9 @@ public class ModelWithDB {
 		try{
 			// 2.1 쿼리 생성
 			String sql = " delete from memo where no = " + memo.getNo();
+			
+			System.out.println(sql);
+			
 			// 2.2 쿼리를 실행 가능한 상태로 만들어준다
 			Statement stmt = conn.createStatement();
 			// 2.3 delete 쿼리를 실행
