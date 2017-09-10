@@ -1,58 +1,63 @@
-# 잔돈계산(인터페이스 사용) / Control flow 설명
+	Interface를 사용하여 잔돈계산하는 시스템 작성 / 조건문 반복문 설명
 
-## 잔돈계산(인터페이스 사용)
-	인터페이스를 사용하여 잔돈계산하는 코드 작성
+#### 잔돈계산 시스템(Interface 사용)
+1. ChangeMain class(main)
 
-- ChangeMain Class(진입점)
- 	- 지불금액 : {0} / 구입금액 : {1} 입력받아 잔돈계산  
-	```java
- 	public static void main(String[] args){
-		Scanner scanner = new Scanner(System.in);
-
-		System.out.print("지불금액 : ");
-		int num1 = scanner.nextInt();
-		System.out.print("구입금액 : ");
-		int num2 = scanner.nextInt();
-
-		//반복문 사용한 코드
-		Change change = new Change();
-		change.calc(num1, num2);
-
-		//반복문 사용안한 코드
-		//ChangeMain cMain = new ChangeMain();
-		//cMain.calc(num1, num2);
-	}
-	```
-
-- Design.IChange Interface(계산메소드를 설계한 인터페이스)
 ```java
-	package Design;
-	/**
-	* 인터페이스를 설계하는 방법
-	* 접근제한자 + interface + 이름
-	*
-	* 설계된데로 구현하도록 강제화하는 방법
-	*
-	* 인터페이스에 맞는 메소드별로 모아서 생성할것
-	*
-	* @author daeho
-	*
-	*/
-	public interface IChange {
-		public void calc(int pay, int buy);
-	}
+// 지불금액과 구입금액을 입력받아 잔돈 계산
+public static void main(String[] args){
+ Scanner scanner = new Scanner(System.in);
+
+ System.out.print("지불금액 : ");
+ int num1 = scanner.nextInt();
+ System.out.print("구입금액 : ");
+ int num2 = scanner.nextInt();
+
+ //반복문 사용한 코드
+ Change change = new Change();
+ change.calc(num1, num2);
+
+ //반복문 사용안한 코드
+ //ChangeMain cMain = new ChangeMain();
+ //cMain.calc(num1, num2);
+}
 ```
 
-- Design.IChangePrint Interface(출력메소드를 설계한 인터페이스)
-```java
-		package Design;
 
-		public interface IChangePrint {
-				public void print(String flag, int count);
-		}
+2. Design.IChange interface(계산 메소드를 설계한 인터페이스)
+
+```java
+package Design;
+/**
+* 인터페이스를 설계하는 방법
+* 접근제한자 + interface + 이름
+*
+* 설계된데로 구현하도록 강제화하는 방법
+*
+* 인터페이스에 맞는 메소드별로 모아서 생성할것
+*
+* @author daeho
+*
+*/
+public interface IChange {
+	public void calc(int pay, int buy);
+}
 ```
 
-- Change Class(위의 두 인터페이스를 구현한 잔돈계산 클래스)
+
+3. Design.IChangePrint interface(출력 메소드를 설계한 인터페이스)
+
+```java
+package Design;
+
+public interface IChangePrint {
+		public void print(String flag, int count);
+}
+```
+
+
+4. Change class(IChange, IChangePrint를 구현한 잔돈계산 class)
+
 ```java
 /**
  * 인터페이스를 구현하기
@@ -93,5 +98,138 @@ public class Change implements Design.IChange, Design.IChangePrint {
 }
 ```
 
-## Control flow 설명
-	[소스코드](https://github.com/mnisdh/Android/blob/master/java/Change/src/ControlFlow.java)
+
+#### 조건문
+
+1. if문
+
+```java
+/**
+ * 조건문 if
+ */
+public void checkIf(){
+	int a = 10;
+	int b = 5;
+
+	if(a > b){
+		//a가 b보다 크면 실행되는 영역
+		System.out.println("a가 b보다 큽니다.");
+	}else if(a == b){
+		//a와 b가 같으면 실행되는 영역
+	}else{
+		//그외 조건일때 실행되는 영역
+	}
+
+}
+```
+
+
+2. switch문
+
+```java
+/**
+ * 조건문 switch
+ * 한개의 변수를 대상으로 값이 같은지 체크할때 사용
+ */
+public void checkSwitch(){
+	int a = 10;
+
+	switch(a){
+	case 5:
+		System.out.println("a의 값이 5입니다.");
+			break; //break가 없을시 아래코드까지 실행되므로 예외사항아닐시엔 항상 넣을것
+	case 10:
+		System.out.println("a의 값이 10입니다.");
+		break;
+	}
+}
+```
+
+
+#### 반복문
+
+1. for문
+
+```java
+/**
+ * 반복문 for
+ * 배열의 인덱스는 0부터시작함
+ */
+public void checkFor(){
+	int[] array = {1, 2, 3, 4, 5, 6, 7};
+	//array[0] == 1
+	//array[1] == 2
+
+	//일반적인 for문
+	//for(시작값; 조건; 증감값)
+	for(int i = 0; i < array.length; i++){
+		System.out.println(array[i]);
+	}
+	/* result
+	 * 1
+	 * 2
+	 * 3
+	 * 4
+	 * 5
+	 * 6
+	 * 7
+	 */
+
+	//for(꺼낼타입 변수명 : 꺼낼배열)  향상된 for
+	for(int item : array){
+		System.out.println(item);
+	}
+	/* result
+	 * 1
+	 * 2
+	 * 3
+	 * 4
+	 * 5
+	 * 6
+	 * 7
+	 */
+}
+```
+
+
+2. while문
+
+```java
+/**
+ * 반복문 while
+ * 반복이 가능한 if문
+ */
+public void checkWhile(){
+	int[] array = {1, 2, 3, 4, 5, 6, 7};
+
+	int count = 0; // 시작값
+
+	// while(조건식)  false가 될때까지 실행
+	while(count < array.length){ // 종료값
+		System.out.println(array[count]);
+		count++; // 증감값
+	}
+}
+```
+
+
+3. do while문
+
+```java
+/**
+ * 반복문 do while
+ * While은 조건식 체크후 동작하지만 Do While은 do블럭 실행후 조건식을 체크하므로
+ * do블럭은 반드시 1번은 실행되는 방식
+ */
+public void checkDoWhile(){
+	int[] array = {1, 2, 3, 4, 5, 6, 7};
+
+	int count = 0;
+
+	do{
+		System.out.println(array[count]);
+		count++; // 증감값
+	}
+	while(count < array.length);
+}
+```

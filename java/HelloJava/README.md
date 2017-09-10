@@ -1,15 +1,3 @@
----
-title: Hello java
-keywords: 자바, 변수, 메소드, 주석, 연산
-last_updated:
-tags:
-summary: "메소드 구조, 변수 다루는 법, 변수연산 테스트, 주석종류"
-sidebar: mydoc_sidebar
-permalink: java_hellojava.html
-folder: java
----
-
-
 	변수, 메소드, 연산, 주석 설명
 
 #### 변수 다루는 법
