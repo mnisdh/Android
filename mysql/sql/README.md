@@ -1,6 +1,7 @@
-# sql문 설명
+### sql문 설명
 
-### create문
+##### create문
+
 ```sql
 /*
 1. 테이블 생성
@@ -22,7 +23,9 @@ create table memo (
     );
 ```
 
-### insert문
+
+##### insert문
+
 ```sql
 /*
 2. 입력
@@ -47,7 +50,9 @@ values('우원재', '내용을', now());
 commit;
 ```
 
-### select문
+
+##### select문
+
 ```sql
 /*
 3. 읽기
@@ -69,7 +74,8 @@ select name, content, datetime from memo;
 select * from memo;
 ```
 
-### update문
+##### update문
+
 ```sql
 /*
 4. 수정
@@ -86,7 +92,9 @@ update memo set content = '수정된 내용입니다.'
 select * from memo where name = '개코';
 ```
 
-### delete문
+
+##### delete문
+
 ```sql
 /*
 5. 삭제

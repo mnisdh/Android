@@ -1,0 +1,10 @@
+package com.daehoshin.java.generic;
+
+/**
+ * 클래스에서 제네릭 사용해보기
+ * @author daeho
+ *
+ */
+public class List<T> {
+	public T[] animals;
+}

@@ -1,0 +1,17 @@
+package com.daehoshin.java.generic;
+
+/**
+ * 클래스에서 제네릭 사용해보기
+ * @author daeho
+ *
+ */
+public class DHList<T> {
+	public T[] animals;
+	
+	
+	public void aaaa(){
+		ArrayList<Integer> aaa = new ArrayList<>(){
+			
+		}
+	}
+}
