@@ -1,0 +1,53 @@
+package com.daehoshin.java.generic;
+
+import java.util.ArrayList;
+
+/**
+ * 클래스에서 제네릭 사용해보기
+ * @author daeho
+ *
+ */
+public class DHList<T> {
+	private ArrayList<T> lists = new ArrayList<T>();
+	
+	public void add(T item){
+		lists.add(item);
+	}
+	public void add(T[] items){
+		for(T item : items) add(item);
+	}
+	
+	public void remove(int index){
+		lists.remove(index);
+	}
+	public void remove(T item){
+		lists.remove(item);
+	}
+	
+	public void insert(int index, T item){
+		lists.add(index, item);
+	}
+	
+	public boolean contains(T item){
+		return lists.contains(item);
+	}
+	
+	public T get(int index){
+		if(lists.size() <= index) return null;
+		
+		return lists.get(index);
+	}
+	
+	public int getCount(){
+		return lists.size();
+	}
+	
+	public int indexOf(T item){
+		return lists.indexOf(item);
+	}
+	
+	public void clear(){
+		lists.clear();
+	}
+}
+

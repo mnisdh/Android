@@ -1,0 +1,20 @@
+package com.daehoshin.java.generic;
+
+public class GenericMain {
+
+	public static void main(String[] args) {
+		
+		DHList<test> list = new DHList<test>();
+		list.add(new test());
+		list.add(new test());
+		list.add(new test());
+		list.add(new test());
+		System.out.println(list.getCount());
+	}
+
+}
+
+
+class test{
+	public String name = "test";
+}

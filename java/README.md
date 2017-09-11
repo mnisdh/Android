@@ -4,7 +4,7 @@
   > 메소드 구조, 변수 다루는 법, 변수연산 테스트, 주석종류
 
 2. [Change](https://github.com/mnisdh/Android/tree/master/java/Change)
-  > 잔돈계산(인터페이스 사용), Control flow 설명
+  > 잔돈계산(인터페이스 사용), 조건문 / 반복문 설명
 
 3. [Solid](https://github.com/mnisdh/Android/tree/master/java/Solid)
   > OOP Solid 설명
@@ -22,4 +22,4 @@
   > Array, List, Set, Map 설명
 
 8. [Memo](https://github.com/mnisdh/Android/tree/master/java/Memo)
-  > MVC 패턴설명, MVC패턴 적용한 텍스트 저장하는 시스템 연습
+  > MVC 패턴설명, MVC패턴 적용한 텍스트 저장하는 시스템 연습, FileInput/Output 설명, Mysql 연동 설명
