@@ -1,4 +1,4 @@
-#### Algorithm
+### Algorithm
 
 ##### 숫자계산
 - 1 ~ max까지 더하는 메소드

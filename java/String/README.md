@@ -1,6 +1,6 @@
 String 설명, String을 활용한 알고리즘
 
-#### String Api
+### String Api
 ##### 스트링 함수
 
 - length - 문자열의 길이를 구한다  
@@ -59,7 +59,7 @@ System.out.println(a.startsWith("Str"));
 ```
 
 
-#### Algorithm
+### Algorithm
 스트링을 활용한 알고리즘 풀이 (Anagram)
 
 ```java

@@ -1,13 +1,14 @@
-# 텍스트 저장하는 시스템 연습
+### 텍스트 저장하는 시스템 연습
 	MVC 패턴을 사용한 텍스트 저장 시스템
 
-## MVC 패턴
+##### MVC 패턴
 	Model - 데이터를 의미
 	View - 사용자가 보는 것을 의미(입/출력)
 	Controller - 사용자가 보기 위해 데이터를 가공, 혹은 조작 하는 것을 의미(계산메소드등)
 
-## 적용 코드
-#### MemoMain(main class)  
+### 적용 코드
+##### MemoMain(main class)  
+
 ```java
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,7 +91,9 @@ public class MemoMain {
 }
 ```
 
-#### Model(model class)
+
+##### Model(model class)
+
 ```java
 /**
  * 데이터를 저장하는 저장소를 관리하는 클래스
@@ -136,7 +139,9 @@ class Model{
 }
 ```
 
-#### View(view class)
+
+##### View(view class)
+
 ```java
 /**
  * 화면 입출력을 관리하는 클래스
@@ -260,7 +265,9 @@ class View{
 }
 ```
 
-#### Memo(개별 메모를 저장하는 class)
+
+##### Memo(개별 메모를 저장하는 class)
+
 ```java
 /**
  * 개별글 한개 한개를 저장하는 클래스

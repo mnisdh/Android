@@ -1,6 +1,8 @@
-# Collection
+### Collection
 
-## Array
+
+##### Array
+
 ```java
 /**
  * 선언
@@ -19,7 +21,9 @@ public void checkArray(){
 }
 ```
 
-## List
+
+##### List
+
 ```java
 /**
  * Index를 포함하는 동적 객체배열
@@ -47,7 +51,9 @@ public void checkList(){
 }
 ```
 
-## Generic 사용
+
+##### Generic 사용
+
 ```java
 /**
  * 제네릭을 사용하는 방법
@@ -62,7 +68,9 @@ public void checkGeneric(){
 }
 ```
 
-## Set
+
+##### Set
+
 ```java
 /**
  * List와 유사하나 중복값을 허용하지 않는 동적 객체배열
@@ -84,7 +92,9 @@ public void checkSet(){
 }
 ```
 
-## Map
+
+##### Map
+
 ```java
 /**
  * Key, Value로 구성된 동적 객체배열

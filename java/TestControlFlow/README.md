@@ -1,8 +1,9 @@
-# 조건문, 반복문을 사용한 문자열 출력 테스트
+### 조건문, 반복문을 사용한 문자열 출력 테스트
 
-## [소스코드](https://github.com/mnisdh/Android/blob/master/java/TestControlFlow/src/Test.java)
+##### [소스코드](https://github.com/mnisdh/Android/blob/master/java/TestControlFlow/src/Test.java)
 
-## 결과물
+##### 결과물
+
 ```
 -----------------------------난이도 1-----------------------------  
 A  
