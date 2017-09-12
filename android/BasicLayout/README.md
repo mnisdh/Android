@@ -5,7 +5,7 @@
 레이아웃이나 위젯에 연결하여 위치값을 설정하는 레이아웃으로
 프레임 레이아웃 다음으로 속도가 빠름
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/ConstraintLayout.png)
+![https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/ConstraintLayout.png](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/ConstraintLayout.png)
 
 
 ##### Frame Layout
