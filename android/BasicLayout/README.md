@@ -5,7 +5,7 @@
 레이아웃이나 위젯에 연결하여 위치값을 설정하는 레이아웃으로
 프레임 레이아웃 다음으로 속도가 빠름
 
-![https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/ConstraintLayout.png](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/ConstraintLayout.png)
+![image](/capture/ConstraintLayout.png)
 
 
 ##### Frame Layout
@@ -13,14 +13,14 @@
 위젯들이 중첩되는 레이아웃으로 게임 같은 어플을 개발할때 사용되며
 레이아웃들 중 가장 빠름
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/FrameLayout.png)
+![image](/capture/FrameLayout.png)
 
 
 ##### Linear Layout
 
 orientation 옵션을 사용하여 가로, 세로 기준으로 위젯을 위치시키는 레이아웃
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/LinearLayout.png)
+![image](/capture/LinearLayout.png)
 
 
 ##### Grid Layout
@@ -28,14 +28,14 @@ orientation 옵션을 사용하여 가로, 세로 기준으로 위젯을 위치�
 표와 같은 형태로 제공되는 레이아웃이며 컬럼이나 로우등의 속성으로 위젯의 범위를 설정할수있다
 하지만 높이나 너비를 균일하게 설정하기 힘드므로 사용은 거의 하지않음
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/GridLayout.png)
+![image](/capture/GridLayout.png)
 
 
 ##### Relative Layout
 
 Constraint 레이아웃과 비슷하게 위젯에 연결하여 위치값을 설정하는 레이아웃
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/RelativeLayout.png)
+![image](/capture/RelativeLayout.png)
 
 
 ### OnClickListener 연결 설명
@@ -136,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
 
 ### 계산기 어플
 
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/Calculator1.png)
-![image](https://github.com/mnisdh/Android/tree/master/android/BasicLayout/capture/Calculator2.png)
+![image](/capture/Calculator1.png)
+![image](/capture/Calculator2.png)
 
 ```java
 package android.daehoshin.com.basiclayout;

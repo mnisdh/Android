@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CalculatorActivity extends AppCompatActivity {
@@ -240,6 +241,7 @@ public class CalculatorActivity extends AppCompatActivity {
     private boolean existLastNum(){
         // 이전에 저장된 string과 길이 비교하여 입력되지 않은 숫자 있는지 체크
         if(beforeStr.length() == txtCalc.getText().length()) return false;
+        Arrays.binarySearch()
         return true;
     }
 
