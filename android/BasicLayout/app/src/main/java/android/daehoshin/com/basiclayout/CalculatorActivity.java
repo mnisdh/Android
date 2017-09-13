@@ -10,15 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalculatorActivity extends AppCompatActivity {
+    // 사용할 위젯을 선언
     private TextView txtCalc, txtResult;
 
-    //연산버튼을 두번 누르지 못하게 체크하는 변수
+    // 연산버튼을 두번 누르지 못하게 체크하는 변수
     boolean isBeforeText = true;
-    //계산할 숫자를 담는 list
-    List<Integer> numList = new ArrayList<>();
-    //계산할 연산의 버튼 id를 담는 list
-    List<Integer> otherIdList = new ArrayList<>();
-    //연산버튼 클릭전의 마지막 숫자값을 받아오기 위한 이전 string을 담는 변수
+    // 계산할 숫자를 담는 list
+    ArrayList<Double> numList = new ArrayList<>();
+    // 계산할 연산의 버튼 id를 담는 list
+    ArrayList<Integer> otherIdList = new ArrayList<>();
+    // 연산버튼 클릭전의 마지막 숫자값을 받아오기 위한 이전 string을 담는 변수
     private String beforeStr = "";
 
     @Override
@@ -44,6 +45,7 @@ public class CalculatorActivity extends AppCompatActivity {
         findViewById(R.id.btn7).setOnClickListener(onClickListener);
         findViewById(R.id.btn8).setOnClickListener(onClickListener);
         findViewById(R.id.btn9).setOnClickListener(onClickListener);
+        findViewById(R.id.btnDot).setOnClickListener(onClickListener);
 
         findViewById(R.id.btnCalc).setOnClickListener(onClickListener);
         findViewById(R.id.btnDevi).setOnClickListener(onClickListener);
@@ -51,6 +53,9 @@ public class CalculatorActivity extends AppCompatActivity {
         findViewById(R.id.btnPlus).setOnClickListener(onClickListener);
         findViewById(R.id.btnMinus).setOnClickListener(onClickListener);
         findViewById(R.id.btnClear).setOnClickListener(onClickListener);
+
+        findViewById(R.id.btnStr).setOnClickListener(onClickListener);
+        findViewById(R.id.btnEnd).setOnClickListener(onClickListener);
     }
 
     /**
@@ -76,10 +81,12 @@ public class CalculatorActivity extends AppCompatActivity {
                 // 초기화 버튼
                 case R.id.btnClear:                clear();                       break;
                 // 연산기호 버튼
-                case R.id.btnDevi:                 addText("/", id);                break;
-                case R.id.btnMulti:                addText("*", id);                break;
-                case R.id.btnPlus:                 addText("+", id);                break;
-                case R.id.btnMinus:                addText("-", id);                break;
+                case R.id.btnStr:                  addText("(", id);              break;
+                case R.id.btnEnd:                  addText(")", id);              break;
+                case R.id.btnDevi:                 addText("/", id);              break;
+                case R.id.btnMulti:                addText("*", id);              break;
+                case R.id.btnPlus:                 addText("+", id);              break;
+                case R.id.btnMinus:                addText("-", id);              break;
                 // 숫자버튼
                 case R.id.btn0:                    addText(0);                    break;
                 case R.id.btn1:                    addText(1);                    break;
@@ -91,62 +98,130 @@ public class CalculatorActivity extends AppCompatActivity {
                 case R.id.btn7:                    addText(7);                    break;
                 case R.id.btn8:                    addText(8);                    break;
                 case R.id.btn9:                    addText(9);                    break;
+                // 소수점버튼
+                case R.id.btnDot:                  addDotText();                  break;
             }
         }
     };
+
 
     /**
      * 입력된 연산을 계산해서 텍스트뷰에 출력
      */
     private void calc(){
+        if(isOpendBracket()){
+            Toast.makeText(this, "계산식이 완성되지 않았습니다.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        txtResult.setText(calc(numList, otherIdList) + "");
+
+        // 계산 완료 후 연산기호 체크 변수 초기화
+        isBeforeText = false;
+    }
+
+    /**
+     * 숫자list와 기호list를 받아 실제 계산처리하는 메소드
+     * @param calcNums
+     * @param calcOthers
+     * @return
+     */
+    private double calc(ArrayList<Double> calcNums, ArrayList<Integer> calcOthers){
         double sum = 0;
 
-        try {
-            // 기 저장된 숫자목록을 템프list에 저장
-            List<Integer> tempList = new ArrayList<>();
-            tempList.addAll(numList);
+        try{
+            // 넘어온 숫자list를 템프list에 저장
+            ArrayList<Double> tempList = new ArrayList<>();
+            tempList.addAll(calcNums);
+
+            // 넘어온 기호list를 템프list에 저장
+            ArrayList<Integer> tempOthers = new ArrayList<>();
+            tempOthers.addAll(calcOthers);
+
+            // 기호list가 2개이상일 경우 처음과 끝에 괄호여부 확인하여 있는경우 제거
+            if(tempOthers.size() > 1){
+                if(tempOthers.get(0) == R.id.btnStr && tempOthers.get(tempOthers.size() - 1) == R.id.btnEnd) {
+                    tempOthers.remove(0);
+                    tempOthers.remove(tempOthers.size() - 1);
+                }
+            }
 
             // 리스트에 저장되지 않은 마지막 숫자가 있는지 체크하여 템프list에 추가
             if (existLastNum()) tempList.add(getLastNum());
 
-            // 연산기호가 하나 더 있는경우 메세지 출력하고 리턴
-            if (tempList.size() == otherIdList.size()) {
-                Toast.makeText(this, "계산식이 완성되지 않았습니다.", Toast.LENGTH_LONG).show();
-                return;
-            }
+            // + , - 계산을 위한 숫자list, 기호list 생성
+            List<Double> numArray = new ArrayList<>();
+            List<Integer> otherArray = new ArrayList<>();
 
-            // 우선순위 계산을 위한 숫자list, 기호list 생성
-            // numbers의 경우 정확한 결과값을 계산하기 위해 double로 생성
-            List<Double> numbers = new ArrayList<>();
-            List<Integer> others = new ArrayList<>();
+            // 괄호 , * , / 부터 연산하여 위에서 생성한 리스트들에 새로 추가
+            int tempOthersSize = tempOthers.size();
+            for (int i = 0; i < tempOthersSize; i++) {
+                int btnId = tempOthers.get(i);
 
-            // * , / 부터 연산하여 위에서 생성한 리스트들에 새로 추가
-            numbers.add(Double.parseDouble(tempList.get(0) + ""));
-            for (int i = 0; i < otherIdList.size(); i++) {
-                int btnId = otherIdList.get(i);
-                double num = Double.parseDouble(tempList.get(i + 1) + "");
+                // 괄호 체크를 위한 변수선언
+                boolean isBracket = false;
+                int bracketIndex = 0;
 
+                if(i == 0){
+                    // 처음 기호가 괄호인 경우는 따로처리(인덱스값이 달라짐)
+                    if(btnId == R.id.btnStr){
+                        isBracket = true;
+                        bracketIndex = i;
+                    }
+                    // 다음 기호가 괄호인 경우
+                    else if(i < tempOthers.size() - 1 && tempOthers.get(i + 1) == R.id.btnStr){
+                        isBracket = true;
+                        bracketIndex = i + 1;
+                    }
+                }
+                // 다음 기호가 괄호인 경우
+                else if(i < tempOthers.size() - 1 && tempOthers.get(i + 1) == R.id.btnStr){
+                    isBracket = true;
+                    bracketIndex = i + 1;
+                }
+
+                // 괄호가 체크된 경우 괄호 부분 먼저 계산해서 list를 업데이트
+                if(isBracket) {
+                    setBracketArrays(tempList, tempOthers, bracketIndex);
+                    tempOthersSize = tempOthers.size();
+                    btnId = tempOthers.get(i);
+                }
+
+                // 기호 앞의 숫자를 list에 저장
+                if(i == 0) numArray.add(tempList.get(0));
+                // 기호 뒤의 숫자가 없는경우 아래코드 동작안하도록함
+                if(tempList.size() <= (i + 1)) continue;
+                // 기호 뒤의 숫자를 변수에 설정
+                double num = tempList.get(i + 1);
+
+                // 기호 타입 체크
                 switch (btnId) {
+                    // * 일 경우
                     case R.id.btnMulti:
-                        numbers.set(numbers.size() - 1, numbers.get(numbers.size() - 1) * num);
+                        numArray.set(numArray.size() - 1, numArray.get(numArray.size() - 1) * num);
                         break;
+                    // / 일 경우
                     case R.id.btnDevi:
-                        numbers.set(numbers.size() - 1, numbers.get(numbers.size() - 1) / num);
+                        numArray.set(numArray.size() - 1, numArray.get(numArray.size() - 1) / num);
                         break;
+                    // 나머지의 경우 후순위로 미루기 위해 list에 저장
                     default:
-                        numbers.add(num);
-                        others.add(btnId);
+                        numArray.add(num);
+                        otherArray.add(btnId);
                         break;
                 }
             }
 
-            // * , / 연산 한 결과에서 다시 + , - 연산하여 결과값을 sum에 반영
-            if (numbers.size() > 0) {
-                sum += numbers.get(0);
-                for (int i = 1; i < numbers.size(); i++) {
-                    double num = numbers.get(i);
+            // 나머지 계산 안된 list값들을 계산
+            // 처음숫자의 경우 무조건 sum에 더해줌
+            if (numArray.size() > 0) sum += numArray.get(0);
 
-                    switch (others.get(i - 1)) {
+            if (numArray.size() > 1) {
+                for (int i = 1; i < numArray.size(); i++) {
+                    // 기호 뒤의 숫자를 변수에 설정
+                    double num = numArray.get(i);
+                    // 기호에 맞게 연산 하여 sum에 더해줌
+                    switch (otherArray.get(i - 1)) {
                         case R.id.btnPlus:
                             sum += num;
                             break;
@@ -156,16 +231,118 @@ public class CalculatorActivity extends AppCompatActivity {
                     }
                 }
             }
-            // double로 계산된 결과를 반올림 메소드를 사용해서 텍스트뷰에 출력
-            txtResult.setText(Math.round(sum) + "");
 
-            // 계산 완료 후 연산기호 체크 변수 초기화
-            isBeforeText = false;
+            // 결과값 반환
+            return sum;
         }
-        catch (Exception ex) {
-            // 연산도중 에러 발생시 메세지 표시
-            Toast.makeText(this, "계산식 범위를 초과하였습니다.", Toast.LENGTH_LONG).show();
+        catch (Exception ex){
+            return sum;
         }
+    }
+
+    /**
+     * 넘겨 받은 숫자list와 기호list에서 주어진 괄호의 index로
+     * 짝이 되는 괄호를 찾아 괄호안의 list들을 계산해주며
+     * 계산된 숫자,기호 값들은 넘겨받은 list들에서 remove해줌
+     * @param oriNums
+     * @param oriOthers
+     * @param bIndex
+     */
+    private void setBracketArrays(ArrayList<Double> oriNums, ArrayList<Integer> oriOthers, int bIndex){
+        // 괄호안에 포함되는 숫자list, 기호list를 담기위한 변수 생성
+        ArrayList<Double> bNums = new ArrayList<>();
+        ArrayList<Integer> bOthers = new ArrayList<>();
+
+        // 괄호 시작 인덱스
+        int otherStrIndex = bIndex;
+        // 괄호 종료 인덱스
+        int otherEndIndex = 0;
+        // 괄호 위치에 따른 숫자 시작 인덱스
+        int numStrIndex = bracketStartToNumIndex(oriOthers, otherStrIndex);
+        // 괄호 위치에 따른 숫자 종료 인덱스
+        int numEndIndex = 0;
+
+        // 괄호 종료 인덱스 찾기
+        for(int j = oriOthers.size() - 1; j > 0; j--){
+            if(oriOthers.get(j).equals(R.id.btnEnd)){
+                otherEndIndex = j;
+                numEndIndex = bracketEndToNumIndex(oriOthers, otherEndIndex);
+                break;
+            }
+        }
+
+        // 괄호안에 포함되는 숫자들을 위에 생성한 숫자list에 담아주며 원본 숫자list에서는 삭제
+        for(int n = numStrIndex; n <= numEndIndex; n++){
+            if(oriNums.size() > numStrIndex) {
+                bNums.add(oriNums.get(numStrIndex));
+                oriNums.remove(numStrIndex);
+            }
+        }
+
+        // 괄호안에 포함되는 기호들을 위에 생성한 기호list에 담아주며 원본 기호list에서는 삭제
+        for(int o = otherStrIndex; o <= otherEndIndex; o++){
+            if(oriOthers.size() > otherStrIndex) {
+                bOthers.add(oriOthers.get(otherStrIndex));
+                oriOthers.remove(otherStrIndex);
+            }
+        }
+
+        // 괄호안의 숫자,기호들을 계산해서 원본 숫자list에 삽입/추가 해줌
+        double bracketSum = calc(bNums, bOthers);
+        if(oriNums.size() - 1 >= numStrIndex) oriNums.add(numStrIndex, bracketSum);
+        else oriNums.add(bracketSum);
+    }
+
+    /**
+     * 시작괄호 인덱스로 숫자의 시작 인덱스 받아오기
+     * @param others
+     * @param convertIndex
+     * @return
+     */
+    public int bracketStartToNumIndex(ArrayList<Integer> others, int convertIndex){
+        int index = 0;
+
+        for(int i = 0; i < others.size(); i++) {
+            if(i == convertIndex) return index;
+
+            switch (others.get(i)) {
+                case R.id.btnStr:
+                    break;
+                case R.id.btnEnd:
+                    break;
+                default:
+                    index++;
+                    break;
+            }
+        }
+
+        return index;
+    }
+
+    /**
+     * 종료괄호 인덱스로 숫자의 시작 인덱스 받아오기
+     * @param others
+     * @param convertIndex
+     * @return
+     */
+    public int bracketEndToNumIndex(ArrayList<Integer> others, int convertIndex){
+        int index = 0;
+
+        for(int i = 0; i < others.size(); i++) {
+            if(i == convertIndex) return index;
+
+            switch (others.get(i)) {
+                case R.id.btnStr:
+                    break;
+                case R.id.btnEnd:
+                    break;
+                default:
+                    index++;
+                    break;
+            }
+        }
+
+        return index;
     }
 
     /**
@@ -207,19 +384,78 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     /**
+     * 숫자에 포함되는 문자를 받을때 사용 ex) .
+     */
+    private void addDotText(){
+        if(existLastDot()){
+            Toast.makeText(this, "잘못된 입력입니다.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 텍스트뷰에 dot 출력
+        if(!existLastNum()) txtCalc.append("0.");
+        else txtCalc.append(".");
+
+        // 연산기호 입력가능 하도록 변수 설정
+        isBeforeText = false;
+    }
+
+    /**
      * 연산기호 입력 메소드
      * @param s
      * @param btnId
      */
     private void addText(String s, int btnId){
-        // 마지막 입력이 연산기호일 경우 메세지 출력후 리턴
-        if(isBeforeText) {
-            Toast.makeText(this, "숫자를 입력해 주세요.", Toast.LENGTH_SHORT).show();
-            return;
+        switch (btnId) {
+            case R.id.btnStr:
+                boolean isFailed = true;
+                if(isBeforeText) isFailed = false;
+                else if(numList.size() == 0 || !existLastNum()) isFailed = false;
+
+                if (isFailed) {
+                    Toast.makeText(this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 연산기호 중복입력 체크를 위해 변수 설정
+                isBeforeText = true;
+
+                break;
+            case R.id.btnEnd:
+                if(!isOpendBracket()){
+                    Toast.makeText(this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 마지막 입력이 연산기호일 경우 메세지 출력후 리턴
+                if(isBeforeText) {
+                    Toast.makeText(this, "숫자를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 숫자list에 추가되지 않은 숫자체크하여 추가
+                if(existLastNum()) numList.add(getLastNum());
+
+                // 연산기호 중복입력 체크를 위해 변수 설정
+                isBeforeText = false;
+
+                break;
+            default:
+                // 마지막 입력이 연산기호일 경우 메세지 출력후 리턴
+                if(isBeforeText) {
+                    Toast.makeText(this, "숫자를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 숫자list에 추가되지 않은 숫자체크하여 추가
+                if(existLastNum()) numList.add(getLastNum());
+
+                // 연산기호 중복입력 체크를 위해 변수 설정
+                isBeforeText = true;
+
+                break;
         }
 
-        // 숫자list에 추가되지 않은 숫자체크하여 추가
-        if(existLastNum()) numList.add(getLastNum());
         // 연산기호list에 추가
         otherIdList.add(btnId);
 
@@ -229,8 +465,21 @@ public class CalculatorActivity extends AppCompatActivity {
         // last 숫자체크를 위해 현재 입력된 string을 저장
         beforeStr = txtCalc.getText().toString();
 
-        // 연산기호 중복입력 체크를 위해 변수 설정
-        isBeforeText = true;
+
+    }
+
+    /**
+     * 열려있는 괄호가 있는지 체크
+     * @return
+     */
+    private boolean isOpendBracket(){
+        int count = 0;
+        for(int id : otherIdList){
+            if(id == R.id.btnStr) count++;
+            else if(id == R.id.btnEnd) count--;
+        }
+
+        return count > 0;
     }
 
     /**
@@ -244,15 +493,30 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     /**
+     * 마지막에 dot이 입력되어있는지 체크
+     * @return
+     */
+    private boolean existLastDot(){
+        // 이전에 저장된 string과 길이 비교하여 입력되지 않은 숫자중 dot이 있는지 체크
+        if(existLastNum()){
+            String str = txtCalc.getText().toString().replace(beforeStr, "");
+
+            if(str.indexOf(".") >= 0) return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 입력되지 않은 마지막 숫자 가져오기
      * @return
      */
-    private int getLastNum(){
+    private double getLastNum(){
         // 이전에 저장된 string 길이 이후의 string을 가져옴
         String sNum = txtCalc.getText().toString().substring(beforeStr.length()).trim();
 
-        // 가져온 string을 int로 변환하여 리턴
-        return Integer.parseInt(sNum);
+        // 가져온 string을 double로 변환하여 리턴
+        return Double.parseDouble(sNum);
     }
 
 }
