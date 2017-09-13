@@ -9,6 +9,19 @@
     android:weightSum="6"
     tools:context="android.daehoshin.com.basiclayout.CalculatorActivity">
 
+    <!--
+    크기 표시단위
+    dp (dip) : Density independent Pixel
+    sp       : Scale independent Pixel (단말에 따라 스케일이 적용되어 보여짐)
+
+    색상표
+    #000000 ~ #FFFFFF
+     RRGGBB
+    투명도가 포함되면 8자리
+    #00000000 ~ #ffffffff
+     AARRGGBB
+    -->
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
