@@ -252,12 +252,13 @@ public class CalculatorActivity extends AppCompatActivity {
      * 입력된 연산을 계산해서 텍스트뷰에 출력
      */
     private void calc(){
+        // 열린 괄호가 있는경우 메세지만 출력
         if(isOpendBracket()){
             Toast.makeText(this, "계산식이 완성되지 않았습니다.", Toast.LENGTH_LONG).show();
             return;
         }
-        double sum = 5.1d - ((9d/3d-2.5d*2.05d)-80d)/8d;
-        Toast.makeText(this, sum+"", Toast.LENGTH_LONG).show();
+
+        // 텍스트뷰에 결과값 출력
         txtResult.setText(calc(numList, otherIdList) + "");
 
         // 계산 완료 후 연산기호 체크 변수 초기화
