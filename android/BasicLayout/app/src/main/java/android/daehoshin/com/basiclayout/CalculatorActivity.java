@@ -113,7 +113,8 @@ public class CalculatorActivity extends AppCompatActivity {
             Toast.makeText(this, "계산식이 완성되지 않았습니다.", Toast.LENGTH_LONG).show();
             return;
         }
-
+        double sum = 5.1d - ((9d/3d-2.5d*2.05d)-80d)/8d;
+        Toast.makeText(this, sum+"", Toast.LENGTH_LONG).show();
         txtResult.setText(calc(numList, otherIdList) + "");
 
         // 계산 완료 후 연산기호 체크 변수 초기화
