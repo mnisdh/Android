@@ -10,18 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".FrameActivity" />
         <activity android:name=".LinearActivity" />
         <activity android:name=".GridActivity" />
         <activity android:name=".RelativeActivity" />
         <activity android:name=".CalculatorActivity"
-            android:configChanges="screenLayout|orientation|layoutDirection|screenSize"></activity>
+            android:configChanges="screenLayout|orientation|layoutDirection|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
