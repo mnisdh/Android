@@ -1,7 +1,7 @@
-### Algorithm
+# Algorithm
 
-##### 숫자계산
-- 1 ~ max까지 더하는 메소드
+## 숫자계산
+### 1 ~ max까지 더하는 메소드
 
 ```
 	1 2 3 4 5 6 7 8
@@ -26,7 +26,7 @@ public long sum(long max){
 ```
 
 
-- 1 ~ max까지 홀수만 더하는 메소드
+### 1 ~ max까지 홀수만 더하는 메소드
 
 ```
 	1 3 5     = 9     3 * 3 = 9
@@ -52,7 +52,7 @@ public long sumOdd(long max){
 ```
 
 
-- 1 ~ max까지 짝수만 더하는 메소드
+### 1 ~ max까지 짝수만 더하는 메소드
 
 ```
 	2 4     = 9     2 * 2 + 2 = 6
@@ -77,9 +77,9 @@ public long sumEven(long max){
 }
 ```
 
-##### Math 관련
+## Math 관련
 
-- abs - 절대값 구하기
+### abs - 절대값 구하기
 
 ```java
 // 절대값 구하기
@@ -87,7 +87,7 @@ int a = Math.abs(-123);
 ```
 
 
-- round - 반올림 구하기
+### round - 반올림 구하기
 
 ```java
 // 반올림
@@ -95,7 +95,7 @@ long b = Math.round(123.5);
 ```
 
 
-- ceil - 올림 구하기
+### ceil - 올림 구하기
 
 ```java
 // 올림
@@ -103,7 +103,7 @@ double c = Math.ceil(123.4);
 ```
 
 
-- floor - 내림 구하기
+### floor - 내림 구하기
 
 ```java
 // 내림
@@ -111,14 +111,14 @@ double d = Math.floor(123.5);
 ```
 
 
-- random - 랜덤값 구하기
+### random - 랜덤값 구하기
 
 ```java
 Math.random(); // 0보다 크가나 같고 1보다 작은 실수를 리턴
 ```
 
 
-##### 일반적인 Random값 사용 관련
+### 일반적인 Random값 사용 관련
 
 ```java
 		Random random = new Random();
@@ -128,7 +128,7 @@ Math.random(); // 0보다 크가나 같고 1보다 작은 실수를 리턴
 ```
 
 
-##### 숫자 카운팅 연습
+## 숫자 카운팅 연습
 
 ```java
 /**
@@ -173,7 +173,7 @@ public class AlgoCountNumber {
 ```
 
 
-##### 로또번호 생성기
+## 로또번호 생성기
 
 랜덤값을 사용한 로또번호 생성기 연습
 

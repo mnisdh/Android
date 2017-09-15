@@ -1,4 +1,4 @@
-### MVC 패턴
+# MVC 패턴
 
 하나의 어플리케이션을 크게 Model, View, Controller 의 세영역으로 구분하고 각 영역간의 코드 결합도를 최소화 시키는 개발 패턴중 하나이다
 
@@ -7,9 +7,9 @@
 - Controller : 사용자가 보기 위해 데이터를 가공, 혹은 조작 하는 것을 의미(계산메소드등)
 
 
-### File Input / Output
+# File Input / Output
 
-##### Input
+## Input
 
 ```java
 public ArrayList<Memo> getList(){
@@ -46,7 +46,7 @@ public ArrayList<Memo> getList(){
 ```
 
 
-##### Output
+## Output
 
 ```java
 public void create(Memo memo){
@@ -94,17 +94,17 @@ public void create(Memo memo){
 }
 ```
 
-### mysql 연동
+# mysql 연동
 
-##### Connector 설치
+## Connector 설치
 
 - osx의 경우 [Connector/j](https://dev.mysql.com/downloads/connector/j/5.1.html)를 다운로드한다
 - 이클립스 프로젝트 속성 - Java build path - Libraries - Add External jre로 다운받은 파일 추가하면 완료
 
 
-##### 사용법
+## 사용법
 
-- 드라이버 동적 로드
+### 드라이버 동적 로드
 
 ```java
 public ModelWithDB(){
@@ -134,7 +134,7 @@ public ModelWithDB(){
 ```
 
 
-- Connection 맺기
+### Connection 맺기
 
 ```java
 private final String URL = "jdbc:mysql://localhost:3306/memo";
@@ -154,7 +154,7 @@ private Connection getConnection(){
 ```
 
 
-- Statement를 사용한 쿼리실행
+### Statement를 사용한 쿼리실행
 
 ```java
 public ArrayList<Memo> getList(){
@@ -193,7 +193,7 @@ public ArrayList<Memo> getList(){
 ```
 
 
-- PreparedStatement를 사용한 쿼리실행(Statement 보다 속도가 빠르다)
+### PreparedStatement를 사용한 쿼리실행(Statement 보다 속도가 빠르다)
 
 ```java
 public void create(Memo memo){
@@ -224,9 +224,9 @@ public void create(Memo memo){
 ```
 
 
-### MVC패턴, mysql을 사용한 메모저장 시스템
+# MVC패턴, mysql을 사용한 메모저장 시스템
 
-##### MemoMain.java(메인 : 각클래스들을 연결해주는 역할)
+## MemoMain.java(메인 : 각클래스들을 연결해주는 역할)
 
 ```java
 import java.util.Scanner;
@@ -258,7 +258,7 @@ public class MemoMain {
 ```
 
 
-##### ModelWithDB.java(Model : mysql연동하여 데이터를 처리하는 역할)
+## ModelWithDB.java(Model : mysql연동하여 데이터를 처리하는 역할)
 
 ```java
 import java.sql.Connection;
@@ -487,7 +487,7 @@ public class ModelWithDB {
 ```
 
 
-##### View.java(View : 화면의 입출력을 관리하는 역할)
+## View.java(View : 화면의 입출력을 관리하는 역할)
 
 ```java
 import java.util.ArrayList;
@@ -617,7 +617,7 @@ public class View {
 ```
 
 
-##### Control.java(Controller : Model과 View를 연결해주는 역할)
+## Control.java(Controller : Model과 View를 연결해주는 역할)
 
 ```java
 import java.util.Scanner;

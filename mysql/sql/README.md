@@ -1,6 +1,6 @@
-### sql문 설명
+# sql문 설명
 
-##### create문
+## create문
 
 ```sql
 /*
@@ -24,7 +24,7 @@ create table memo (
 ```
 
 
-##### insert문
+## insert문
 
 ```sql
 /*
@@ -51,7 +51,7 @@ commit;
 ```
 
 
-##### select문
+## select문
 
 ```sql
 /*
@@ -74,7 +74,7 @@ select name, content, datetime from memo;
 select * from memo;
 ```
 
-##### update문
+## update문
 
 ```sql
 /*
@@ -93,7 +93,7 @@ select * from memo where name = '개코';
 ```
 
 
-##### delete문
+## delete문
 
 ```sql
 /*

@@ -59,7 +59,7 @@ print('출력내용');
 ```
 
 ## 조건문
-#### if
+### if
 ```javascript
 var a = 10;
 
@@ -72,7 +72,7 @@ if (a > 11) {
 }
 ```
 
-#### switch
+### switch
 ```javascript
 var i = 10;
 
@@ -92,7 +92,7 @@ switch (i) {
 }
 ```
 
-#### 삼항 연산자
+### 삼항 연산자
 ```javascript
 var input = prompt('숫자 입력', '');
 var number = Number(input);
@@ -100,7 +100,7 @@ var number = Number(input);
 (number > 0) ? alert('자연수') : alert('자연수아님');
 ```
 
-#### 짧은 조건문
+### 짧은 조건문
 ```javascript
 true || alert('실행될까요?A');
 false || alert('실행될까요?B');
@@ -112,14 +112,14 @@ false && alert('실행될까요?D');
 ```
 
 ## 반복문
-#### for
+### for
 ```javascript
 for (var i = 0; i < 10; i++){
   console.log("i = " + i);
 }
 ```
 
-#### for in
+### for in
 ```javascript
 var array = ['포도', '사과', '바나나', '망고'];
 
@@ -128,7 +128,7 @@ for(var i in array) {
 }
 ```
 
-#### while
+### while
 ```javascript
 var i = 0;
 while(i < 10) {
@@ -137,7 +137,7 @@ while(i < 10) {
 }
 ```
 
-#### do while
+### do while
 ```javascript
 var value = 0;
 do {

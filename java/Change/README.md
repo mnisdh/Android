@@ -1,7 +1,7 @@
 	Interface를 사용하여 잔돈계산하는 시스템 작성 / 조건문 반복문 설명
 
-### 잔돈계산 시스템(Interface 사용)
-##### ChangeMain class(main)
+# 잔돈계산 시스템(Interface 사용)
+## ChangeMain class(main)
 
 ```java
 // 지불금액과 구입금액을 입력받아 잔돈 계산
@@ -24,7 +24,7 @@ public static void main(String[] args){
 ```
 
 
-##### Design.IChange interface(계산 메소드를 설계한 인터페이스)
+## Design.IChange interface(계산 메소드를 설계한 인터페이스)
 
 ```java
 package Design;
@@ -45,7 +45,7 @@ public interface IChange {
 ```
 
 
-##### Design.IChangePrint interface(출력 메소드를 설계한 인터페이스)
+## Design.IChangePrint interface(출력 메소드를 설계한 인터페이스)
 
 ```java
 package Design;
@@ -56,7 +56,7 @@ public interface IChangePrint {
 ```
 
 
-##### Change class(IChange, IChangePrint를 구현한 잔돈계산 class)
+## Change class(IChange, IChangePrint를 구현한 잔돈계산 class)
 
 ```java
 /**
@@ -99,9 +99,9 @@ public class Change implements Design.IChange, Design.IChangePrint {
 ```
 
 
-### 조건문
+# 조건문
 
-##### if문
+## if문
 
 ```java
 /**
@@ -124,7 +124,7 @@ public void checkIf(){
 ```
 
 
-##### switch문
+## switch문
 
 ```java
 /**
@@ -146,9 +146,9 @@ public void checkSwitch(){
 ```
 
 
-### 반복문
+# 반복문
 
-##### for문
+## for문
 
 ```java
 /**
@@ -192,7 +192,7 @@ public void checkFor(){
 ```
 
 
-##### while문
+## while문
 
 ```java
 /**
@@ -213,7 +213,7 @@ public void checkWhile(){
 ```
 
 
-##### do while문
+## do while문
 
 ```java
 /**

@@ -1,11 +1,11 @@
-### Annotation(Metadata 라고도 불림)
+# Annotation(Metadata 라고도 불림)
 - 클래스, 메소드, 변수등 모든요소에 선언 가능
 - 컴파일러에게 정보를 알려줄때 사용하거나
 - 컴파일할때 설치시의 작업을 지정하거나
 - 실행할 때 별도의 처리가 필요할때 사용
 
 
-##### 일반적으로 사용하는 Annotation
+## 일반적으로 사용하는 Annotation
 
 - @Override : 해당 메소드가 부모클래스의 메소드를 오버라이드 했다는것을 명시적으로 선언
 
@@ -14,7 +14,7 @@
 - @SuppressWarnings : 프로그램에 문제는 없으나 컴파일러가 경고뿌리는 것을 없앨때 사용(되도록 안쓰는게 좋은듯)
 
 
-##### Meta Annotation
+## Meta Annotation
 
 - @Target : 어떤것에 적용할것인지
 
@@ -44,7 +44,7 @@ RUNTIME 	: 가상머신에 의해서 참조가능
 - @interface : customAnnotation 생성시 사용
 
 
-##### 생성예제
+## 생성예제
 
 ```java
 package com.daehoshin.java.annotation;

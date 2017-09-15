@@ -1,10 +1,10 @@
-### Generic
+# Generic
 - 클래스의 타입을 parameter로 만든 것이다
 - 다루는 클래스의 타입을 일반적으로 선언하면서도 Object가 아닌 실제 클래스 타입을 명시하므로써 형변환없이도 사용할수 있게 해준다
 - Object로 여러 타입을 받아서 사용할 수있으나 형변환을 잘못하면 runtime시에 잘못을 확인되는데 Generic사용시는 사전에 타입을 확인하므로 유용하다
 
 
-##### Class에서 사용시
+## Class에서 사용시
 
 ```java
 public class Part<T> {
@@ -26,7 +26,7 @@ public class Test(){
 ```
 
 
-##### 생성자에서 사용시
+## 생성자에서 사용시
 
 ```java
 public class Part<T, S>{
@@ -41,7 +41,7 @@ public class Part<T, S>{
 ```
 
 
-##### Method에서 사용시
+## Method에서 사용시
 
 ```java
 //Class에선 T를 사용하지만
@@ -53,7 +53,7 @@ public class Part<T>{
 }
 ```
 
-### Generic을 사용하여 List 클래스 만들기
+# Generic을 사용하여 List 클래스 만들기
 
 ```java
 package com.daehoshin.java.generic;

@@ -45,20 +45,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(!isSpread) {
             aniSet.playTogether(
-                    ObjectAnimator.ofFloat(btn1, View.TRANSLATION_X, -100),
-                    ObjectAnimator.ofFloat(btn1, View.TRANSLATION_Y, -100),
+                    ObjectAnimator.ofFloat(btn1, View.TRANSLATION_X, -200),
+                    ObjectAnimator.ofFloat(btn1, View.TRANSLATION_Y, -200),
                     ObjectAnimator.ofFloat(btn1, View.ROTATION, 360 * duration / 100),
 
-                    ObjectAnimator.ofFloat(btn2, View.TRANSLATION_X, 100),
-                    ObjectAnimator.ofFloat(btn2, View.TRANSLATION_Y, -100),
+                    ObjectAnimator.ofFloat(btn2, View.TRANSLATION_X, 200),
+                    ObjectAnimator.ofFloat(btn2, View.TRANSLATION_Y, -200),
                     ObjectAnimator.ofFloat(btn2, View.ROTATION, 360 * duration / 100),
 
-                    ObjectAnimator.ofFloat(btn3, View.TRANSLATION_X, -100),
-                    ObjectAnimator.ofFloat(btn3, View.TRANSLATION_Y, 100),
+                    ObjectAnimator.ofFloat(btn3, View.TRANSLATION_X, -200),
+                    ObjectAnimator.ofFloat(btn3, View.TRANSLATION_Y, 200),
                     ObjectAnimator.ofFloat(btn3, View.ROTATION, 360 * duration / 100),
 
-                    ObjectAnimator.ofFloat(btn4, View.TRANSLATION_X, 100),
-                    ObjectAnimator.ofFloat(btn4, View.TRANSLATION_Y, 100),
+                    ObjectAnimator.ofFloat(btn4, View.TRANSLATION_X, 200),
+                    ObjectAnimator.ofFloat(btn4, View.TRANSLATION_Y, 200),
                     ObjectAnimator.ofFloat(btn4, View.ROTATION, 360 * duration / 100)
             );
         }
