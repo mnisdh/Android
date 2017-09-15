@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
 <img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator.gif?raw=true"/>
 
+<iframe awidth="560" height="315" src="https://www.youtube.com/embed/lNbHto-ZwrY" frameborder="0" allowfullscreen></iframe>
+
 ```java
 package android.daehoshin.com.basiclayout;
 
