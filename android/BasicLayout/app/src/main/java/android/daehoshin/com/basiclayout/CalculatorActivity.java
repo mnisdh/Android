@@ -1,11 +1,13 @@
 package android.daehoshin.com.basiclayout;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -107,17 +109,28 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             case R.id.btnDot:                  addDotText();                  break;
         }
 
-        runAnimation(id);
+        // 가짜버튼 생성해서 메인 레이아웃에 추가
+        Button btnTemp = createTempButton((Button) findViewById(id));
+        layMain.addView(btnTemp);
+
+        // 애니메이션 실행
+        runAnimation(btnTemp);
     }
 
+    /**
+     * 애니메이션 동작을위해 짭 버튼 생성
+     * @param btn
+     * @return
+     */
     private Button createTempButton(Button btn){
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(btn.getWidth(),btn.getHeight());
-
+        // 버튼 생성하여 원본 버튼과 동일하게 구성
         Button btnNew = new Button(this);
         btnNew.setText(btn.getText().toString());
-        btnNew.setLayoutParams(params);
+        btnNew.setWidth(btn.getWidth());
+        btnNew.setHeight(btn.getHeight());
         btnNew.setBackground(btn.getBackground());
 
+        // 부모 레이아웃의 x, y 값을 포함해야 최상위 레이아웃에서의 좌표값을 확인할수 있음
         View parent = (View)btn.getParent();
         float x = btn.getX() + parent.getX();
         float y = btn.getY() + parent.getY();
@@ -128,40 +141,50 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
         return btnNew;
     }
 
-    private void runAnimation(int buttonId){
-        Button btnTemp = null;
+    /**
+     * 애니메이션 실행
+     * @param btn
+     */
+    private void runAnimation(final Button btn){
+        // 동작할 애니메이터 생성
+        ObjectAnimator ani = ObjectAnimator.ofFloat(btn, View.X, txtCalc.getX() + txtCalc.getWidth() - btn.getWidth());
+        ObjectAnimator ani2 = ObjectAnimator.ofFloat(btn, View.Y, txtCalc.getY() - 100);
+        ObjectAnimator ani3 = ObjectAnimator.ofFloat(btn, View.ROTATION, 720);
+        ObjectAnimator ani4 = ObjectAnimator.ofFloat(btn, View.ALPHA, 0.4f);
+        ObjectAnimator ani5 = ObjectAnimator.ofFloat(btn, View.SCALE_X, 0.4f);
+        ObjectAnimator ani6 = ObjectAnimator.ofFloat(btn, View.SCALE_Y, 0.4f);
 
-        int animId = R.anim.number;
+        // 애니메이터들 실행을 위해 준비
+        AnimatorSet aniSet = new AnimatorSet();
+        aniSet.playTogether(ani, ani2, ani3, ani4, ani5, ani6);
+        aniSet.setDuration(1000);
+        aniSet.setInterpolator(new DecelerateInterpolator());
+        // 애니메이션 종료 후 가짜 버튼 삭제를 위한 Listener 생성
+        aniSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-        switch (buttonId){
-            case R.id.btnCalc:
-                animId = R.anim.number;
-                break;
-            case R.id.btnClear:
-                animId = R.anim.number;
-                break;
-            default:
-                animId = R.anim.number;
-                break;
-        }
+            }
 
-        Button btn = (Button) findViewById(buttonId);
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                layMain.removeView(btn);
+            }
 
-        if(btnTemp == null) {
-            btnTemp = createTempButton(btn);
+            @Override
+            public void onAnimationCancel(Animator animation) {
 
-            layMain.addView(btnTemp, new ConstraintLayout.LayoutParams(100,100));
+            }
 
-            Animation aniD = AnimationUtils.loadAnimation(this, animId);
-            btnTemp.startAnimation(aniD);
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
-            layMain.removeView(btnTemp);
-        }else{
-            Animation aniD = AnimationUtils.loadAnimation(this, animId);
-            btnTemp.startAnimation(aniD);
-        }
+            }
+        });
+
+        // 애니메이션 실행
+        aniSet.start();
     }
-
 
     /**
      * 입력된 연산을 계산해서 텍스트뷰에 출력
@@ -470,7 +493,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             case R.id.btnStr:
                 boolean isFailed = true;
                 if(isBeforeText) isFailed = false;
-                else if(numList.size() == 0 || !existLastNum()) isFailed = false;
+                else if(numList.size() == 0 && !existLastNum()) isFailed = false;
 
                 if (isFailed) {
                     Toast.makeText(this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
