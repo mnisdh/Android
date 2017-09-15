@@ -134,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 
-# 계산기 어플 [영상]("https://youtu.be/lNbHto-ZwrY")
+# 계산기 어플
+
+[영상]("https://youtu.be/lNbHto-ZwrY")
 
 <img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator1.png?raw=true"/> <img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator2.png?raw=true"/>
 
