@@ -138,21 +138,30 @@ public class MainActivity extends AppCompatActivity {
 
 <img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator1.png?raw=true"/> <img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator2.png?raw=true"/>
 
+<img width="250" height="450" src="https://github.com/mnisdh/Android/blob/master/android/BasicLayout/capture/Calculator.gif?raw=true"/>
+
 ```java
 package android.daehoshin.com.basiclayout;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculatorActivity extends AppCompatActivity {
+public class CalculatorActivity extends AppCompatActivity implements View.OnClickListener {
     // 사용할 위젯을 선언
     private TextView txtCalc, txtResult;
+    private ConstraintLayout layMain;
 
     // 연산버튼을 두번 누르지 못하게 체크하는 변수
     boolean isBeforeText = true;
@@ -168,6 +177,7 @@ public class CalculatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
 
+        layMain = (ConstraintLayout) findViewById(R.id.layMain);
         initButton();
         initTextView();
     }
@@ -176,27 +186,27 @@ public class CalculatorActivity extends AppCompatActivity {
      * 버튼 초기화
      */
     private void initButton(){
-        findViewById(R.id.btn0).setOnClickListener(onClickListener);
-        findViewById(R.id.btn1).setOnClickListener(onClickListener);
-        findViewById(R.id.btn2).setOnClickListener(onClickListener);
-        findViewById(R.id.btn3).setOnClickListener(onClickListener);
-        findViewById(R.id.btn4).setOnClickListener(onClickListener);
-        findViewById(R.id.btn5).setOnClickListener(onClickListener);
-        findViewById(R.id.btn6).setOnClickListener(onClickListener);
-        findViewById(R.id.btn7).setOnClickListener(onClickListener);
-        findViewById(R.id.btn8).setOnClickListener(onClickListener);
-        findViewById(R.id.btn9).setOnClickListener(onClickListener);
-        findViewById(R.id.btnDot).setOnClickListener(onClickListener);
+        findViewById(R.id.btn0).setOnClickListener(this);
+        findViewById(R.id.btn1).setOnClickListener(this);
+        findViewById(R.id.btn2).setOnClickListener(this);
+        findViewById(R.id.btn3).setOnClickListener(this);
+        findViewById(R.id.btn4).setOnClickListener(this);
+        findViewById(R.id.btn5).setOnClickListener(this);
+        findViewById(R.id.btn6).setOnClickListener(this);
+        findViewById(R.id.btn7).setOnClickListener(this);
+        findViewById(R.id.btn8).setOnClickListener(this);
+        findViewById(R.id.btn9).setOnClickListener(this);
+        findViewById(R.id.btnDot).setOnClickListener(this);
 
-        findViewById(R.id.btnCalc).setOnClickListener(onClickListener);
-        findViewById(R.id.btnDevi).setOnClickListener(onClickListener);
-        findViewById(R.id.btnMulti).setOnClickListener(onClickListener);
-        findViewById(R.id.btnPlus).setOnClickListener(onClickListener);
-        findViewById(R.id.btnMinus).setOnClickListener(onClickListener);
-        findViewById(R.id.btnClear).setOnClickListener(onClickListener);
+        findViewById(R.id.btnCalc).setOnClickListener(this);
+        findViewById(R.id.btnDevi).setOnClickListener(this);
+        findViewById(R.id.btnMulti).setOnClickListener(this);
+        findViewById(R.id.btnPlus).setOnClickListener(this);
+        findViewById(R.id.btnMinus).setOnClickListener(this);
+        findViewById(R.id.btnClear).setOnClickListener(this);
 
-        findViewById(R.id.btnStr).setOnClickListener(onClickListener);
-        findViewById(R.id.btnEnd).setOnClickListener(onClickListener);
+        findViewById(R.id.btnStr).setOnClickListener(this);
+        findViewById(R.id.btnEnd).setOnClickListener(this);
     }
 
     /**
@@ -212,39 +222,113 @@ public class CalculatorActivity extends AppCompatActivity {
     /**
      * 버튼 이벤트 연결을 위한 리스너
      */
-    View.OnClickListener onClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            switch (id){
-                // 계산 버튼
-                case R.id.btnCalc:                 calc();                        break;
-                // 초기화 버튼
-                case R.id.btnClear:                clear();                       break;
-                // 연산기호 버튼
-                case R.id.btnStr:                  addText("(", id);              break;
-                case R.id.btnEnd:                  addText(")", id);              break;
-                case R.id.btnDevi:                 addText("/", id);              break;
-                case R.id.btnMulti:                addText("*", id);              break;
-                case R.id.btnPlus:                 addText("+", id);              break;
-                case R.id.btnMinus:                addText("-", id);              break;
-                // 숫자버튼
-                case R.id.btn0:                    addText(0);                    break;
-                case R.id.btn1:                    addText(1);                    break;
-                case R.id.btn2:                    addText(2);                    break;
-                case R.id.btn3:                    addText(3);                    break;
-                case R.id.btn4:                    addText(4);                    break;
-                case R.id.btn5:                    addText(5);                    break;
-                case R.id.btn6:                    addText(6);                    break;
-                case R.id.btn7:                    addText(7);                    break;
-                case R.id.btn8:                    addText(8);                    break;
-                case R.id.btn9:                    addText(9);                    break;
-                // 소수점버튼
-                case R.id.btnDot:                  addDotText();                  break;
-            }
-        }
-    };
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
 
+        // 가짜버튼 생성해서 메인 레이아웃에 추가
+        Button btnTemp = createTempButton((Button) findViewById(id));
+        layMain.addView(btnTemp);
+
+        // 애니메이션 실행
+        runAnimation(btnTemp);
+
+        switch (id){
+            // 계산 버튼
+            case R.id.btnCalc:                 calc();                        break;
+            // 초기화 버튼
+            case R.id.btnClear:                clear();                       break;
+            // 연산기호 버튼
+            case R.id.btnStr:                  addText("(", id);              break;
+            case R.id.btnEnd:                  addText(")", id);              break;
+            case R.id.btnDevi:                 addText("/", id);              break;
+            case R.id.btnMulti:                addText("*", id);              break;
+            case R.id.btnPlus:                 addText("+", id);              break;
+            case R.id.btnMinus:                addText("-", id);              break;
+            // 숫자버튼
+            case R.id.btn0:                    addText(0);                    break;
+            case R.id.btn1:                    addText(1);                    break;
+            case R.id.btn2:                    addText(2);                    break;
+            case R.id.btn3:                    addText(3);                    break;
+            case R.id.btn4:                    addText(4);                    break;
+            case R.id.btn5:                    addText(5);                    break;
+            case R.id.btn6:                    addText(6);                    break;
+            case R.id.btn7:                    addText(7);                    break;
+            case R.id.btn8:                    addText(8);                    break;
+            case R.id.btn9:                    addText(9);                    break;
+            // 소수점버튼
+            case R.id.btnDot:                  addDotText();                  break;
+        }
+    }
+
+    /**
+     * 애니메이션 동작을위해 짭 버튼 생성
+     * @param btn
+     * @return
+     */
+    private Button createTempButton(Button btn){
+        // 버튼 생성하여 원본 버튼과 동일하게 구성
+        Button btnNew = new Button(this);
+        btnNew.setText(btn.getText().toString());
+        btnNew.setWidth(btn.getWidth());
+        btnNew.setHeight(btn.getHeight());
+        btnNew.setBackground(btn.getBackground());
+
+        // 부모 레이아웃의 x, y 값을 포함해야 최상위 레이아웃에서의 좌표값을 확인할수 있음
+        View parent = (View)btn.getParent();
+        float x = btn.getX() + parent.getX();
+        float y = btn.getY() + parent.getY();
+
+        btnNew.setX(x);
+        btnNew.setY(y);
+
+        return btnNew;
+    }
+
+    /**
+     * 애니메이션 실행
+     * @param btn
+     */
+    private void runAnimation(final Button btn){
+        // 동작할 애니메이터 생성
+        ObjectAnimator ani = ObjectAnimator.ofFloat(btn, View.X, txtCalc.getX() + txtCalc.getWidth() - btn.getWidth());
+        ObjectAnimator ani2 = ObjectAnimator.ofFloat(btn, View.Y, txtCalc.getY() - 100);
+        ObjectAnimator ani3 = ObjectAnimator.ofFloat(btn, View.ROTATION, 720);
+        ObjectAnimator ani4 = ObjectAnimator.ofFloat(btn, View.ALPHA, 0.4f);
+        ObjectAnimator ani5 = ObjectAnimator.ofFloat(btn, View.SCALE_X, 0.4f);
+        ObjectAnimator ani6 = ObjectAnimator.ofFloat(btn, View.SCALE_Y, 0.4f);
+
+        // 애니메이터들 실행을 위해 준비
+        AnimatorSet aniSet = new AnimatorSet();
+        aniSet.playTogether(ani, ani2, ani3, ani4, ani5, ani6);
+        aniSet.setDuration(1000);
+        aniSet.setInterpolator(new DecelerateInterpolator());
+        // 애니메이션 종료 후 가짜 버튼 삭제를 위한 Listener 생성
+        aniSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                layMain.removeView(btn);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        // 애니메이션 실행
+        aniSet.start();
+    }
 
     /**
      * 입력된 연산을 계산해서 텍스트뷰에 출력
@@ -553,7 +637,7 @@ public class CalculatorActivity extends AppCompatActivity {
             case R.id.btnStr:
                 boolean isFailed = true;
                 if(isBeforeText) isFailed = false;
-                else if(numList.size() == 0 || !existLastNum()) isFailed = false;
+                else if(numList.size() == 0 && !existLastNum()) isFailed = false;
 
                 if (isFailed) {
                     Toast.makeText(this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();

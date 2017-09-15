@@ -82,6 +82,14 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         int id = v.getId();
+
+        // 가짜버튼 생성해서 메인 레이아웃에 추가
+        Button btnTemp = createTempButton((Button) findViewById(id));
+        layMain.addView(btnTemp);
+
+        // 애니메이션 실행
+        runAnimation(btnTemp);
+
         switch (id){
             // 계산 버튼
             case R.id.btnCalc:                 calc();                        break;
@@ -108,13 +116,6 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             // 소수점버튼
             case R.id.btnDot:                  addDotText();                  break;
         }
-
-        // 가짜버튼 생성해서 메인 레이아웃에 추가
-        Button btnTemp = createTempButton((Button) findViewById(id));
-        layMain.addView(btnTemp);
-
-        // 애니메이션 실행
-        runAnimation(btnTemp);
     }
 
     /**
