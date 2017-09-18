@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="android.daehoshin.com.coustomview.MainActivity">
+
+    <android.daehoshin.com.coustomview.CustomView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/aniButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.daehoshin.com.coustomview.AniButton xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/btnDraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="draw activity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:use_animation="false"
+        custom:layout_constraintHorizontal_bias="0.502"
+        custom:layout_constraintVertical_bias="0.704"
+        tools:ignore="missingPrefix" />
+
+    <android.daehoshin.com.coustomview.AniButton
+        android:id="@+id/aniButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello CustomWidget!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:use_animation="true"
+        tools:ignore="missingPrefix" />
+
+</android.support.constraint.ConstraintLayout>
