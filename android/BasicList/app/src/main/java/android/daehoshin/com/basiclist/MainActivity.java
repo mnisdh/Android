@@ -1,6 +1,7 @@
 package android.daehoshin.com.basiclist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -72,13 +73,14 @@ class CustomAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = null;
+
         if(convertView == null) { // 아이템 convertView를 재사용하기위해 null체크
             // 레이아웃 인플레이터로 xml 파일을 View 객체로 변환
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item, null);
 
             // 아이템이 최초 호출된 경우는 Holder에 위젯들을 담고
             holder = new Holder();
-            holder.tvText = (TextView) convertView.findViewById(R.id.tvText);
+            holder.setTvText((TextView) convertView.findViewById(R.id.tvText));
 
             // 홀더를 View에 붙여놓는다
             convertView.setTag(holder);
@@ -88,12 +90,30 @@ class CustomAdapter extends BaseAdapter{
         }
 
         // 뷰안에 있는 텍스트뷰 위젯에 값을 입력한다
-        holder.tvText.setText(data.get(position));
+        holder.getTvText().setText(data.get(position));
 
         return convertView;
     }
 
     class Holder{
-        TextView tvText;
+        private TextView tvText;
+
+        public void setTvText(TextView tvText){
+            this.tvText = tvText;
+            this.tvText.setOnClickListener(new View.OnClickListener() {
+                // 화면에 보여지는 View는
+                // 기본적으로 자신이 속한 컴포넌트의 컨텍스트를 그대로 가지고 있다
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                    intent.putExtra("ValueKey", ((TextView)v).getText().toString());
+                    
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
+        public TextView getTvText(){
+            return tvText;
+        }
     }
 }
