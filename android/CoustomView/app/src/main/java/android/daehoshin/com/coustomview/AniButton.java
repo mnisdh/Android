@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -22,6 +21,7 @@ import android.view.View;
  */
 
 public class AniButton extends AppCompatButton {
+    // 애니메이션 사용여부를 체크하는 변수
     private boolean useAnimation = false;
     public boolean getUseAnimation(){
         return useAnimation;
@@ -30,18 +30,15 @@ public class AniButton extends AppCompatButton {
         useAnimation = use;
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if(useAnimation) runScaleAni(v);
-        }
-    };
-
     View.OnTouchListener onTouchListener = new View.OnTouchListener(){
-
+        /**
+         * 터치 다운시 애니메이션 동작
+         * @param v
+         * @param event
+         * @return
+         */
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
                     runScaleAni(v);
@@ -54,14 +51,13 @@ public class AniButton extends AppCompatButton {
         }
     };
 
+    /**
+     * 크기를 커졌다 원사이즈로 돌아오는 애니메이션 동작
+     * @param v
+     */
     private void runScaleAni(View v){
         ObjectAnimator aniX = ObjectAnimator.ofFloat(v, View.SCALE_X, 1.1f, 1.0f);
         ObjectAnimator aniY = ObjectAnimator.ofFloat(v, View.SCALE_Y, 1.1f, 1.0f);
-
-        //aniX.setRepeatCount(1);
-        //aniX.setRepeatMode(ObjectAnimator.REVERSE);
-        //aniY.setRepeatCount(1);
-        //aniY.setRepeatMode(ObjectAnimator.REVERSE);
 
         AnimatorSet aniSet = new AnimatorSet();
         aniSet.playTogether(aniX,aniY);
@@ -70,10 +66,15 @@ public class AniButton extends AppCompatButton {
         aniSet.start();
     }
 
+    /**
+     * 생성자
+     * @param context
+     * @param attrs
+     */
     public AniButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        //this.setOnClickListener(onClickListener);
+        // 세밀한 이벤트 동작처리를 위해 onClickListener 대신 onTouchListener로 사용
         this.setOnTouchListener(onTouchListener);
 
         // 1. attrs.xml 에 정의된 속성을 가져온다
@@ -81,7 +82,6 @@ public class AniButton extends AppCompatButton {
 
         // 2. 해당 이름으로 정의된 속성의 개수를 가져온다
         int size = typed.getIndexCount();
-        Log.d("AniButton", "size=" + size);
 
         // 3. 반복문을 돌면서 해당 속성에 대한 처리를 해준다
         for(int i = 0; i < size; i++){

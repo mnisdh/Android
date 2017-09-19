@@ -24,9 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // view를 추가할 레이아웃 설정
         stage = (ConstraintLayout)findViewById(R.id.stage);
 
+        // 커스텀뷰 생성
         CustomView cv = new CustomView(this);
+        // 레이아웃에 커스텀뷰 추가
         stage.addView(cv);
 
         findViewById(R.id.btnDraw).setOnClickListener(new View.OnClickListener() {

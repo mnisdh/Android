@@ -13,17 +13,27 @@ import android.view.View;
  */
 
 public class CustomView extends View {
-
-    // 코드로 생성할때
+    /**
+     * 코드로 생성할때 호출하는 생성자
+     * @param context
+     */
     public CustomView(Context context){
         super(context);
     }
 
-    // xml 에서 태그로 사용할 때 시스템에서 호출해주는 생성자
+    /**
+     * xml 에서 태그로 사용할 때 시스템에서 호출해주는 생성자
+     * @param context
+     * @param attrs
+     */
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * 컨트롤이 그려질때 동작하는 메소드에 사각형을 그리는 코드 추가
+     * @param canvas
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

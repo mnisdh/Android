@@ -18,14 +18,23 @@ public class DrawActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
 
+        init();
+    }
+
+    private void init(){
+        // drawview를 추가할 레이아웃 설정
         stage = (FrameLayout) findViewById(R.id.stage);
+
+        // drawview를 생성해서 레이아웃에 추가
         dv = new DrawView(this);
         stage.addView(dv);
 
+        // 사이즈 설정을 위한 seekbar 설정 / 리스너 연결
         sbSize = (SeekBar)findViewById(R.id.sbSize);
         sbSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // 사이즈 변경 메소드 호출
                 dv.setSize(progress);
             }
 
@@ -40,24 +49,23 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
+        // 컬러 설정을 위한 라디오그룹 설정 / 리스너 연결
         RadioGroup rgColor =(RadioGroup) findViewById(R.id.rgColor);
         rgColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                int color = Color.BLACK;
+                int size = sbSize.getProgress();
+
                 switch (checkedId){
-                    case R.id.rbtBlack:
-                        dv.setColor(Color.BLACK, sbSize.getProgress());
-                        break;
-                    case R.id.rbtCyan:
-                        dv.setColor(Color.CYAN, sbSize.getProgress());
-                        break;
-                    case R.id.rbtMagenta:
-                        dv.setColor(Color.MAGENTA, sbSize.getProgress());
-                        break;
-                    case R.id.rbtYellow:
-                        dv.setColor(Color.YELLOW, sbSize.getProgress());
-                        break;
+                    case R.id.rbtBlack: color = Color.BLACK; break;
+                    case R.id.rbtCyan: color = Color.CYAN; break;
+                    case R.id.rbtMagenta: color = Color.MAGENTA; break;
+                    case R.id.rbtYellow: color = Color.YELLOW; break;
                 }
+
+                // 컬러 변경 메소드 호출
+                dv.setColor(color, size);
             }
         });
     }
