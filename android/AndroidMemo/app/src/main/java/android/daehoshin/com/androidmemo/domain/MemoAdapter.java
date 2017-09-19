@@ -61,7 +61,8 @@ public class MemoAdapter extends BaseAdapter {
         Memo memo = memos.get(position);
         holder.getTvNo().setText(memo.getId() + "");
         holder.getTvTitle().setText(memo.getTitle());
-        holder.getTvDatetime().setText(memo.getDatetime() + "");
+        holder.getTvTitle().setTag(memo);
+        holder.getTvDatetime().setText(memo.getFormatedDatetime());
 
         return convertView;
     }
@@ -74,7 +75,7 @@ public class MemoAdapter extends BaseAdapter {
         }
         public TextView getTvNo(){ return tvNo; }
 
-        public void setTvTitle(TextView tvTitle){
+        public void setTvTitle(final TextView tvTitle){
             this.tvTitle = tvTitle;
             this.tvTitle.setOnClickListener(new View.OnClickListener() {
                 // 화면에 보여지는 View는
@@ -82,7 +83,7 @@ public class MemoAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                    intent.putExtra("type", "view");
+                    intent.putExtra("memo",(Memo) tvTitle.getTag());
 
                     v.getContext().startActivity(intent);
                 }

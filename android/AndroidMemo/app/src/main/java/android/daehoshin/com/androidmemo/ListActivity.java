@@ -14,6 +14,9 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
     List<Memo> memos = new ArrayList<>();
     ListView lvMemo;
+    MemoAdapter adapter;
+
+    final int NEW_MEMO_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,7 @@ public class ListActivity extends AppCompatActivity {
 
     private void init(){
         // 2.데이터와 리스트뷰를 연결하는 아답터를 생성
-        MemoAdapter adapter = new MemoAdapter(this, memos);
+        adapter = new MemoAdapter(this, memos);
 
         // 3.아답터와 리스트뷰를 연결
         lvMemo = (ListView) findViewById(R.id.lvMemo);
@@ -36,10 +39,23 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("type", "add");
-                startActivity(intent);
+                intent.putExtra("no", memos.size() + 1);
+                startActivityForResult(intent, NEW_MEMO_REQUEST);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case NEW_MEMO_REQUEST:
+                if(resultCode == RESULT_OK) {
+                    memos.add(0, (Memo) data.getSerializableExtra("memo"));
+                    adapter.notifyDataSetChanged();
+                }
+                break;
+        }
+    }
 }

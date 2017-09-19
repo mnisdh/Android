@@ -15,9 +15,11 @@
             android:id="@+id/tvNo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="1"
+            android:layout_weight="0.06"
+            android:fontFamily="casual"
             android:gravity="left"
+            android:text="1"
+            android:textColor="@android:color/black"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -25,19 +27,22 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="9"
+            android:layout_weight="9.9"
+            android:fontFamily="casual"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="20dp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
 
-
     <TextView
         android:id="@+id/tvDatetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:gravity="end"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/darker_gray" />
 </LinearLayout>
