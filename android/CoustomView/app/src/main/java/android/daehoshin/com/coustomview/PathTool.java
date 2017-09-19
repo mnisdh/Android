@@ -8,12 +8,16 @@ import android.graphics.Path;
 
 public class PathTool extends Path{
     private int color;
+    private float size;
 
-    public PathTool(int color){
+    public PathTool(int color, float size){
         this.color = color;
+        this.size = size;
     }
 
     public int getColor(){
         return this.color;
     }
+
+    public float getSize() { return this.size; }
 }

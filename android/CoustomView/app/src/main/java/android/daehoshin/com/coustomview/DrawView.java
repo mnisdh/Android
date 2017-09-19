@@ -23,18 +23,26 @@ public class DrawView extends View {
     // 소스코드에서만 사용하기 때문에 생성자 파라미터는 context만 필요
     public DrawView(Context context) {
         super(context);
-
-        setColor(Color.CYAN);
-
         paint = new Paint();
+
+        init();
+    }
+
+    private void init(){
+        setColor(Color.CYAN, 1);
+
         paint.setColor(currentPath.getColor());
         paint.setStyle(Paint.Style.STROKE);
     }
 
-    public void setColor(int color){
-        PathTool pt = new PathTool(color);
+    public void setColor(int color, int size){
+        PathTool pt = new PathTool(color, size);
         pts.add(pt);
         currentPath = pt;
+    }
+
+    public void setSize(int size){
+        setColor(currentPath.getColor(), size);
     }
 
     // 화면을 그려주는 onDraw 오버라이드
@@ -44,6 +52,7 @@ public class DrawView extends View {
 
         for(PathTool pt : pts) {
             paint.setColor(pt.getColor());
+            paint.setStrokeWidth(pt.getSize());
             canvas.drawPath(pt, paint);
         }
 
