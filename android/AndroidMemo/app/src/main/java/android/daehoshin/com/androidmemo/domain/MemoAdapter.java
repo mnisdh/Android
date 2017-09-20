@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,18 @@ public class MemoAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public void update(){
+    public void update() throws IOException {
         memos.clear();
         // 파일목록 가져오기
         // 1. 파일이 있는 디렉토리 경로를 가져온다
-        for(File file : DirUtil.getFiles(context.getFilesDir().getAbsolutePath())){
-            Memo memo = new Memo(file);
-            memos.add(memo);
+        for(File file : DirUtil.getFiles(context.getFilesDir().getAbsolutePath() + "/")){
+            Memo memo = null;
+            try {
+                memo = new Memo(file);
+                memos.add(memo);
+            } catch (IOException e) {
+                throw e;
+            }
         }
 
         this.notifyDataSetChanged();
@@ -76,17 +82,15 @@ public class MemoAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
-        Memo memo = memos.get(position);
-        holder.setTvNo(memo.getId());
-        holder.setTvTitle(memo.getTitle());
-        holder.getTvTitle().setTag(memo);
-        holder.setTvDatetime(memo.getFormatedDatetime());
+        holder.setMemo(memos.get(position));
 
         return convertView;
     }
 
     class Holder{
         private TextView tvNo, tvTitle, tvDatetime;
+        private Memo memo;
+        private Intent intent = null;
 
         public Holder(View v){
             tvNo = (TextView) v.findViewById(R.id.tvNo);
@@ -96,13 +100,22 @@ public class MemoAdapter extends BaseAdapter {
                 // 기본적으로 자신이 속한 컴포넌트의 컨텍스트를 그대로 가지고 있다
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                    intent.putExtra("memo",(Memo) tvTitle.getTag());
+                    if(intent == null) intent = new Intent(v.getContext(), DetailActivity.class);
+
+                    intent.putExtra("memo", memo);
 
                     v.getContext().startActivity(intent);
                 }
             });
             tvDatetime = (TextView) v.findViewById(R.id.tvDatetime);
+        }
+
+        public void setMemo(Memo memo){
+            this.memo = memo;
+
+            setTvNo(memo.getId());
+            setTvTitle(memo.getTitle());
+            setTvDatetime(memo.getFormatedDatetime());
         }
 
         public void setTvNo(int no){

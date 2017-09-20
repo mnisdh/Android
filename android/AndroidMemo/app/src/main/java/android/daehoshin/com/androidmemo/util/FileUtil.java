@@ -5,7 +5,6 @@ import android.content.Context;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +38,7 @@ public class FileUtil {
             if(fos != null) try {
                 fos.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw e;
             }
         }
     }
@@ -48,7 +47,29 @@ public class FileUtil {
         write(context, fileName, content.getBytes());
     }
 
-    public static String read(File file) throws FileNotFoundException {
+    public static void write(String fileName, byte[] bytes) throws IOException {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(fileName);
+            fos.write(bytes);
+        }catch (Exception ex){
+            throw ex;
+        }
+        finally {
+            // 스트림을 꼭 닫아야한다
+            if(fos != null) try {
+                fos.close();
+            } catch (IOException e) {
+                throw e;
+            }
+        }
+    }
+
+    public static void write(String fileName, String content) throws IOException {
+        write(fileName, content.getBytes());
+    }
+
+    public static String read(File file) throws IOException {
         String s = "";
 
         FileInputStream fis = null;
@@ -57,6 +78,20 @@ public class FileUtil {
 
             // 2. 실제 파일 인코딩을 바꿔주는 래퍼 클래스 사용
             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+
+
+            /* 다른처리
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            // 한번에 읽어올 버퍼양을 설정
+            byte[] buffer = new byte[1024];
+            // 현재 읽은양을 담는 변수설정
+            int count = 0;
+            while ((count = bis.read(buffer)) != -1){
+                s += new String(buffer, 0, count);
+            }
+            bis.close();
+            */
+
 
             // 3. 버퍼처리
             BufferedReader br = new BufferedReader(isr);
@@ -81,7 +116,7 @@ public class FileUtil {
             if(fis != null) try {
                 fis.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw e;
             }
 
             return s;

@@ -3,6 +3,7 @@ package android.daehoshin.com.androidmemo.domain;
 import android.daehoshin.com.androidmemo.util.FileUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +13,8 @@ import java.util.Date;
  */
 
 public class Memo implements Serializable {
+    private final String SEP = "@#@";
+
     private int id;
     public int getId(){return id;}
 
@@ -42,43 +45,58 @@ public class Memo implements Serializable {
     public Memo(int id){
         this.id = id;
     }
-    public Memo(File file){
+    public Memo(File file) throws IOException {
         try {
             String s = FileUtil.read(file);
             String[] rows = s.split("[\\r\\n]+");
+            //String[] rows = s.split("\n");
 
             for(String row : rows){
-                String[] cells = row.split(":^:");
+                String[] cells = row.split(SEP);
+
+                String key = "";
+                String value = "";
                 if(cells.length == 2){
-                    switch (cells[0]){
-                        case "no": this.id = Integer.parseInt(cells[1]); break;
-                        case "title": this.title = cells[1]; break;
-                        case "author": this.author = cells[1]; break;
-                        case "datetime": this.datetime = Long.parseLong(cells[1]); break;
-                        case "content": this.content += cells[1]; break;
-                    }
+                    key = cells[0];
+                    value = cells[1];
                 }
-                else if(cells.length == 1 && !this.content.equals("")) this.content += cells[0];
+                else{
+                    key = "";
+                    value = cells[0];
+                }
+
+                switch (key){
+                    case "no": this.id = Integer.parseInt(value); break;
+                    case "title": this.title = value; break;
+                    case "author": this.author = value; break;
+                    case "datetime": this.datetime = Long.parseLong(value); break;
+                    case "content": this.content += value; break;
+                    default: this.content += "\n" + value; break;
+                }
             }
 
-        }catch (Exception ex){
-
+        }catch (Exception e){
+            throw e;
         }
 
     }
 
-    public void Save(String fileName){
-
+    public void save(String fileName) throws IOException {
+        try {
+            FileUtil.write(fileName, toBytes());
+        } catch (IOException e) {
+            throw e;
+        }
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("no:^:").append(id).append("\n");
-        sb.append("title:^:").append(title).append("\n");
-        sb.append("author:^:").append(author).append("\n");
-        sb.append("datetime:^:").append(datetime).append("\n");
-        sb.append("content:^:").append(content).append("\n");
+        sb.append("no").append(SEP).append(id).append("\n");
+        sb.append("title").append(SEP).append(title).append("\n");
+        sb.append("author").append(SEP).append(author).append("\n");
+        sb.append("datetime").append(SEP).append(datetime).append("\n");
+        sb.append("content").append(SEP).append(content).append("\n");
 
         return sb.toString();
     }

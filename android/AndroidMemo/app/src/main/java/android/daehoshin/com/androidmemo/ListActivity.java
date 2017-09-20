@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 
 public class ListActivity extends AppCompatActivity {
@@ -43,8 +46,7 @@ public class ListActivity extends AppCompatActivity {
         findViewById(R.id.btnClear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.clear();
-                adapter.update();
+                loadListView();
             }
         });
 
@@ -65,6 +67,10 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void loadListView(){
-        adapter.update();
+        try {
+            adapter.update();
+        } catch (IOException e) {
+            Toast.makeText(this, "업데이트 오류발생", Toast.LENGTH_SHORT).show();
+        }
     }
 }

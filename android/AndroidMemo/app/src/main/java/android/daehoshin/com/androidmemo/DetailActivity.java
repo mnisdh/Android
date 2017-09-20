@@ -2,7 +2,6 @@ package android.daehoshin.com.androidmemo;
 
 import android.content.Intent;
 import android.daehoshin.com.androidmemo.domain.Memo;
-import android.daehoshin.com.androidmemo.util.FileUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class DetailActivity extends AppCompatActivity {
     TextView tvText;
@@ -74,7 +75,7 @@ public class DetailActivity extends AppCompatActivity {
                 //File file = new File(DIR_INTR + filename);
 
                 // 내용을 파일에 쓴다
-                FileUtil.write(v.getContext(), filename, memo.toBytes());
+                memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
 
                 Intent intent = new Intent();
                 intent.putExtra("memo", memo);
