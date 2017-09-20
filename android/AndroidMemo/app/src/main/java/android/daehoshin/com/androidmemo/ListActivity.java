@@ -8,11 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
-    List<Memo> memos = new ArrayList<>();
     ListView lvMemo;
     MemoAdapter adapter;
 
@@ -28,7 +25,7 @@ public class ListActivity extends AppCompatActivity {
 
     private void init(){
         // 2.데이터와 리스트뷰를 연결하는 아답터를 생성
-        adapter = new MemoAdapter(this, memos);
+        adapter = new MemoAdapter(this);
 
         // 3.아답터와 리스트뷰를 연결
         lvMemo = (ListView) findViewById(R.id.lvMemo);
@@ -39,10 +36,19 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("no", memos.size() + 1);
+                intent.putExtra("no", adapter.getCount() + 1);
                 startActivityForResult(intent, NEW_MEMO_REQUEST);
             }
         });
+        findViewById(R.id.btnClear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.clear();
+                adapter.update();
+            }
+        });
+
+        loadListView();
     }
 
     @Override
@@ -52,10 +58,13 @@ public class ListActivity extends AppCompatActivity {
         switch (requestCode){
             case NEW_MEMO_REQUEST:
                 if(resultCode == RESULT_OK) {
-                    memos.add(0, (Memo) data.getSerializableExtra("memo"));
-                    adapter.notifyDataSetChanged();
+                    adapter.insert(0, (Memo) data.getSerializableExtra("memo"));
                 }
                 break;
         }
+    }
+
+    private void loadListView(){
+        adapter.update();
     }
 }

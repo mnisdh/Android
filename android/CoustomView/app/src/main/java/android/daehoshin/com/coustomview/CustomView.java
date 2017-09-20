@@ -46,4 +46,6 @@ public class CustomView extends View {
         // 종이 - 무엇을 그릴지 결정하는 도구
         canvas.drawRect(100, 100, 200, 200, paint);
     }
+
+
 }
