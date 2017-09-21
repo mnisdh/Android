@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +18,8 @@ public class DetailActivity extends AppCompatActivity {
 
     TextView tvText;
     EditText etTitle, etName, etContext, etDatetime;
-    Button btnPost;
+    Button btnPost, btnDelete;
+    Switch swUpdate;
 
     //private static final String DIR_INTR = "/data/data/android.daehoshin.com.androidmemo/files/";
 
@@ -48,8 +51,18 @@ public class DetailActivity extends AppCompatActivity {
         etContext = (EditText) findViewById(R.id.etContext);
         etDatetime = (EditText) findViewById(R.id.etDatetime);
 
+        swUpdate = (Switch) findViewById(R.id.swUpdate);
+        swUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setUpdateMode(isChecked);
+            }
+        });
+
         btnPost = (Button) findViewById(R.id.btnPost);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
         btnPost.setOnClickListener(listener);
+        btnDelete.setOnClickListener(listener);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("id", -1);
@@ -71,32 +84,53 @@ public class DetailActivity extends AppCompatActivity {
          */
         @Override
         public void onClick(View v) {
-            Memo memo = getMemo();
-            try {
-                // 내용을 파일에 쓴다
-                // 내부저장소 경로 : /data/data/패키지명/files
-                //String filename = System.currentTimeMillis() + ".txt";
-                //File file = new File(DIR_INTR + filename);
-
-                // 내용을 파일에 쓴다
-                //memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
-                memoDAO.addMemo(memo);
-
-                Intent intent = new Intent();
-                intent.putExtra("id", memo.getId());
-                setResult(RESULT_OK, intent);
-            }catch (Exception ex){
-                Toast.makeText(v.getContext(), "에러 : " + ex.toString(), Toast.LENGTH_LONG).show();
+            switch (v.getId()){
+                case R.id.btnPost: post(v); break;
+                case R.id.btnDelete: delete(v); break;
             }
-            finally {
-                finish();
-            }
+
         }
     };
+
+    private void post(View v){
+        Memo memo = getMemo();
+        try {
+            // 내용을 파일에 쓴다
+            // 내부저장소 경로 : /data/data/패키지명/files
+            //String filename = System.currentTimeMillis() + ".txt";
+            //File file = new File(DIR_INTR + filename);
+
+            // 내용을 파일에 쓴다
+            //memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
+            memoDAO.addMemo(memo);
+
+            Intent intent = new Intent();
+            intent.putExtra("id", memo.getId());
+            setResult(RESULT_OK, intent);
+        }catch (Exception ex){
+            Toast.makeText(v.getContext(), "에러 : " + ex.toString(), Toast.LENGTH_LONG).show();
+        }
+        finally {
+            finish();
+        }
+    }
+
+    private void delete(View v){
+
+    }
+
+    private void setUpdateMode(boolean use){
+        setClickable(etTitle, use);
+        setClickable(etName, use);
+        setClickable(etDatetime, use);
+        setClickable(etContext, use);
+    }
 
     private void setAddMode(){
         tvText.setText("New post");
 
+        btnDelete.setVisibility(View.GONE);
+        swUpdate.setVisibility(View.GONE);
         etDatetime.setVisibility(View.GONE);
     }
 
@@ -113,8 +147,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setEditText(EditText et, String text){
         et.setText(text);
-        et.setFocusable(false);
-        et.setClickable(false);
+        setClickable(et, false);
+    }
+
+    private void setClickable(View v, boolean use){
+        v.setFocusable(use);
+        v.setClickable(use);
     }
 
     @Override

@@ -101,7 +101,7 @@ public class MemoAdapter extends BaseAdapter {
         public Holder(View v){
             tvNo = (TextView) v.findViewById(R.id.tvNo);
             tvTitle = (TextView) v.findViewById(R.id.tvTitle);
-            this.tvTitle.setOnClickListener(new View.OnClickListener() {
+            v.setOnClickListener(new View.OnClickListener() {
                 // 화면에 보여지는 View는
                 // 기본적으로 자신이 속한 컴포넌트의 컨텍스트를 그대로 가지고 있다
                 @Override
@@ -109,7 +109,6 @@ public class MemoAdapter extends BaseAdapter {
                     if(intent == null) intent = new Intent(v.getContext(), DetailActivity.class);
 
                     intent.putExtra("id", memo.getId());
-
                     v.getContext().startActivity(intent);
                 }
             });
