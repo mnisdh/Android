@@ -1,8 +1,8 @@
 package android.daehoshin.com.androidmemo;
 
 import android.content.Intent;
-import android.daehoshin.com.androidmemo.domain.Memo;
 import android.daehoshin.com.androidmemo.domain.MemoAdapter;
+import android.daehoshin.com.androidmemo.domain.MemoDAO;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +13,7 @@ import java.io.IOException;
 
 
 public class ListActivity extends AppCompatActivity {
+    MemoDAO memoDAO = null;
     ListView lvMemo;
     MemoAdapter adapter;
 
@@ -27,6 +28,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void init(){
+        if(memoDAO == null) memoDAO = new MemoDAO(this);
+
         // 2.데이터와 리스트뷰를 연결하는 아답터를 생성
         adapter = new MemoAdapter(this);
 
@@ -60,7 +63,8 @@ public class ListActivity extends AppCompatActivity {
         switch (requestCode){
             case NEW_MEMO_REQUEST:
                 if(resultCode == RESULT_OK) {
-                    adapter.insert(0, (Memo) data.getSerializableExtra("memo"));
+                    int id = data.getIntExtra("id", -1);
+                    adapter.insert(0, memoDAO.getMemo(id));
                 }
                 break;
         }
@@ -72,5 +76,12 @@ public class ListActivity extends AppCompatActivity {
         } catch (IOException e) {
             Toast.makeText(this, "업데이트 오류발생", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(memoDAO != null) memoDAO.close();
+
+        super.onDestroy();
     }
 }

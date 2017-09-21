@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.daehoshin.com.androidmemo.DetailActivity;
 import android.daehoshin.com.androidmemo.R;
-import android.daehoshin.com.androidmemo.util.DirUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +19,12 @@ import java.util.List;
  */
 
 public class MemoAdapter extends BaseAdapter {
-    Context context;
-    List<Memo> memos = new ArrayList<>();
+    private Context context;
+    private List<Memo> memos = new ArrayList<>();
+    private MemoDAO memoDAO = null;
 
     public MemoAdapter(Context context){
+        if(memoDAO == null) memoDAO = new MemoDAO(context);
         this.context = context;
     }
 
@@ -37,21 +37,27 @@ public class MemoAdapter extends BaseAdapter {
         memos.clear();
         // 파일목록 가져오기
         // 1. 파일이 있는 디렉토리 경로를 가져온다
-        for(File file : DirUtil.getFiles(context.getFilesDir().getAbsolutePath() + "/")){
-            Memo memo = null;
-            try {
-                memo = new Memo(file);
-                memos.add(memo);
-            } catch (IOException e) {
-                throw e;
-            }
-        }
+        //for(File file : DirUtil.getFiles(context.getFilesDir().getAbsolutePath() + "/")){
+        //    Memo memo = null;
+        //    try {
+        //        memo = new Memo(file);
+        //        memos.add(memo);
+        //    } catch (IOException e) {
+        //        throw e;
+        //    }
+        //}
+
+        memos = memoDAO.getMemos(true);
 
         this.notifyDataSetChanged();
     }
 
     public void clear(){
-        DirUtil.removeFiles(context.getFilesDir().getAbsolutePath());
+        //DirUtil.removeFiles(context.getFilesDir().getAbsolutePath());
+        memoDAO.deleteAllMemo();
+        memos.clear();
+
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -102,7 +108,7 @@ public class MemoAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     if(intent == null) intent = new Intent(v.getContext(), DetailActivity.class);
 
-                    intent.putExtra("memo", memo);
+                    intent.putExtra("id", memo.getId());
 
                     v.getContext().startActivity(intent);
                 }

@@ -1,10 +1,10 @@
 package android.daehoshin.com.androidmemo.domain;
 
+import android.content.Context;
 import android.daehoshin.com.androidmemo.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,11 +12,14 @@ import java.util.Date;
  * Created by daeho on 2017. 9. 19..
  */
 
-public class Memo implements Serializable {
+public class Memo {
     private final String SEP = "@#@";
 
     private int id;
     public int getId(){return id;}
+    public void setId(int id){
+        this.id = id;
+    }
 
     private String title;
     public String getTitle(){return title;}
@@ -42,6 +45,7 @@ public class Memo implements Serializable {
     }
     public void setDatetime(long datetime){this.datetime = datetime;}
 
+    public Memo() { }
     public Memo(int id){
         this.id = id;
     }
@@ -81,6 +85,11 @@ public class Memo implements Serializable {
 
     }
 
+    private void save(Context context){
+        MemoDAO memoDAO = new MemoDAO(context);
+        memoDAO.addMemo(this);
+        memoDAO.close();
+    }
     public void save(String fileName) throws IOException {
         try {
             FileUtil.write(fileName, toBytes());

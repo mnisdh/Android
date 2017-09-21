@@ -2,6 +2,7 @@ package android.daehoshin.com.androidmemo;
 
 import android.content.Intent;
 import android.daehoshin.com.androidmemo.domain.Memo;
+import android.daehoshin.com.androidmemo.domain.MemoDAO;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,13 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-
 public class DetailActivity extends AppCompatActivity {
+    MemoDAO memoDAO = null;
+
     TextView tvText;
     EditText etTitle, etName, etContext, etDatetime;
     Button btnPost;
-    int no = 0;
 
     //private static final String DIR_INTR = "/data/data/android.daehoshin.com.androidmemo/files/";
 
@@ -29,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private Memo getMemo(){
-        Memo memo = new Memo(no);
+        Memo memo = new Memo();
         memo.setTitle(etTitle.getText().toString());
         memo.setAuthor(etName.getText().toString());
         memo.setContent(etContext.getText().toString());
@@ -39,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void init(){
+        if(memoDAO == null) memoDAO = new MemoDAO(this);
+
         tvText = (TextView) findViewById(R.id.tvText);
 
         etTitle = (EditText) findViewById(R.id.etTitle);
@@ -50,10 +52,12 @@ public class DetailActivity extends AppCompatActivity {
         btnPost.setOnClickListener(listener);
 
         Intent intent = getIntent();
-        Memo memo = (Memo) intent.getSerializableExtra("memo");
-
-        if(memo == null) setAddMode(intent.getIntExtra("no", 0));
-        else setViewMode(memo);
+        int id = intent.getIntExtra("id", -1);
+        if(id < 0) setAddMode();
+        else{
+            Memo memo = memoDAO.getMemo(id);
+            setViewMode(memo);
+        }
     }
 
     View.OnClickListener listener = new View.OnClickListener() {
@@ -71,14 +75,15 @@ public class DetailActivity extends AppCompatActivity {
             try {
                 // 내용을 파일에 쓴다
                 // 내부저장소 경로 : /data/data/패키지명/files
-                String filename = System.currentTimeMillis() + ".txt";
+                //String filename = System.currentTimeMillis() + ".txt";
                 //File file = new File(DIR_INTR + filename);
 
                 // 내용을 파일에 쓴다
-                memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
+                //memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
+                memoDAO.addMemo(memo);
 
                 Intent intent = new Intent();
-                intent.putExtra("memo", memo);
+                intent.putExtra("id", memo.getId());
                 setResult(RESULT_OK, intent);
             }catch (Exception ex){
                 Toast.makeText(v.getContext(), "에러 : " + ex.toString(), Toast.LENGTH_LONG).show();
@@ -89,10 +94,8 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    private void setAddMode(int no){
+    private void setAddMode(){
         tvText.setText("New post");
-
-        this.no = no;
 
         etDatetime.setVisibility(View.GONE);
     }
@@ -112,5 +115,12 @@ public class DetailActivity extends AppCompatActivity {
         et.setText(text);
         et.setFocusable(false);
         et.setClickable(false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(memoDAO != null) memoDAO.close();
+
+        super.onDestroy();
     }
 }
