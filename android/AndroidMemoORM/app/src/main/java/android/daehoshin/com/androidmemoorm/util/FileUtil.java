@@ -1,9 +1,10 @@
-package android.daehoshin.com.androidmemo.util;
+package android.daehoshin.com.androidmemoorm.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,14 +50,14 @@ public class FileUtil {
     }
 
     public static void write(Context context, String fileName, Bitmap bitmap) throws IOException {
-        write(context, fileName, TypeUtil.toByteArray(bitmap));
+        write(context, fileName, bitmapToByteArray(bitmap));
     }
 
     public static void write(String fileName, Bitmap bitmap) throws IOException {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(fileName);
-            fos.write(TypeUtil.toByteArray(bitmap));
+            fos.write(bitmapToByteArray(bitmap));
         }catch (Exception ex){
             throw ex;
         }
@@ -146,5 +147,10 @@ public class FileUtil {
         }
     }
 
-
+    public static byte[] bitmapToByteArray(Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+        byte[] byteArray = stream.toByteArray() ;
+        return byteArray ;
+    }
 }

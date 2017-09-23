@@ -1,7 +1,8 @@
-package android.daehoshin.com.androidmemo.util;
+package android.daehoshin.com.memo.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +18,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class FileUtil {
-    public static void write(Context context, String fileName, byte[] bytes) throws IOException {
+    public static void save(Context context, String fileName, byte[] bytes) throws IOException {
         FileOutputStream fos = null;
         try {
             // 내용을 파일에 쓴다
@@ -44,33 +45,7 @@ public class FileUtil {
         }
     }
 
-    public static void write(Context context, String fileName, String content) throws IOException {
-        write(context, fileName, content.getBytes());
-    }
-
-    public static void write(Context context, String fileName, Bitmap bitmap) throws IOException {
-        write(context, fileName, TypeUtil.toByteArray(bitmap));
-    }
-
-    public static void write(String fileName, Bitmap bitmap) throws IOException {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(fileName);
-            fos.write(TypeUtil.toByteArray(bitmap));
-        }catch (Exception ex){
-            throw ex;
-        }
-        finally {
-            // 스트림을 꼭 닫아야한다
-            if(fos != null) try {
-                fos.close();
-            } catch (IOException e) {
-                throw e;
-            }
-        }
-    }
-
-    public static void write(String fileName, byte[] bytes) throws IOException {
+    public static void save(String fileName, byte[] bytes) throws IOException {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(fileName);
@@ -88,11 +63,7 @@ public class FileUtil {
         }
     }
 
-    public static void write(String fileName, String content) throws IOException {
-        write(fileName, content.getBytes());
-    }
-
-    public static String read(File file) throws IOException {
+    public static String openString(File file) throws IOException {
         String s = "";
 
         FileInputStream fis = null;
@@ -143,6 +114,28 @@ public class FileUtil {
             }
 
             return s;
+        }
+    }
+
+    public static Bitmap openBitmap(File file) throws IOException {
+        Bitmap bitmap = null;
+
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(file);
+            bitmap = BitmapFactory.decodeStream(fis);
+        }catch (Exception ex){
+            throw ex;
+        }
+        finally {
+            // 스트림을 꼭 닫아야한다
+            if(fis != null) try {
+                fis.close();
+            } catch (IOException e) {
+                throw e;
+            }
+
+            return bitmap;
         }
     }
 

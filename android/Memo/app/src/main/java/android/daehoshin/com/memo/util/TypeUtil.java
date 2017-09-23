@@ -1,4 +1,4 @@
-package android.daehoshin.com.androidmemo.util;
+package android.daehoshin.com.memo.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class TypeUtil {
-
     public static byte[] toByteArray(Bitmap bitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
         bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;

@@ -1,4 +1,4 @@
-package android.daehoshin.com.androidmemo.util;
+package android.daehoshin.com.library.Util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
