@@ -36,7 +36,7 @@ public class DetailActivity extends AppCompatActivity {
         memo.setTitle(etTitle.getText().toString());
         memo.setAuthor(etName.getText().toString());
         memo.setContent(etContext.getText().toString());
-        memo.setDatetime(System.currentTimeMillis());
+        memo.setCreate_date(System.currentTimeMillis());
 
         return memo;
     }
@@ -68,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
         int id = intent.getIntExtra("id", -1);
         if(id < 0) setAddMode();
         else{
-            Memo memo = memoDAO.getMemo(id);
+            Memo memo = memoDAO.select(id);
             setViewMode(memo);
         }
     }
@@ -139,7 +139,7 @@ public class DetailActivity extends AppCompatActivity {
 
         setEditText(etTitle, memo.getTitle());
         setEditText(etName, memo.getAuthor());
-        setEditText(etDatetime, memo.getFormatedDatetime());
+        setEditText(etDatetime, memo.getFormatedUpdate_date());
         setEditText(etContext, memo.getContent());
 
         btnPost.setVisibility(View.GONE);

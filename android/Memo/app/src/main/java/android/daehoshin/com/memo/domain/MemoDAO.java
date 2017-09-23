@@ -97,4 +97,7 @@ public class MemoDAO {
         }
     }
 
+    public void close(){
+        dbHelper.close();
+    }
 }

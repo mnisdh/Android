@@ -3,6 +3,9 @@ package android.daehoshin.com.memo.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by daeho on 2017. 9. 19..
  */
@@ -19,7 +22,7 @@ public class Memo {
     private String author;
 
     @DatabaseField
-    private long cretae_date;
+    private long create_date;
 
     @DatabaseField
     private long update_date;
@@ -54,17 +57,21 @@ public class Memo {
         this.author = author;
     }
 
-    public long getCretae_date() {
-        return cretae_date;
+    public long getCreate_date() {
+        return create_date;
     }
 
-    public void setCretae_date(long cretae_date) {
-        this.cretae_date = cretae_date;
+    public String getFormatedCreate_date(){ return getFormatedDatetime(create_date, "yyyy-MM-dd hh:mm:ss"); }
+
+    public void setCreate_date(long cretae_date) {
+        this.create_date = cretae_date;
     }
 
     public long getUpdate_date() {
         return update_date;
     }
+
+    public String getFormatedUpdate_date(){ return getFormatedDatetime(update_date, "yyyy-MM-dd hh:mm:ss"); }
 
     public void setUpdate_date(long update_date) {
         this.update_date = update_date;
@@ -84,5 +91,11 @@ public class Memo {
 
     public void setImage_path(String image_path) {
         this.image_path = image_path;
+    }
+
+    private String getFormatedDatetime(long datetime, String format){
+        Date date = new Date(datetime);
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
     }
 }

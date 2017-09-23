@@ -1,9 +1,5 @@
 package android.daehoshin.com.memo;
 
-import android.daehoshin.com.androidmemoorm.dao.PicNoteDAO;
-import android.daehoshin.com.androidmemoorm.model.PicNote;
-import android.daehoshin.com.androidmemoorm.util.FileUtil;
-import android.daehoshin.com.memo.R;
 import android.daehoshin.com.memo.domain.Memo;
 import android.daehoshin.com.memo.domain.MemoDAO;
 import android.daehoshin.com.memo.draw.DrawView;
@@ -40,7 +36,7 @@ public class DrawActivity extends AppCompatActivity {
     }
 
     private void init(){
-        dao = new PicNoteDAO(this);
+        dao = new MemoDAO(this);
 
         // drawview를 추가할 레이아웃 설정
         stage = (FrameLayout) findViewById(R.id.stage);
@@ -93,7 +89,7 @@ public class DrawActivity extends AppCompatActivity {
         Memo memo = new Memo();
         memo.setImage_path(fileName);
         memo.setTitle(etTitle.getText().toString());
-        memo.setCretae_date(System.currentTimeMillis());
+        memo.setCreate_date(System.currentTimeMillis());
         dao.create(memo);
 
         //Intent intent = new Intent();
