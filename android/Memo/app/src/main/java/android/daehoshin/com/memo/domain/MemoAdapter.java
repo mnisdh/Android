@@ -1,5 +1,8 @@
 package android.daehoshin.com.memo.domain;
 
+import android.content.Context;
+import android.content.Intent;
+import android.daehoshin.com.memo.DetailActivity;
 import android.daehoshin.com.memo.R;
 import android.daehoshin.com.memo.util.FileUtil;
 import android.graphics.Bitmap;
@@ -10,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,9 @@ import java.util.List;
 public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
     // 1. 데이터 저장소
     private List<Memo> data = new ArrayList<>();
+    private Context context;
+
+    public MemoAdapter(Context context) { this.context = context; }
 
     public void setData(List<Memo> data){
         this.data = data;
@@ -58,28 +63,34 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
         Memo memo = data.get(position);
         holder.setId(memo.getId());
         holder.setTitle(memo.getTitle());
-        holder.setDatetime(memo.getCretae_date() + "");
-        if(!memo.getImage_path().equals("")) {
+        holder.setDatetime(memo.getFormatedCreate_date());
+
+        holder.sethiddenImage(true);
+        if(memo.getImage_path() != null) {
             Bitmap bitmap = null;
             try {
-                bitmap = FileUtil.openBitmap(new File(memo.getImage_path());
+                bitmap = FileUtil.openBitmap(context, memo.getImage_path());
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if(bitmap != null) holder.setImage(bitmap);
+            if(bitmap != null) {
+                holder.sethiddenImage(false);
+                holder.setImage(bitmap);
+            }
         }
     }
 
     public void update(){
-
+        notifyDataSetChanged();
     }
 
     public class Holder extends RecyclerView.ViewHolder{
         private TextView tvId, tvTitle, tvDatetime;
         private ImageView ivImage;
+        private long id;
 
-        public Holder(View itemView) {
+        public Holder(final View itemView) {
             super(itemView);
 
             tvId = (TextView) itemView.findViewById(R.id.tvId);
@@ -87,10 +98,20 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
             tvDatetime = (TextView) itemView.findViewById(R.id.tvDatetime);
 
             ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                    intent.putExtra("id", id);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void setId(long id) {
             this.tvId.setText(id + "");
+            this.id = id;
         }
 
         public void setTitle(String title) {
@@ -103,6 +124,11 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
 
         public void setImage(Bitmap bitmap) {
             this.ivImage.setImageBitmap(bitmap);
+        }
+
+        public void sethiddenImage(boolean isHidden){
+            if(isHidden) this.ivImage.setVisibility(View.GONE);
+            else this.ivImage.setVisibility(View.VISIBLE);
         }
     }
 }

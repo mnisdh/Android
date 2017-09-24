@@ -1,6 +1,6 @@
 package android.daehoshin.com.memo;
 
-import android.daehoshin.com.memo.domain.Memo;
+import android.content.Intent;
 import android.daehoshin.com.memo.domain.MemoDAO;
 import android.daehoshin.com.memo.draw.DrawView;
 import android.daehoshin.com.memo.util.FileUtil;
@@ -85,16 +85,9 @@ public class DrawActivity extends AppCompatActivity {
             bitmap.recycle();
         }
 
-        // 데이터베이스에 경로도 저장
-        Memo memo = new Memo();
-        memo.setImage_path(fileName);
-        memo.setTitle(etTitle.getText().toString());
-        memo.setCreate_date(System.currentTimeMillis());
-        dao.create(memo);
-
-        //Intent intent = new Intent();
-        //intent.putExtra("id", memo.getId());
-        //setResult(RESULT_OK, intent);
+        Intent intent = new Intent();
+        intent.putExtra("fileName", fileName);
+        setResult(RESULT_OK, intent);
 
         finish();
     }

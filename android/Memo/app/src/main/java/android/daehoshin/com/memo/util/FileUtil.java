@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,6 +44,7 @@ public class FileUtil {
         }
     }
 
+    /*
     public static void save(String fileName, byte[] bytes) throws IOException {
         FileOutputStream fos = null;
         try {
@@ -62,13 +62,14 @@ public class FileUtil {
             }
         }
     }
+    */
 
-    public static String openString(File file) throws IOException {
+    public static String openString(Context context, String fileName) throws IOException {
         String s = "";
 
         FileInputStream fis = null;
         try{
-            fis = new FileInputStream(file);
+            fis = context.openFileInput(fileName);
 
             // 2. 실제 파일 인코딩을 바꿔주는 래퍼 클래스 사용
             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
@@ -117,12 +118,12 @@ public class FileUtil {
         }
     }
 
-    public static Bitmap openBitmap(File file) throws IOException {
+    public static Bitmap openBitmap(Context context, String fileName) throws IOException {
         Bitmap bitmap = null;
 
         FileInputStream fis = null;
         try{
-            fis = new FileInputStream(file);
+            fis = context.openFileInput(fileName);
             bitmap = BitmapFactory.decodeStream(fis);
         }catch (Exception ex){
             throw ex;

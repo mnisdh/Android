@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name="android.daehoshin.com.memo.DetailActivity"></activity>
+        <activity android:name="android.daehoshin.com.memo.DrawActivity"></activity>
     </application>
 
 </manifest>

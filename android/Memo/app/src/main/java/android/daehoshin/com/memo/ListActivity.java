@@ -5,14 +5,11 @@ import android.daehoshin.com.memo.domain.Memo;
 import android.daehoshin.com.memo.domain.MemoAdapter;
 import android.daehoshin.com.memo.domain.MemoDAO;
 import android.os.Bundle;
-import android.support.v7.app.AlertController;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -34,10 +31,13 @@ public class ListActivity extends AppCompatActivity {
 
     private void init(){
         dao = new MemoDAO(this);
-        adapter = new MemoAdapter();
+        adapter = new MemoAdapter(this);
 
         rvList = (RecyclerView) findViewById(R.id.rvList);
         rvList.setAdapter(adapter);
+
+        rvList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
     }
 
     @Override

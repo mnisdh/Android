@@ -70,6 +70,7 @@ public class DetailActivity extends AppCompatActivity {
         else{
             Memo memo = memoDAO.getMemo(id);
             setViewMode(memo);
+            setUpdateMode(false);
         }
     }
 
@@ -124,6 +125,14 @@ public class DetailActivity extends AppCompatActivity {
         setClickable(etName, use);
         setClickable(etDatetime, use);
         setClickable(etContext, use);
+
+        if(use) {
+            btnPost.setVisibility(View.VISIBLE);
+
+        }
+        else {
+            btnPost.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setAddMode(){
@@ -141,8 +150,6 @@ public class DetailActivity extends AppCompatActivity {
         setEditText(etName, memo.getAuthor());
         setEditText(etDatetime, memo.getFormatedDatetime());
         setEditText(etContext, memo.getContent());
-
-        btnPost.setVisibility(View.GONE);
     }
 
     private void setEditText(EditText et, String text){
