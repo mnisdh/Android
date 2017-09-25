@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.daehoshin.com.memo.domain.Memo;
 import android.daehoshin.com.memo.domain.MemoDAO;
 import android.daehoshin.com.memo.util.FileUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -97,7 +98,9 @@ public class DetailActivity extends AppCompatActivity {
         Memo memo = getMemo();
         try {
             // 신규 포스트 추가
-            if(isNewPost) memoDAO.create(memo);
+            if(isNewPost) {
+                memoDAO.create(memo);
+            }
             // 기존 포스트 업데이트
             else{
                 memo.setUpdate_date(System.currentTimeMillis());
@@ -108,7 +111,6 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("id", memo.getId());
             setResult(RESULT_OK, intent);
-
         }catch (Exception ex){
             Toast.makeText(v.getContext(), "에러 : " + ex.toString(), Toast.LENGTH_LONG).show();
         }
@@ -141,7 +143,9 @@ public class DetailActivity extends AppCompatActivity {
                     ivImage.setVisibility(View.VISIBLE);
                     String fileName = data.getStringExtra("fileName");
                     try {
-                        ivImage.setImageBitmap(FileUtil.openBitmap(this, fileName));
+                        Bitmap bitmap = FileUtil.openBitmap(MemoDAO.getImagePath(), fileName);
+                        ivImage.setImageBitmap(bitmap);
+                        ivImage.setMinimumHeight(bitmap.getHeight());
                         ivImage.setTag(fileName);
 
                     } catch (IOException e) {
@@ -194,13 +198,16 @@ public class DetailActivity extends AppCompatActivity {
 
         setEditText(etTitle, memo.getTitle());
         setEditText(etName, memo.getAuthor());
-        setEditText(etDatetime, memo.getFormatedUpdate_date());
+        if(memo.getUpdate_date() == 0) setEditText(etDatetime, memo.getFormatedCreate_date());
+        else setEditText(etDatetime, memo.getFormatedUpdate_date());
         setEditText(etContent, memo.getContent());
 
         if(memo.getImage_path() != null) {
             ivImage.setVisibility(View.VISIBLE);
             try {
-                ivImage.setImageBitmap(FileUtil.openBitmap(this, memo.getImage_path()));
+                Bitmap bitmap = FileUtil.openBitmap(MemoDAO.getImagePath(), memo.getImage_path());
+                ivImage.setImageBitmap(bitmap);
+                ivImage.setMinimumHeight(bitmap.getHeight());
                 ivImage.setTag(memo.getImage_path());
             } catch (IOException e) {
                 e.printStackTrace();

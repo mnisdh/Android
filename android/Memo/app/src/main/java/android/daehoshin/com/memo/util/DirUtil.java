@@ -1,5 +1,7 @@
 package android.daehoshin.com.memo.util;
 
+import android.os.Environment;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
  */
 
 public class DirUtil {
+    public static String getExternalStoragePath() { return Environment.getExternalStorageDirectory().getAbsolutePath(); }
+
     public static File[] getFiles(String path){
         List<String> list = new ArrayList<>();
 

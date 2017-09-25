@@ -1,8 +1,10 @@
 package android.daehoshin.com.memo.domain;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.daehoshin.com.memo.DetailActivity;
+import android.daehoshin.com.memo.ListActivity;
 import android.daehoshin.com.memo.R;
 import android.daehoshin.com.memo.util.FileUtil;
 import android.graphics.Bitmap;
@@ -30,6 +32,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
 
     public void setData(List<Memo> data){
         this.data = data;
+        update();
     }
     public List<Memo> getData(){
         return data;
@@ -69,7 +72,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
         if(memo.getImage_path() != null) {
             Bitmap bitmap = null;
             try {
-                bitmap = FileUtil.openBitmap(context, memo.getImage_path());
+                bitmap = FileUtil.openBitmap(MemoDAO.getImagePath(), memo.getImage_path());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,7 +84,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
         }
     }
 
-    public void update(){
+    private void update(){
         notifyDataSetChanged();
         //notify();
     }
@@ -105,7 +108,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), DetailActivity.class);
                     intent.putExtra("id", id);
-                    v.getContext().startActivity(intent);
+                    ((Activity)v.getContext()).startActivityForResult(intent, ListActivity.NEW_MEMO_REQUEST);
                 }
             });
         }

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.daehoshin.com.memo.domain.Memo;
 import android.daehoshin.com.memo.domain.MemoAdapter;
 import android.daehoshin.com.memo.domain.MemoDAO;
+import android.daehoshin.com.memo.util.PermissionUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,22 +16,42 @@ import java.util.ArrayList;
 
 
 public class ListActivity extends AppCompatActivity {
+    PermissionUtil pUtil;
+
     MemoDAO dao;
     RecyclerView rvList;
     MemoAdapter adapter;
 
-    final int NEW_MEMO_REQUEST = 1;
+    public static final int NEW_MEMO_REQUEST = 1;
+
+    PermissionUtil.PermissionGrant permissionGrant = new PermissionUtil.PermissionGrant() {
+        @Override
+        public void init() {
+            init2();
+            loadList();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        init();
-        loadList();
+        String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        int REQ_CODE = 99;
+
+        pUtil = new PermissionUtil(REQ_CODE, permissions);
+        pUtil.checkPermission(this, permissionGrant);
     }
 
-    private void init(){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        pUtil.afterPermissionResult(requestCode, grantResults, permissionGrant);
+    }
+
+    private void init2(){
         dao = new MemoDAO(this);
         adapter = new MemoAdapter(this);
 
@@ -60,12 +82,11 @@ public class ListActivity extends AppCompatActivity {
     public void deleteListAll(View v){
         dao.delete(adapter.getData());
         adapter.setData(new ArrayList<Memo>());
-        adapter.update();
     }
 
     private void loadList(){
         adapter.setData(dao.selectAll());
-        adapter.update();
+        //adapter.update();
     }
 
     @Override

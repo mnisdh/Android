@@ -40,12 +40,22 @@ public class DrawView extends View {
         paint.setStyle(Paint.Style.STROKE);
     }
 
+    public void clear(){
+        int color = currentPath.getColor();
+        float size = currentPath.getSize();
+
+        pts.clear();
+        setColor(color, size);
+
+        invalidate();
+    }
+
     /**
      * 컬러, 사이즈 변경시 path 새로 생성하여 currentPath로 설정하는 메소드
      * @param color
      * @param size
      */
-    public void setColor(int color, int size){
+    public void setColor(int color, float size){
         // PathTool 새로생성 -> path list에 추가 -> 생성된path를 currentPath로 설정
         PathTool pt = new PathTool(color, size);
         pts.add(pt);

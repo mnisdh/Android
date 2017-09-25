@@ -57,12 +57,16 @@ public class DrawActivity extends AppCompatActivity {
     }
 
 
+    public void clear(View v){
+        dv.clear();
+    }
+
     /**
      * 그림을 그린 stage를 캡쳐
      *
-     * @param view
+     * @param v
      */
-    public void captureCanvas(View view){
+    public void captureCanvas(View v){
         // 0. 드로잉 캐쉬를 먼저 지워준다
         stage.destroyDrawingCache();
 
@@ -72,11 +76,11 @@ public class DrawActivity extends AppCompatActivity {
         // 2. 레이아웃에서 그려진 내용을 bitmap 형식으로 가져옴
         Bitmap bitmap = stage.getDrawingCache();
 
-        String fileName = System.currentTimeMillis() + ".jpg";
+        String fileName = System.currentTimeMillis() + ".png";
         // 이미지 파일을 저장하고
         try {
             // /data/data/패키지/files 안에 저장
-            FileUtil.save(this, fileName, TypeUtil.toByteArray(bitmap));
+            FileUtil.save(MemoDAO.getImagePath(), fileName, TypeUtil.toByteArray(bitmap));
         } catch (IOException e) {
             Toast.makeText(this, "저장실패", Toast.LENGTH_LONG).show();
         }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,11 +45,13 @@ public class FileUtil {
         }
     }
 
-    /*
-    public static void save(String fileName, byte[] bytes) throws IOException {
+    public static void save(String path, String fileName, byte[] bytes) throws IOException {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(fileName);
+            File dir = new File(path);
+            if(!dir.exists()) dir.mkdirs();
+
+            fos = new FileOutputStream(path + File.separator + fileName);
             fos.write(bytes);
         }catch (Exception ex){
             throw ex;
@@ -62,7 +65,7 @@ public class FileUtil {
             }
         }
     }
-    */
+
 
     public static String openString(Context context, String fileName) throws IOException {
         String s = "";
@@ -70,6 +73,60 @@ public class FileUtil {
         FileInputStream fis = null;
         try{
             fis = context.openFileInput(fileName);
+
+            // 2. 실제 파일 인코딩을 바꿔주는 래퍼 클래스 사용
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+
+
+            /* 다른처리
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            // 한번에 읽어올 버퍼양을 설정
+            byte[] buffer = new byte[1024];
+            // 현재 읽은양을 담는 변수설정
+            int count = 0;
+            while ((count = bis.read(buffer)) != -1){
+                s += new String(buffer, 0, count);
+            }
+            bis.close();
+            */
+
+
+            // 3. 버퍼처리
+            BufferedReader br = new BufferedReader(isr);
+
+            String row;
+            boolean isFirst = false;
+            while((row = br.readLine()) != null){
+                if(isFirst) {
+                    s += row;
+                    isFirst = false;
+                }
+                else s += "\n" + row;
+            }
+
+            br.close();
+            isr.close();
+        }catch (Exception ex){
+            throw ex;
+        }
+        finally {
+            // 스트림을 꼭 닫아야한다
+            if(fis != null) try {
+                fis.close();
+            } catch (IOException e) {
+                throw e;
+            }
+
+            return s;
+        }
+    }
+
+    public static String openString(String path, String fileName) throws IOException {
+        String s = "";
+
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(path + File.separator + fileName);
 
             // 2. 실제 파일 인코딩을 바꿔주는 래퍼 클래스 사용
             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
@@ -140,5 +197,25 @@ public class FileUtil {
         }
     }
 
+    public static Bitmap openBitmap(String path, String fileName) throws IOException {
+        Bitmap bitmap = null;
 
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(path + File.separator + fileName);
+            bitmap = BitmapFactory.decodeStream(fis);
+        }catch (Exception ex){
+            throw ex;
+        }
+        finally {
+            // 스트림을 꼭 닫아야한다
+            if(fis != null) try {
+                fis.close();
+            } catch (IOException e) {
+                throw e;
+            }
+
+            return bitmap;
+        }
+    }
 }

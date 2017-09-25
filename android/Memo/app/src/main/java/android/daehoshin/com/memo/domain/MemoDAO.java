@@ -2,10 +2,12 @@ package android.daehoshin.com.memo.domain;
 
 import android.content.Context;
 import android.daehoshin.com.memo.DBHelper;
+import android.daehoshin.com.memo.util.DirUtil;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,10 @@ import java.util.List;
  */
 
 public class MemoDAO {
+    public static String getImagePath(){
+        return DirUtil.getExternalStoragePath() + File.separator + "memo";
+    }
+
     private DBHelper dbHelper;
     Dao<Memo, Long> dao = null;
 
