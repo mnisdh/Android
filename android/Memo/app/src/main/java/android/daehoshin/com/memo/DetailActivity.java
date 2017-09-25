@@ -168,10 +168,12 @@ public class DetailActivity extends AppCompatActivity {
         if(use){
             btnPost.setVisibility(View.VISIBLE);
             btnAddImage.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
         }
         else {
             btnAddImage.setVisibility(View.GONE);
             btnPost.setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -194,7 +196,6 @@ public class DetailActivity extends AppCompatActivity {
 
         tvText.setText("Post detail");
         swUse.setText("Use update mode");
-        btnPost.setText("Update");
 
         setEditText(etTitle, memo.getTitle());
         setEditText(etName, memo.getAuthor());

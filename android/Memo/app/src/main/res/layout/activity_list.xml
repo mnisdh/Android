@@ -8,12 +8,12 @@
 
     <Button
         android:id="@+id/btnPost"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/post_64x64"
+        android:background="@drawable/add"
         android:fontFamily="casual"
         android:onClick="newPost"
         android:textAppearance="@style/TextAppearance.AppCompat"
@@ -24,12 +24,12 @@
 
     <Button
         android:id="@+id/btnClear"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/remove_64x64"
+        android:background="@drawable/delete"
         android:fontFamily="casual"
         android:onClick="deleteListAll"
         android:textAppearance="@style/TextAppearance.AppCompat"
