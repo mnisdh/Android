@@ -22,15 +22,13 @@ public class DetailActivity extends AppCompatActivity {
 
     MemoDAO memoDAO = null;
     boolean isNewPost = false;
+    long id = -1;
 
     TextView tvText;
     EditText etTitle, etName, etContent, etDatetime;
     Button btnPost, btnDelete, btnAddImage;
     Switch swUse;
     ImageView ivImage;
-
-
-    //private static final String DIR_INTR = "/data/data/android.daehoshin.com.androidmemo/files/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,26 +62,11 @@ public class DetailActivity extends AppCompatActivity {
         ivImage = (ImageView) findViewById(R.id.ivImage);
 
         swUse = (Switch) findViewById(R.id.swUse);
-        swUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isNewPost){
-                    if(isChecked){
-
-                    }
-                    else{
-                        
-                    }
-                }
-                else setUpdateMode(isChecked);
-            }
-        });
+        swUse.setOnCheckedChangeListener(switchOnCheckedChangeListener);
 
         btnPost = (Button) findViewById(R.id.btnPost);
         btnDelete = (Button) findViewById(R.id.btnDelete);
         btnAddImage = (Button) findViewById(R.id.btnAddImage);
-        btnPost.setOnClickListener(listener);
-        btnDelete.setOnClickListener(listener);
 
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", -1);
@@ -95,41 +78,30 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    View.OnClickListener listener = new View.OnClickListener() {
-        /**
-         * 내용을 파일에 작성
-         * - 파일 쓰기
-         *   내부저장소 - Internal : 개별앱만 접근가능 파일탐색기에서 보이지 않음
-         *   외부저장소 - External : 모든앱이 접근가능하나 권한 필요
-         *
-         * @param v
-         */
+    CompoundButton.OnCheckedChangeListener switchOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.btnPost: post(v); break;
-                case R.id.btnDelete: delete(v); break;
-            }
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isNewPost){
+                if(isChecked){
 
+                }
+                else{
+
+                }
+            }
+            else setUpdateMode(isChecked);
         }
     };
 
-    private void post(View v){
+    public void post(View v){
         Memo memo = getMemo();
         try {
             // 신규 포스트 추가
-            if(isNewPost){
-                // 내용을 파일에 쓴다
-                // 내부저장소 경로 : /data/data/패키지명/files
-                //String filename = System.currentTimeMillis() + ".txt";
-                //File file = new File(DIR_INTR + filename);
-
-                // 내용을 파일에 쓴다
-                //memo.save(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + filename);
-                memoDAO.create(memo);
-            }
+            if(isNewPost) memoDAO.create(memo);
             // 기존 포스트 업데이트
             else{
+                memo.setUpdate_date(System.currentTimeMillis());
+                memo.setId(id);
                 memoDAO.update(memo);
             }
 
@@ -143,6 +115,15 @@ public class DetailActivity extends AppCompatActivity {
         finally {
             finish();
         }
+    }
+
+    public void delete(View v){
+        memoDAO.delete(id);
+
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+
+        finish();
     }
 
     public void openDraw(View v){
@@ -162,6 +143,7 @@ public class DetailActivity extends AppCompatActivity {
                     try {
                         ivImage.setImageBitmap(FileUtil.openBitmap(this, fileName));
                         ivImage.setTag(fileName);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -171,10 +153,6 @@ public class DetailActivity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    private void delete(View v){
-
     }
 
     private void setUpdateMode(boolean use){
@@ -208,6 +186,8 @@ public class DetailActivity extends AppCompatActivity {
     private void setViewMode(Memo memo){
         isNewPost = false;
 
+        id = memo.getId();
+
         tvText.setText("Post detail");
         swUse.setText("Use update mode");
         btnPost.setText("Update");
@@ -221,6 +201,7 @@ public class DetailActivity extends AppCompatActivity {
             ivImage.setVisibility(View.VISIBLE);
             try {
                 ivImage.setImageBitmap(FileUtil.openBitmap(this, memo.getImage_path()));
+                ivImage.setTag(memo.getImage_path());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -233,8 +214,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setClickable(View v, boolean use){
-        v.setFocusable(use);
-        v.setClickable(use);
+        v.setFocusableInTouchMode(use);
     }
 
     @Override

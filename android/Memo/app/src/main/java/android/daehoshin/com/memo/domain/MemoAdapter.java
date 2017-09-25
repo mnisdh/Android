@@ -83,6 +83,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.Holder> {
 
     public void update(){
         notifyDataSetChanged();
+        //notify();
     }
 
     public class Holder extends RecyclerView.ViewHolder{

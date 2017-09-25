@@ -89,6 +89,13 @@ public class MemoDAO {
             e.printStackTrace();
         }
     }
+    public void delete(long id){
+        try {
+            dao.deleteById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void delete(List<Memo> memos){
         try {
             dao.delete(memos);

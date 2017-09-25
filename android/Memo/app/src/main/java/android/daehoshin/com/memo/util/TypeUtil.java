@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 public class TypeUtil {
     public static byte[] toByteArray(Bitmap bitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream) ;
         byte[] byteArray = stream.toByteArray() ;
         return byteArray ;
     }
