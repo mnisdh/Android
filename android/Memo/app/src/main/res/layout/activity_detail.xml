@@ -144,16 +144,31 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@mipmap/ic_launcher" />
 
-            <Button
-                android:id="@+id/btnAddImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/draw"
-                android:fontFamily="casual"
-                android:onClick="openDraw"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCamera"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/camera" />
+
+                <Button
+                    android:id="@+id/btnAddImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/draw"
+                    android:fontFamily="casual"
+                    android:onClick="openDraw"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/etContent"
