@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         MediaScannerConnection.scanFile(this, new String[]{file.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
             @Override
             public void onScanCompleted(String path, Uri uri) {
-                
+
             }
         });
     }
