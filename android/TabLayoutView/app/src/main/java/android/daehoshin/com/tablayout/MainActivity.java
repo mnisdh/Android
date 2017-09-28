@@ -2,12 +2,8 @@ package android.daehoshin.com.tablayout;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -35,12 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setViewPager(){
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        List<Fragment> data = new ArrayList<>();
-        data.add(new OneFragment());
-        data.add(new TwoFragment());
-        data.add(new ThreeFragment());
-        data.add(new FourFragment());
-        CustomAdapter adapter = new CustomAdapter(getSupportFragmentManager(), data);
+        CustomAdapter adapter = new CustomAdapter();
 
         viewPager.setAdapter(adapter);
     }
