@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setViewPager(){
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        CustomAdapter adapter = new CustomAdapter();
+        CustomAdapter adapter = new CustomAdapter(this);
 
         viewPager.setAdapter(adapter);
     }
