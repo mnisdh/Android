@@ -1,6 +1,5 @@
 package android.daehoshin.com.tetris.blocks;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 
 /**
@@ -11,45 +10,42 @@ public class SBlock extends Block {
     public SBlock(float x, float y, float unit) {
         super(x, y, unit);
 
-        rot = 1;
+        blockType = BlockType.S;
     }
 
     @Override
     void initStyle() {
         paint.setColor(Color.parseColor("#1FEF00"));
+        innerFillPaint.setColor(Color.parseColor("#1FEF00"));
         innerBorderPaint.setColor(Color.parseColor("#9AED8E"));
     }
 
     @Override
-    void drawLeft(Canvas canvas) {
-        drawSingleRect(canvas, 0, 0);
-        drawSingleRect(canvas, 0, 1);
-        drawSingleRect(canvas, 1, 1);
-        drawSingleRect(canvas, 1, 2);
-    }
+    void setRects(int i) {
+        int t = blockType.getValue();
+        switch (i){
+            case 1:
+                rects = new int[][]{{0,t,0},
+                                    {0,t,t},
+                                    {0,0,t}};
+                break;
+            case 2:
+                rects = new int[][]{{0,0,0},
+                                    {0,t,t},
+                                    {t,t,0}};
+                break;
+            case 3:
+                rects = new int[][]{{t,0,0},
+                                    {t,t,0},
+                                    {0,t,0}};
+                break;
+            default:
+                rects = new int[][]{{0,t,t},
+                                    {t,t,0},
+                                    {0,0,0}};
+                break;
+        }
 
-    @Override
-    void drawBottom(Canvas canvas) {
-        drawSingleRect(canvas, 1, 2);
-        drawSingleRect(canvas, 2, 2);
-        drawSingleRect(canvas, 0, 3);
-        drawSingleRect(canvas, 1, 3);
-    }
-
-    @Override
-    void drawRight(Canvas canvas) {
-        drawSingleRect(canvas, 2, 1);
-        drawSingleRect(canvas, 2, 2);
-        drawSingleRect(canvas, 3, 2);
-        drawSingleRect(canvas, 3, 3);
-    }
-
-    @Override
-    void drawTop(Canvas canvas) {
-        drawSingleRect(canvas, 2, 0);
-        drawSingleRect(canvas, 3, 0);
-        drawSingleRect(canvas, 1, 1);
-        drawSingleRect(canvas, 2, 1);
     }
 
 }

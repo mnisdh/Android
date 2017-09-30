@@ -1,14 +1,14 @@
 package android.daehoshin.com.tetris;
 
-import android.daehoshin.com.tetris.blocks.Block;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout flStage;
-    Stage stage;
+    Tetris tetris;
     float unit;
 
     @Override
@@ -20,44 +20,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        tetris.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        tetris.stop();
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if(!stage.getUseSetSize()) {
-            stage.setSize(flStage.getWidth(), flStage.getHeight(), 10);
-            unit = stage.getUnit();
-            stage.invalidate();
-        }
+//        if(!flStage.getUseSetSize()) {
+//            tetris.setSize(flStage.getWidth(), flStage.getHeight());
+//            unit = tetris.getUnit();
+//            tetris.invalidate();
+//        }
     }
 
     private void init(){
         flStage = (FrameLayout) findViewById(R.id.stage);
 
-//        DisplayMetrics metrics = getResources().getDisplayMetrics();
-//        int height = metrics.heightPixels;
-//        int width = metrics.widthPixels;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int height = metrics.heightPixels;
+        int width = metrics.widthPixels;
 
-        stage = new Stage(this);
-        flStage.addView(stage);
+        tetris = new Tetris(this, width, height);
+        flStage.addView(tetris);
     }
 
     public void add(View v){
-        stage.addBlock();
+        tetris.start();
     }
 
     public void rotation(View v){
-        stage.getCurrentBlock().rotation();
-        stage.invalidate();
+        tetris.rotation();
     }
 
     public void move(View v){
-        Block block = stage.getCurrentBlock();
-        if(block == null) return;
-
         switch (v.getId()){
-            case R.id.btnUp: block.moveUp(); break;
-            case R.id.btnDown: block.moveDown(); break;
-            case R.id.btnLeft: block.moveLeft(); break;
-            case R.id.btnRight: block.moveRight(); break;
+            case R.id.btnDown: tetris.down(); break;
+            case R.id.btnLeft: tetris.left(); break;
+            case R.id.btnRight: tetris.right(); break;
         }
-        stage.invalidate();
     }
 }

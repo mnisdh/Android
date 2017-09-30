@@ -1,77 +1,102 @@
 package android.daehoshin.com.tetris;
 
-import android.content.Context;
 import android.daehoshin.com.tetris.blocks.Block;
-import android.daehoshin.com.tetris.blocks.IBlock;
-import android.daehoshin.com.tetris.blocks.JBlock;
-import android.daehoshin.com.tetris.blocks.LBlock;
-import android.daehoshin.com.tetris.blocks.OBlock;
-import android.daehoshin.com.tetris.blocks.SBlock;
-import android.daehoshin.com.tetris.blocks.TBlock;
-import android.daehoshin.com.tetris.blocks.ZBlock;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by daeho on 2017. 9. 28..
  */
 
-public class Stage extends View {
-    private float unit;
-    private int widthCount, heightCount;
-    private float width, height;
-    private Paint paint = new Paint();
+public class Stage {
+    iTetrisEvent iTetrisEvent;
+    iTetrisAttribute iTetrisAttribute;
+    int locX, locY;
+    int cols, rows;
+
+    private Paint paintDummyFill = new Paint();
+    private Paint paintDummyBorderFill = new Paint();
+    private Paint paintDummyBorderLine = new Paint();
+
+    private Paint paintBorderFill = new Paint();
+    private Paint paintBorderLine = new Paint();
 
     private Block currentBlock = null;
 
-    private boolean useSetSize = false;
+    int[][] rects = {{9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,0,0,0,9},
+                     {9,0,0,0,0,0,0,0,1,0,0,9},
+                     {9,0,0,0,0,0,0,0,1,0,0,9},
+                     {9,0,0,0,0,0,0,1,0,0,0,9},
+                     {9,0,0,0,0,0,1,0,0,0,0,9},
+                     {9,0,0,0,1,0,0,0,0,0,0,9},
+                     {9,1,0,0,0,0,0,0,0,0,1,9},
+                     {9,1,0,0,0,0,0,0,0,0,1,9},
+                     {9,1,0,0,0,0,0,0,0,0,1,9},
+                     {9,1,1,1,0,0,0,0,0,0,1,9},
+                     {9,9,9,9,9,9,9,9,9,9,9,9}};
 
-    List<Block> blocks = new ArrayList<>();
+    public Stage(iTetrisEvent iTetrisEvent, iTetrisAttribute iTetrisAttribute, int locX, int locY, int cols, int rows) {
+        this.iTetrisEvent = iTetrisEvent;
+        this.iTetrisAttribute = iTetrisAttribute;
 
-    public Stage(Context context) {
-        super(context);
+        this.locX = locX;
+        this.locY = locY;
+        this.cols = cols;
+        this.rows = rows;
+
+        initRects();
 
         initPaint();
     }
 
-    public void setSize(float stage_width, float stage_height, float col_count){
-        useSetSize = true;
-        col_count++;
-
-        stage_width -= 10;
-        stage_height -= 10;
-
-        float min = stage_width;
-        if(min > stage_height) min = stage_height;
-        this.unit = min / col_count;
-
-        this.width = stage_width - (stage_width % this.unit);
-        this.height = stage_height - (stage_height % this.unit);
-
-        this.widthCount = (int)(this.width / this.unit);
-        this.heightCount = (int)(this.height / this.unit);
-    }
-    public boolean getUseSetSize(){
-        return useSetSize;
+    private void initRects(){
+        rects = new int[rows + 1][cols + 2];
+        for(int i = 0; i < rows + 1; i++){
+            for(int j = 0; j < cols + 2; j++){
+                if(i == rows) rects[i][j] = 9;
+                else{
+                    if(j == 0) rects[i][j] = 9;
+                    else if(j == cols + 1) rects[i][j] = 9;
+                    else rects[i][j] = 0;
+                }
+            }
+        }
     }
 
     private void initPaint(){
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(1);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setPathEffect(new DashPathEffect(new float[] { 4, 4 }, 0));
+        paintDummyFill.setColor(Color.GRAY);
+        paintDummyFill.setStyle(Paint.Style.FILL);
+
+        paintDummyBorderFill.setColor(Color.DKGRAY);
+        paintDummyBorderFill.setStyle(Paint.Style.FILL);
+
+        paintDummyBorderLine.setColor(Color.GRAY);
+        paintDummyBorderLine.setStrokeWidth(1);
+        paintDummyBorderLine.setStyle(Paint.Style.STROKE);
+
+        paintBorderLine.setColor(Color.BLUE);
+        paintBorderLine.setStrokeWidth(1);
+        paintBorderLine.setStyle(Paint.Style.STROKE);
+        //paint.setPathEffect(new DashPathEffect(new float[] { 4, 4 }, 0));
+
+        paintBorderFill.setColor(Color.RED);
+        paintBorderFill.setStyle(Paint.Style.FILL);
     }
 
     public float getUnit(){
-        return unit;
+        return iTetrisAttribute.getUnit();
     }
 
     public Block getCurrentBlock(){
@@ -79,62 +104,142 @@ public class Stage extends View {
     }
 
     public void addBlock(Block block){
-        blocks.add(block);
+        float unit = getUnit();
+        block.setLocation(locX * unit, locY * unit);
+        block.move(4, 0);
+
         currentBlock = block;
-
-        invalidate();
+        iTetrisEvent.redraw();
     }
 
-    public void addBlock(){
-        Block block = null;
-
-        Random random = new Random();
-        switch (random.nextInt(7)){
-            case 0: block = new IBlock(0, 0, unit); break;
-            case 1: block = new JBlock(0, 0, unit); break;
-            case 2: block = new LBlock(0, 0, unit); break;
-            case 3: block = new OBlock(0, 0, unit); break;
-            case 4: block = new SBlock(0, 0, unit); break;
-            case 5: block = new TBlock(0, 0, unit); break;
-            case 6: block = new ZBlock(0, 0, unit); break;
-        }
-
-        if(block != null) addBlock(block);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        if(!useSetSize) return;
-
+    public void draw(Canvas canvas){
         drawStage(canvas);
-        drawBlocks(canvas);
+        drawDummy(canvas);
+        drawBlock(canvas);
     }
 
-    private void drawBlocks(Canvas canvas){
-        for(Block block : blocks) block.draw(canvas);
+    private void drawBlock(Canvas canvas){
+        if(currentBlock != null) currentBlock.draw(canvas);
     }
 
     private void drawStage(Canvas canvas){
+        float unit = getUnit();
         Path path = new Path();
+        float x = locX * unit;
+        float y = locY * unit;
 
-        float tempX = 0;
-        while (tempX <= width){
-            //canvas.drawLine(tempX, 0, tempX, height, paint);
-            path.moveTo(tempX, 0);
-            path.lineTo(tempX, height);
-            canvas.drawPath(path, paint);
-            tempX += unit;
+        TetrisDraw.drawOuterBorder(canvas, 10, x, y, x + (unit * cols), y + (unit * rows), paintBorderFill, paintBorderLine);
+    }
+
+    private void drawDummy(Canvas canvas){
+        float unit = getUnit();
+        float x = locX * unit;
+        float y = locY * unit;
+
+        for(int i = 0; i < rects.length - 1; i++){
+            for(int j = 1; j < rects[0].length - 1; j++){
+                if(rects[i][j] != 0) {
+                    float minX = x + ((j - 1) * unit);
+                    float minY = y + (i * unit);
+                    float maxX = x + ((j) * unit);
+                    float maxY = y + ((i + 1) * unit);
+                    canvas.drawRect(minX, minY, maxX, maxY, paintDummyFill);
+                    TetrisDraw.drawInnerBorder(canvas, (int)(unit / 8), minX, minY, maxX, maxY, paintDummyBorderFill, paintDummyBorderLine);
+                }
+            }
+        }
+    }
+
+    private boolean isClash(Block block){
+        int[][] bRects = block.getRects();
+        float unit = getUnit();
+        int bLocX = (int)(block.getX() / unit - locX + 1);
+        int bLocY = (int)(block.getY() / unit - locY);
+
+        for(int i = 0; i < bRects.length; i++){
+            if(rects.length <= i + bLocY) continue;
+            for(int j = 0; j < bRects[0].length; j++){
+                if(rects[0].length <= j + bLocX) continue;
+
+                int temp = bRects[i][j];
+                if(temp == 0) continue;
+
+                if(rects[i + bLocY][j + bLocX] + temp != temp) return true;
+            }
         }
 
-        float tempY = 0;
-        while (tempY <= height){
-            //canvas.drawLine(0, tempY, width, tempY, paint);
-            path.moveTo(0, tempY);
-            path.lineTo(width, tempY);
-            canvas.drawPath(path, paint);
-            tempY += unit;
+        return false;
+    }
+
+    private void addDummy(Block block){
+        int[][] bRects = block.getRects();
+        float unit = getUnit();
+        int bLocX = (int)(block.getX() / unit - locX + 1);
+        int bLocY = (int)(block.getY() / unit - locY);
+
+        for(int i = 0; i < bRects.length; i++){
+            if(rects.length <= i + bLocY) continue;
+            for(int j = 0; j < bRects[0].length; j++){
+                if(rects[0].length <= j + bLocX) continue;
+
+                int temp = bRects[i][j];
+                if(temp == 0) continue;
+
+                rects[i + bLocY][j + bLocX] = 9;
+            }
+        }
+    }
+
+    private int getCompletedRow(){
+        for(int i = rects.length - 2; i >= 0; i--){
+            boolean isAllSame = true;
+            for(int j = 0; j < rects[0].length; j++){
+                if(rects[i][j] != 9) isAllSame = false;
+            }
+            if(isAllSame) return i;
+        }
+
+        return -1;
+    }
+
+    private void removeCompletedRow(int index){
+        for(int i = rects.length - 2; i >= 0; i--){
+            if(i >= index) continue;
+            for(int j = 0; j < rects[0].length; j++){
+                rects[i + 1][j] = rects[i][j];
+            }
+        }
+    }
+
+    public void blockMoveLeft(){
+        if(currentBlock == null) return;
+
+        currentBlock.moveLeft();
+        if(isClash(currentBlock)) currentBlock.moveRight();
+    }
+    public void blockMoveRight(){
+        if(currentBlock == null) return;
+
+        currentBlock.moveRight();
+        if(isClash(currentBlock)) currentBlock.moveLeft();
+    }
+    public void blockMoveDown(){
+        if(currentBlock == null) return;
+
+        currentBlock.moveDown();
+        if(isClash(currentBlock)) {
+            currentBlock.moveUp();
+            addDummy(currentBlock);
+            iTetrisEvent.postRedraw();
+
+            int idx = getCompletedRow();
+            while (idx >= 0){
+                removeCompletedRow(idx);
+                iTetrisEvent.postRedraw();
+                idx = getCompletedRow();
+            }
+
+            iTetrisEvent.addBlock();
         }
     }
 }
