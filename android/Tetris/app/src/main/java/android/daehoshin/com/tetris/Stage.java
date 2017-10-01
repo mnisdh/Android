@@ -109,7 +109,6 @@ public class Stage {
         block.move(4, 0);
 
         currentBlock = block;
-        iTetrisEvent.redraw();
     }
 
     public void draw(Canvas canvas){
@@ -211,6 +210,21 @@ public class Stage {
         }
     }
 
+    public void blockRotation(){
+        if(currentBlock == null) return;
+
+        currentBlock.rotation(false);
+        if(isClash(currentBlock)){
+            blockMoveLeft();
+            if(isClash(currentBlock)){
+                blockMoveRight();
+                if(isClash(currentBlock)){
+                    currentBlock.rotation(true);
+                }
+            }
+        }
+    }
+
     public void blockMoveLeft(){
         if(currentBlock == null) return;
 
@@ -223,9 +237,13 @@ public class Stage {
         currentBlock.moveRight();
         if(isClash(currentBlock)) currentBlock.moveLeft();
     }
+
+    private boolean isDowning = false;
     public void blockMoveDown(){
         if(currentBlock == null) return;
+        if(isDowning) return;
 
+        isDowning = true;
         currentBlock.moveDown();
         if(isClash(currentBlock)) {
             currentBlock.moveUp();
@@ -240,6 +258,8 @@ public class Stage {
             }
 
             iTetrisEvent.addBlock();
+            iTetrisEvent.postRedraw();
         }
+        isDowning = false;
     }
 }

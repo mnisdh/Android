@@ -154,8 +154,14 @@ public abstract class Block {
         this.y = y;
     }
 
-    public void rotation(){
-        if(rot == 3) rot = 0;
-        else rot++;
+    public void rotation(boolean isReverse){
+        if(isReverse) {
+            if(rot == 0) rot = 3;
+            else rot--;
+        }
+        else{
+            rot++;
+            if(rot == 4) rot = 0;
+        }
     }
 }

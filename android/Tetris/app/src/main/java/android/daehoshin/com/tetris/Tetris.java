@@ -78,7 +78,7 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
     }
 
     public void rotation(){
-        stage.getCurrentBlock().rotation();
+        stage.blockRotation();
         redraw();
     }
     public void left(){
