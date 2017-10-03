@@ -223,6 +223,8 @@ public class Stage {
                 }
             }
         }
+
+        iTetrisEvent.redraw();
     }
 
     public void blockMoveLeft(){
@@ -230,12 +232,14 @@ public class Stage {
 
         currentBlock.moveLeft();
         if(isClash(currentBlock)) currentBlock.moveRight();
+        else iTetrisEvent.redraw();
     }
     public void blockMoveRight(){
         if(currentBlock == null) return;
 
         currentBlock.moveRight();
         if(isClash(currentBlock)) currentBlock.moveLeft();
+        else iTetrisEvent.redraw();
     }
 
     private boolean isDowning = false;
@@ -258,8 +262,9 @@ public class Stage {
             }
 
             iTetrisEvent.addBlock();
-            iTetrisEvent.postRedraw();
         }
+        iTetrisEvent.postRedraw();
+
         isDowning = false;
     }
 }
