@@ -15,6 +15,8 @@ public class Score {
     int cols, rows;
 
     private int score = 0;
+    private int scoreStep = 500;
+    private int nextLevelScore = 500;
 
     private Paint paintText = new Paint();
     private Paint paintBorderFill = new Paint();
@@ -34,6 +36,8 @@ public class Score {
 
     private void initPaint(){
         paintText.setTextSize(50);
+        paintText.setColor(Color.BLUE);
+        paintText.setFakeBoldText(true);
 
         paintBorderLine.setColor(Color.DKGRAY);
         paintBorderLine.setStrokeWidth(1);
@@ -49,6 +53,11 @@ public class Score {
 
     public void score_append(int appendScore){
         score += appendScore;
+
+        if(score >= nextLevelScore){
+            iTetrisEvent.levelUp();
+            nextLevelScore += scoreStep;
+        }
     }
 
     public void score_reset(){

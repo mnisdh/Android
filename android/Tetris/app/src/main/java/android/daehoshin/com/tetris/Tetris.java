@@ -74,6 +74,11 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
         score.score_append(appendScore);
     }
 
+    @Override
+    public void levelUp() {
+        sleepTime -= 50;
+    }
+
     public void start(){
         RUNNING = true;
 
@@ -123,6 +128,7 @@ interface iTetrisEvent{
     void end();
     void score_reset();
     void score_append(int appendScore);
+    void levelUp();
 }
 
 interface iTetrisAttribute{
