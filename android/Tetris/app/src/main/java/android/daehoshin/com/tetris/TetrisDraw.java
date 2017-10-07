@@ -81,7 +81,8 @@ public class TetrisDraw {
         path.lineTo(minX, maxY);
         path.close();
 
-        fill.setShader(new LinearGradient(minX + size, minY + size, minX - size, maxY, Color.WHITE, fill.getColor(), Shader.TileMode.CLAMP));
+        //fill.setShader(new LinearGradient(minX + size, minY + size, minX - size, maxY, Color.WHITE, fill.getColor(), Shader.TileMode.CLAMP));
+        fill.setShader(new LinearGradient(minX + size, minY + size, minX - size, maxY, fill.getColor(), fill.getColor(), Shader.TileMode.CLAMP));
         canvas.drawPath(path, fill);
         canvas.drawPath(path, border);
     }
@@ -93,7 +94,8 @@ public class TetrisDraw {
         path.lineTo(maxX, maxY);
         path.close();
 
-        fill.setShader(new LinearGradient(minX + size, maxY + size * 2, maxX, maxY, Color.GRAY, fill.getColor(), Shader.TileMode.CLAMP));
+        //fill.setShader(new LinearGradient(minX + size, maxY + size * 2, maxX, maxY, Color.GRAY, fill.getColor(), Shader.TileMode.CLAMP));
+        fill.setShader(new LinearGradient(minX + size, maxY + size * 2, maxX, maxY, fill.getColor(), fill.getColor(), Shader.TileMode.CLAMP));
         canvas.drawPath(path, fill);
         canvas.drawPath(path, border);
     }
@@ -105,7 +107,8 @@ public class TetrisDraw {
         path.lineTo(maxX, maxY);
         path.close();
 
-        fill.setShader(new LinearGradient(maxX + size * 2, minY + size, maxX, maxY, Color.GRAY, fill.getColor(), Shader.TileMode.CLAMP));
+        //fill.setShader(new LinearGradient(maxX + size * 2, minY + size, maxX, maxY, Color.GRAY, fill.getColor(), Shader.TileMode.CLAMP));
+        fill.setShader(new LinearGradient(maxX + size * 2, minY + size, maxX, maxY, fill.getColor(), fill.getColor(), Shader.TileMode.CLAMP));
         canvas.drawPath(path, fill);
         canvas.drawPath(path, border);
     }
@@ -117,7 +120,8 @@ public class TetrisDraw {
         path.lineTo(maxX, minY);
         path.close();
 
-        fill.setShader(new LinearGradient(minX + size, minY + size, maxX, minY - size, Color.WHITE, fill.getColor(), Shader.TileMode.CLAMP));
+        //fill.setShader(new LinearGradient(minX + size, minY + size, maxX, minY - size, Color.WHITE, fill.getColor(), Shader.TileMode.CLAMP));
+        fill.setShader(new LinearGradient(minX + size, minY + size, maxX, minY - size, fill.getColor(), fill.getColor(), Shader.TileMode.CLAMP));
         canvas.drawPath(path, fill);
         canvas.drawPath(path, border);
     }

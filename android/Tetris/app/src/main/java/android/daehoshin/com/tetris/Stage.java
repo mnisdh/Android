@@ -13,6 +13,7 @@ import android.graphics.Path;
 public class Stage {
     iTetrisEvent iTetrisEvent;
     iTetrisAttribute iTetrisAttribute;
+
     int locX, locY;
     int cols, rows;
 
@@ -109,6 +110,8 @@ public class Stage {
         block.move(4, 0);
 
         currentBlock = block;
+
+        if(isClash(currentBlock)) iTetrisEvent.end();
     }
 
     public void draw(Canvas canvas){
@@ -187,6 +190,8 @@ public class Stage {
                 rects[i + bLocY][j + bLocX] = 9;
             }
         }
+
+        iTetrisEvent.score_append(15);
     }
 
     private int getCompletedRow(){
@@ -208,6 +213,8 @@ public class Stage {
                 rects[i + 1][j] = rects[i][j];
             }
         }
+
+        iTetrisEvent.score_append(100);
     }
 
     public void blockRotation(){

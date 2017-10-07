@@ -11,6 +11,9 @@ import android.view.View;
 public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
     private Stage stage;
     private Preview preview;
+    private Score score;
+
+    private int sleepTime = 1000;
 
     private boolean RUNNING = true;
 
@@ -29,6 +32,7 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
 
         stage = new Stage(this, this, 2, 3, 10, 20);
         preview = new Preview(this, this, 14, 3, 6, 6);
+        score = new Score(this, this, 14, 13, 6, 3);
     }
 
     @Override
@@ -37,6 +41,7 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
 
         stage.draw(canvas);
         preview.draw(canvas);
+        score.draw(canvas);
     }
 
     @Override
@@ -54,6 +59,21 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
         stage.addBlock(preview.getCurrentBlock());
     }
 
+    @Override
+    public void end() {
+        stop();
+    }
+
+    @Override
+    public void score_reset() {
+        score.score_reset();
+    }
+
+    @Override
+    public void score_append(int appendScore) {
+        score.score_append(appendScore);
+    }
+
     public void start(){
         RUNNING = true;
 
@@ -63,7 +83,7 @@ public class Tetris extends View implements iTetrisEvent, iTetrisAttribute{
             public void run(){
                 while(RUNNING) {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -100,6 +120,9 @@ interface iTetrisEvent{
     void redraw();
     void postRedraw();
     void addBlock();
+    void end();
+    void score_reset();
+    void score_append(int appendScore);
 }
 
 interface iTetrisAttribute{
