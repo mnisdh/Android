@@ -50,3 +50,7 @@
 
 ### 13. [Camera](https://github.com/mnisdh/Android/tree/master/android/Camera)
   > Camera, Gallery 앱 연동
+
+
+### 14. [CustomGallery](https://github.com/mnisdh/Android/tree/master/android/CustomGallery)
+  > Resolver를 통한 Gallery 앱 연동
