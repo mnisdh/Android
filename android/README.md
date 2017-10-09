@@ -26,4 +26,19 @@
 
 ### 7. [Android Memo](https://github.com/mnisdh/Android/tree/master/android/AndroidMemo)
   > List View를 활용한 메모앱
-  
+
+
+### 8. [Android Memo2](https://github.com/mnisdh/Android/tree/master/android/AndroidMemo2)
+  > DAO를 사용한 메모앱
+
+
+### 9. [Android Memo ORM](https://github.com/mnisdh/Android/tree/master/android/AndroidMemoORM)
+  > onDraw를 활용한 그림메모앱
+
+
+### 10. [Memo](https://github.com/mnisdh/Android/tree/master/android/Memo)
+  > 기존 Android Memo 프로젝트들을 활용한 메모앱
+
+
+### 11. [Permission](https://github.com/mnisdh/Android/tree/master/android/Permission)
+  > 권한 요청 / 획득 방법
