@@ -14,7 +14,8 @@ import java.util.List;
 public class CustomAdapter extends FragmentStatePagerAdapter{
     private List<Fragment> data;
 
-    public CustomAdapter(FragmentManager fm, List<Fragment> data) {
+    public CustomAdapter(
+            FragmentManager fm, List<Fragment> data) {
         super(fm);
         this.data = data;
     }
