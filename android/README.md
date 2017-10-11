@@ -52,5 +52,33 @@
   > Camera, Gallery 앱 연동
 
 
-### 14. [CustomGallery](https://github.com/mnisdh/Android/tree/master/android/CustomGallery)
+### 14. [Custom Gallery](https://github.com/mnisdh/Android/tree/master/android/CustomGallery)
   > Resolver를 통한 Gallery 앱 연동
+
+
+### 15. [Flagment Basic](https://github.com/mnisdh/Android/tree/master/android/FlagmentBasic)
+  > Flagment 사용법
+
+
+### 16. [Flagmet Basic2](https://github.com/mnisdh/Android/tree/master/android/FlagmentBasic2)
+  > Flagment 사용법
+
+
+### 17. [Tab Layout](https://github.com/mnisdh/Android/tree/master/android/TabLayout)
+  > Tab Layout
+
+
+### 18. [View Pager](https://github.com/mnisdh/Android/tree/master/android/ViewPager)
+  > Tab Layout
+
+
+### 19. [Tab Layout View](https://github.com/mnisdh/Android/tree/master/android/TabLayoutView)
+  > Tab Layout
+
+
+### 20. [Thread Basic](https://github.com/mnisdh/Android/tree/master/android/ThreadBasic)
+  > Tab Layout
+
+
+### 21. [Tetris](https://github.com/mnisdh/Android/tree/master/android/Tetris)
+  > Tab Layout
