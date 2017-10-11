@@ -20,6 +20,7 @@ import java.util.List;
  * interface.
  */
 public class MusicFragment extends Fragment {
+    private int musicListType = 0;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -36,11 +37,13 @@ public class MusicFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MusicFragment newInstance(int columnCount) {
+    public static MusicFragment newInstance(int columnCount, int musicListType) {
         MusicFragment fragment = new MusicFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
+        fragment.musicListType = musicListType;
+
         return fragment;
     }
 
@@ -56,7 +59,15 @@ public class MusicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_music_list, container, false);
+        View view = null;
+        switch (musicListType){
+            case 1:
+                view = inflater.inflate(R.layout.fragment_music_list, container, false);
+                break;
+            default:
+                view = inflater.inflate(R.layout.fragment_music_list, container, false);
+                break;
+        }
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -67,7 +78,7 @@ public class MusicFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MusicRecyclerViewAdapter(mListener));
+            recyclerView.setAdapter(new MusicRecyclerViewAdapter(mListener, musicListType));
         }
         return view;
     }
@@ -102,7 +113,7 @@ public class MusicFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onClick(int position);
-        List<Music.Item> getList();
+        void onClick(int position, int musicListType);
+        List<Music.Item> getList(int musicListType);
     }
 }

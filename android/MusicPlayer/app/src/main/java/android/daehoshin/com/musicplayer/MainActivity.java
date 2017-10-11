@@ -33,14 +33,14 @@ public class MainActivity extends BaseActivity implements OnListFragmentInteract
         vpList = (ViewPager) findViewById(R.id.vpList);
 
         tlType.addTab(tlType.newTab().setText(getString(R.string.tab_title)));
+        tlType.addTab(tlType.newTab().setText(getString(R.string.tab_artist)));
         tlType.addTab(tlType.newTab().setText(getString(R.string.tab_album)));
-        tlType.addTab(tlType.newTab().setText(getString(R.string.tab_singer)));
         tlType.addTab(tlType.newTab().setText(getString(R.string.tab_favorite)));
 
-        fragments.add(MusicFragment.newInstance(1));
-        fragments.add(MusicFragment.newInstance(1));
-        fragments.add(MusicFragment.newInstance(1));
-        fragments.add(MusicFragment.newInstance(1));
+        fragments.add(MusicFragment.newInstance(1, 0));
+        fragments.add(MusicFragment.newInstance(1, 1));
+        fragments.add(MusicFragment.newInstance(1, 0));
+        fragments.add(MusicFragment.newInstance(1, 0));
 
         MusicListPagerAdapter adapter = new MusicListPagerAdapter(getSupportFragmentManager(), fragments);
         vpList.setAdapter(adapter);
@@ -55,15 +55,16 @@ public class MainActivity extends BaseActivity implements OnListFragmentInteract
     }
 
     @Override
-    public void onClick(int position) {
+    public void onClick(int position, int musicListType) {
         Intent intent = new Intent(this, PlayerActivity.class);
         intent.putExtra(Const.KEY_POSITION, position);
+        intent.putExtra(Const.KEY_MUSICLISTTYPE, musicListType);
 
         startActivity(intent);
     }
 
     @Override
-    public List<Music.Item> getList() {
-        return Music.getInstance().getData();
+    public List<Music.Item> getList(int musicListType) {
+        return Music.getInstance().getData(musicListType);
     }
 }

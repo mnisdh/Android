@@ -159,13 +159,19 @@ public class Stage {
         int bLocY = (int)(block.getY() / unit - locY);
 
         for(int i = 0; i < bRects.length; i++){
-            if(rects.length <= i + bLocY) continue;
-            for(int j = 0; j < bRects[0].length; j++){
-                if(rects[0].length <= j + bLocX) continue;
+            if(rects.length <= i + bLocY) {
+                for(int j = 0; j < bRects[0].length; j++){
+                    if(bRects[i][j] != 0) return true;
+                }
 
+                continue;
+            }
+
+            for(int j = 0; j < bRects[0].length; j++){
                 int temp = bRects[i][j];
                 if(temp == 0) continue;
 
+                if(rects[0].length <= j + bLocX) return true;
                 if(rects[i + bLocY][j + bLocX] + temp != temp) return true;
             }
         }
@@ -222,10 +228,12 @@ public class Stage {
 
         currentBlock.rotation(false);
         if(isClash(currentBlock)){
-            blockMoveLeft();
+            currentBlock.moveLeft();
             if(isClash(currentBlock)){
-                blockMoveRight();
+                currentBlock.moveRight();
+                currentBlock.moveRight();
                 if(isClash(currentBlock)){
+                    currentBlock.moveLeft();
                     currentBlock.rotation(true);
                 }
             }

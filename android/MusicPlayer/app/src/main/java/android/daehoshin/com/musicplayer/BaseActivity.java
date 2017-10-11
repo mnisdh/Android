@@ -2,6 +2,7 @@ package android.daehoshin.com.musicplayer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         // 앱 버전 체크
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) checkPermission();

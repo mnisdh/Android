@@ -1,5 +1,6 @@
 package android.daehoshin.com.musicplayer;
 
+import android.daehoshin.com.musicplayer.MusicFragment.OnListFragmentInteractionListener;
 import android.daehoshin.com.musicplayer.domain.Music;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,41 +9,38 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.daehoshin.com.musicplayer.MusicFragment.OnListFragmentInteractionListener;
-import android.daehoshin.com.musicplayer.dummy.DummyContent.DummyItem;
-
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecyclerViewAdapter.ViewHolder> {
-
+    private int musicListType = 0;
     private final List<Music.Item> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MusicRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
-        mValues = listener.getList();
+    public MusicRecyclerViewAdapter(OnListFragmentInteractionListener listener, int musicListType) {
+        mValues = listener.getList(musicListType);
         mListener = listener;
+        this.musicListType = musicListType;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int layoutResource = R.layout.fragment_music_title;
+        switch (musicListType){
+            case 1:
+                layoutResource = R.layout.fragment_music_artist;
+                break;
+        }
+
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_music, parent, false);
-        return new ViewHolder(view);
+                .inflate(layoutResource, parent, false);
+        return new ViewHolder(view, musicListType);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.position = position;
-        holder.ivAlbum.setImageURI(mValues.get(position).albumUri);
-        holder.tvTitle.setText(mValues.get(position).title);
-        holder.tvContent.setText(mValues.get(position).artist);
-        holder.tvTime.setText("");
+        Music.Item item = mValues.get(position);
+
+        holder.setMusicItem(item, position);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +48,7 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onClick(holder.position);
+                    mListener.onClick(holder.getMusicPosition(), musicListType);
                 }
             }
         });
@@ -62,26 +60,53 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public int position;
-        public final View mView;
-        public final ImageView ivAlbum;
-        public final TextView tvTitle;
-        public final TextView tvContent;
-        public final TextView tvTime;
-        public Music.Item mItem;
+        private int musicListType = 0;
+        private int position;
+        private final View mView;
 
-        public ViewHolder(View view) {
+        private final ImageView ivAlbum;
+        private final TextView tvArtist;
+        private final TextView tvSongName;
+        private final TextView tvTime;
+        private Music.Item mItem;
+
+        public ViewHolder(View view, int musicListType) {
             super(view);
             mView = view;
+
+            this.musicListType = musicListType;
             ivAlbum = (ImageView) view.findViewById(R.id.ivAlbum);
-            tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-            tvContent = (TextView) view.findViewById(R.id.tvContent);
+            switch (musicListType){
+                case 1:
+                    tvArtist = (TextView) view.findViewById(R.id.tvAartist);
+                    tvSongName = (TextView) view.findViewById(R.id.tvAtitle);
+                    break;
+                default:
+                    tvArtist = (TextView) view.findViewById(R.id.tvTartist);
+                    tvSongName = (TextView) view.findViewById(R.id.tvTtitle);
+                    break;
+            }
+
             tvTime = (TextView) view.findViewById(R.id.tvTime);
+        }
+
+        public int getMusicPosition(){
+            return position;
+        }
+
+        public void setMusicItem(Music.Item item, int musicPosition){
+            this.mItem = item;
+            this.position = musicPosition;
+
+            if(this.ivAlbum != null) this.ivAlbum.setImageURI(mItem.albumUri);
+            if(this.tvArtist != null) this.tvArtist.setText(mItem.artist);
+            if(this.tvSongName != null) this.tvSongName.setText(mItem.title);
+            if(this.tvTime != null) this.tvTime.setText(mItem.duration);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + tvTitle.getText() + "'";
+            return super.toString() + " '" + tvSongName.getText() + "'";
         }
     }
 }

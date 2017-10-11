@@ -2,17 +2,15 @@ package android.daehoshin.com.musicplayer;
 
 import android.content.Intent;
 import android.daehoshin.com.musicplayer.domain.Music;
-import android.media.AudioManager;
+import android.daehoshin.com.musicplayer.util.TypeUtil;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class PlayerActivity extends AppCompatActivity implements View.OnClickListener {
+public class PlayerActivity extends BaseActivity implements View.OnClickListener {
     ViewPager vpContent;
     ImageButton btnPlay;
     TextView tvPlayTime, tvMusicTime;
@@ -21,18 +19,17 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     Music.Item item = null;
     MediaPlayer player = null;
     int current = -1;
+    int musicListType = 0;
 
     boolean usePlayTimeThread = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    void init() {
         setContentView(R.layout.activity_player);
 
         Intent intent = getIntent();
         current = intent.getIntExtra(Const.KEY_POSITION, -1);
-
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        musicListType = intent.getIntExtra(Const.KEY_MUSICLISTTYPE, -1);
 
         bindControl();
 
@@ -54,7 +51,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void loadItem(){
-        item = Music.getInstance().getData().get(current);
+        item = Music.getInstance().getData(musicListType).get(current);
     }
 
     private void initPlayer(){
@@ -66,22 +63,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         player = MediaPlayer.create(this, item.musicUri);
         player.setLooping(false);
 
-        tvMusicTime.setText(miliToSec(player.getDuration()));
+        tvMusicTime.setText(TypeUtil.miliToSec(player.getDuration()));
         sbPlayTime.setMax(player.getDuration());
-    }
-
-    private String miliToSec(int milisecond){
-        int sec = milisecond / 1000;
-        int min = sec / 60;
-        sec = sec % 60;
-
-        return String.format("%02d", min) + ":" + String.format("%02d", sec);
     }
 
     private void initViewPager(){
         vpContent = (ViewPager) findViewById(R.id.vpContent);
 
-        MusicPlayerPagerAdapter adapter = new MusicPlayerPagerAdapter(this);
+        MusicPlayerPagerAdapter adapter = new MusicPlayerPagerAdapter(this, musicListType);
         vpContent.setAdapter(adapter);
         vpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -127,7 +116,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                         public void run() {
                             int cp = player.getCurrentPosition();
                             sbPlayTime.setProgress(cp);
-                            tvPlayTime.setText(miliToSec(cp));
+                            tvPlayTime.setText(TypeUtil.miliToSec(cp));
                         }
                     });
 

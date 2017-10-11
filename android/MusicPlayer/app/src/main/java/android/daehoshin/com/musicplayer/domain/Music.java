@@ -2,6 +2,7 @@ package android.daehoshin.com.musicplayer.domain;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.daehoshin.com.musicplayer.util.TypeUtil;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -23,9 +24,14 @@ public class Music {
 
     private Music(){}; // 생성할 수 없도록 방지
 
-    private List<Item> data = new ArrayList<>();
-    public List<Item> getData(){
-        return data;
+    private List<Item> data_title = new ArrayList<>();
+    private List<Item> data_artist = new ArrayList<>();
+
+    public List<Item> getData(int musicListType){
+        switch (musicListType){
+            case 1: return data_artist;
+            default: return data_title;
+        }
     }
 
     /**
@@ -42,30 +48,39 @@ public class Music {
         String[] proj = { MediaStore.Audio.Media._ID
                         , MediaStore.Audio.Media.ALBUM_ID
                         , MediaStore.Audio.Media.TITLE
-                        , MediaStore.Audio.Media.ARTIST};
+                        , MediaStore.Audio.Media.ARTIST_ID
+                        , MediaStore.Audio.Media.ARTIST
+                        , MediaStore.Audio.Media.DURATION};
 
         // 3. 쿼리
-        Cursor cursor = resolver.query(uri, proj, null, null, proj[2] + " ASC");
-
+        Cursor cursor = resolver.query(uri, proj, null, null, MediaStore.Audio.Media.TITLE + " ASC");
         // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
+        cursorToData(cursor, data_title);
+
+        // 3. 쿼리
+        cursor = resolver.query(uri, proj, null, null, MediaStore.Audio.Media.ARTIST + " ASC");
+        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
+        cursorToData(cursor, data_artist);
+    }
+
+    private void cursorToData(Cursor cursor, List<Item> data){
         if(cursor != null) {
             while (cursor.moveToNext()) {
                 Item item = new Item();
-                item.id = getValue(cursor, proj[0]);
-                item.albumId = getValue(cursor, proj[1]);
-                item.title = getValue(cursor, proj[2]);
-                item.artist = getValue(cursor, proj[3]);
+                item.id = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                item.albumId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                item.title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                item.artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                item.duration = TypeUtil.miliToSec((int)cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)));
 
                 item.musicUri = makeMusicUri(item.id);
                 item.albumUri = makeAlbumUri(item.albumId);
 
                 data.add(item);
             }
-        }
-    }
 
-    private String getValue(Cursor cursor, String name){
-        return cursor.getString(cursor.getColumnIndex(name));
+            cursor.close();
+        }
     }
 
     private Uri makeMusicUri(String musicId){
@@ -86,6 +101,7 @@ public class Music {
         public String albumId; // 앨범 아이디
         public String artist;
         public String title;
+        public String duration;
 
         public Uri musicUri; // 파일주소
         public Uri albumUri; // 앨범이미지 주소

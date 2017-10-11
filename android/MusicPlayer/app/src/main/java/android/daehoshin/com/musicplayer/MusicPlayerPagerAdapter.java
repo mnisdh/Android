@@ -15,14 +15,16 @@ import android.widget.TextView;
 
 public class MusicPlayerPagerAdapter extends PagerAdapter {
     Context context;
+    int musicListType = 0;
 
-    public MusicPlayerPagerAdapter(Context context){
+    public MusicPlayerPagerAdapter(Context context, int musicListType){
         this.context = context;
+        this.musicListType = musicListType;
     }
 
     @Override
     public int getCount() {
-        return Music.getInstance().getData().size();
+        return Music.getInstance().getData(musicListType).size();
     }
 
     @Override
@@ -32,12 +34,12 @@ public class MusicPlayerPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Music.Item item = Music.getInstance().getData().get(position);
+        Music.Item item = Music.getInstance().getData(musicListType).get(position);
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_player, null);
 
-        ((TextView)view.findViewById(R.id.tvTitle)).setText(item.title);
-        ((TextView)view.findViewById(R.id.tvArtist)).setText(item.artist);
+        ((TextView)view.findViewById(R.id.tvAartist)).setText(item.title);
+        ((TextView)view.findViewById(R.id.tvAartist)).setText(item.artist);
         ((ImageView)view.findViewById(R.id.ivAlbum)).setImageURI(item.albumUri);
 
         container.addView(view);

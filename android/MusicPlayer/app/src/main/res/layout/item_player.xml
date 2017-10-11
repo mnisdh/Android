@@ -22,7 +22,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvAartist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="@+id/ivAlbum" />
 
     <TextView
-        android:id="@+id/tvArtist"
+        android:id="@+id/tvAartist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -45,5 +45,5 @@
         android:text="artist"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAartist" />
 </android.support.constraint.ConstraintLayout>

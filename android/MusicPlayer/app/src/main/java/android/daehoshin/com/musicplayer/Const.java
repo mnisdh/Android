@@ -6,4 +6,5 @@ package android.daehoshin.com.musicplayer;
 
 public class Const {
     public static final String KEY_POSITION = "position";
+    public static final String KEY_MUSICLISTTYPE = "musiclisttype";
 }
