@@ -56,11 +56,11 @@
   > Resolver를 통한 Gallery 앱 연동
 
 
-### 15. [Flagment Basic](https://github.com/mnisdh/Android/tree/master/android/FlagmentBasic)
+### 15. [Fragment Basic](https://github.com/mnisdh/Android/tree/master/android/FragmentBasic)
   > Flagment 사용법
 
 
-### 16. [Flagmet Basic2](https://github.com/mnisdh/Android/tree/master/android/FlagmentBasic2)
+### 16. [Fragment Basic2](https://github.com/mnisdh/Android/tree/master/android/FragmentBasic2)
   > Flagment 사용법
 
 
