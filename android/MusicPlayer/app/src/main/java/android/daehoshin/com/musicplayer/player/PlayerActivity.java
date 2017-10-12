@@ -1,7 +1,11 @@
-package android.daehoshin.com.musicplayer;
+package android.daehoshin.com.musicplayer.player;
 
 import android.content.Intent;
+import android.daehoshin.com.musicplayer.BaseActivity;
+import android.daehoshin.com.musicplayer.MusicFragment;
+import android.daehoshin.com.musicplayer.R;
 import android.daehoshin.com.musicplayer.domain.Music;
+import android.daehoshin.com.musicplayer.util.Const;
 import android.daehoshin.com.musicplayer.util.TypeUtil;
 import android.media.MediaPlayer;
 import android.support.v4.view.ViewPager;
@@ -19,17 +23,17 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
     Music.Item item = null;
     MediaPlayer player = null;
     int current = -1;
-    int musicListType = 0;
+    MusicFragment.ListType musicListType;
 
     boolean usePlayTimeThread = true;
 
     @Override
-    void init() {
+    public void init() {
         setContentView(R.layout.activity_player);
 
         Intent intent = getIntent();
         current = intent.getIntExtra(Const.KEY_POSITION, -1);
-        musicListType = intent.getIntExtra(Const.KEY_MUSICLISTTYPE, -1);
+        musicListType = MusicFragment.ListType.valueOf(intent.getStringExtra(Const.KEY_MUSICLISTTYPE));
 
         bindControl();
 
@@ -51,7 +55,7 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void loadItem(){
-        item = Music.getInstance().getData(musicListType).get(current);
+        item = (Music.Item)Music.getInstance().getData(musicListType).get(current);
     }
 
     private void initPlayer(){
@@ -60,7 +64,7 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
             player = null;
         }
 
-        player = MediaPlayer.create(this, item.musicUri);
+        player = MediaPlayer.create(this, item.titleUri);
         player.setLooping(false);
 
         tvMusicTime.setText(TypeUtil.miliToSec(player.getDuration()));
@@ -70,7 +74,7 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
     private void initViewPager(){
         vpContent = (ViewPager) findViewById(R.id.vpContent);
 
-        MusicPlayerPagerAdapter adapter = new MusicPlayerPagerAdapter(this, musicListType);
+        PlayerPagerAdapter adapter = new PlayerPagerAdapter(this, musicListType);
         vpContent.setAdapter(adapter);
         vpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

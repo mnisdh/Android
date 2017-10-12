@@ -1,7 +1,7 @@
 package android.daehoshin.com.musicplayer;
 
 import android.content.Context;
-import android.daehoshin.com.musicplayer.domain.Music;
+import android.daehoshin.com.musicplayer.domain.IMusicItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import static android.daehoshin.com.musicplayer.MusicFragment.ListType.TITLE;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -20,7 +22,21 @@ import java.util.List;
  * interface.
  */
 public class MusicFragment extends Fragment {
-    private int musicListType = 0;
+    public static enum ListType{
+        TITLE("TITLE"), ARTIST("ARTIST"), ALBUM("ALBUM"), FAVORITE("FAVORITE");
+
+        private String value;
+
+        ListType(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value.toString();
+        }
+    }
+    private ListType musicListType = TITLE;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -37,7 +53,7 @@ public class MusicFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MusicFragment newInstance(int columnCount, int musicListType) {
+    public static MusicFragment newInstance(int columnCount, ListType musicListType) {
         MusicFragment fragment = new MusicFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
@@ -61,10 +77,16 @@ public class MusicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = null;
         switch (musicListType){
-            case 1:
+            case TITLE:
                 view = inflater.inflate(R.layout.fragment_music_list, container, false);
                 break;
-            default:
+            case ARTIST:
+                view = inflater.inflate(R.layout.fragment_music_list, container, false);
+                break;
+            case ALBUM:
+                view = inflater.inflate(R.layout.fragment_music_list, container, false);
+                break;
+            case FAVORITE:
                 view = inflater.inflate(R.layout.fragment_music_list, container, false);
                 break;
         }
@@ -113,7 +135,7 @@ public class MusicFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onClick(int position, int musicListType);
-        List<Music.Item> getList(int musicListType);
+        void onClick(int position, ListType musicListType);
+        List<IMusicItem> getList(ListType musicListType);
     }
 }

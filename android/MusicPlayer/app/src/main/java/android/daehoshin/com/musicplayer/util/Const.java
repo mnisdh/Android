@@ -1,4 +1,4 @@
-package android.daehoshin.com.musicplayer;
+package android.daehoshin.com.musicplayer.util;
 
 /**
  * Created by daeho on 2017. 10. 11..

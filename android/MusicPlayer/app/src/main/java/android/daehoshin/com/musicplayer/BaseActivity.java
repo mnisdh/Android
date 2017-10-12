@@ -70,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    abstract void init();
+    public abstract void init();
 
 
 }
