@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         intent = new Intent(this, MyService.class);
+
     }
 
     /**
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void start(View v){
+        intent.setAction("START");
         startService(intent);
     }
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void stop(View v){
+        intent.setAction("STOP");
         stopService(intent);
     }
 
