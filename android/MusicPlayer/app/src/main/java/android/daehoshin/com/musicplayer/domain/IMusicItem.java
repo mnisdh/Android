@@ -5,7 +5,7 @@ package android.daehoshin.com.musicplayer.domain;
  */
 
 public interface IMusicItem {
-    enum ItemType{
+    public static enum ItemType{
         TITLE, ALBUM, ARTIST
     }
 

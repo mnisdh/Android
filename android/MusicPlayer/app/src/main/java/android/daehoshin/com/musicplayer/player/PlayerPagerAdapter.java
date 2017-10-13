@@ -1,9 +1,9 @@
 package android.daehoshin.com.musicplayer.player;
 
 import android.content.Context;
-import android.daehoshin.com.musicplayer.MusicFragment;
 import android.daehoshin.com.musicplayer.R;
 import android.daehoshin.com.musicplayer.domain.Music;
+import android.daehoshin.com.musicplayer.domain.PlayList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +16,14 @@ import android.widget.TextView;
 
 public class PlayerPagerAdapter extends android.support.v4.view.PagerAdapter {
     Context context;
-    MusicFragment.ListType musicListType;
 
-    public PlayerPagerAdapter(Context context, MusicFragment.ListType musicListType){
+    public PlayerPagerAdapter(Context context){
         this.context = context;
-        this.musicListType = musicListType;
     }
 
     @Override
     public int getCount() {
-        return Music.getInstance().getData(musicListType).size();
+        return PlayList.getInstance().getDataCount();
     }
 
     @Override
@@ -35,7 +33,7 @@ public class PlayerPagerAdapter extends android.support.v4.view.PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Music.Item item = (Music.Item)Music.getInstance().getData(musicListType).get(position);
+        Music.Item item = PlayList.getInstance().getData(position);
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_player, null);
 

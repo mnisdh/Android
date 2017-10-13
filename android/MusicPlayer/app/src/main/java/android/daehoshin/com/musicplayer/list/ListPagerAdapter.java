@@ -1,4 +1,4 @@
-package android.daehoshin.com.musicplayer;
+package android.daehoshin.com.musicplayer.list;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +10,10 @@ import java.util.List;
  * Created by daeho on 2017. 10. 11..
  */
 
-public class MusicListPagerAdapter extends FragmentStatePagerAdapter {
-    private List<Fragment> fragments;
+public class ListPagerAdapter extends FragmentStatePagerAdapter {
+    private List<ListFragment> fragments;
 
-    public MusicListPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public ListPagerAdapter(FragmentManager fm, List<ListFragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }
@@ -27,4 +27,5 @@ public class MusicListPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return fragments.size();
     }
+
 }

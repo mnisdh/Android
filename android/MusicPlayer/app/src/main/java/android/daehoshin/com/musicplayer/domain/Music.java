@@ -2,7 +2,7 @@ package android.daehoshin.com.musicplayer.domain;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.daehoshin.com.musicplayer.MusicFragment;
+import android.daehoshin.com.musicplayer.player.Player;
 import android.daehoshin.com.musicplayer.util.TypeUtil;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,32 +28,19 @@ public class Music {
     private Music(){}; // 생성할 수 없도록 방지
 
     private Map<String, Item> data = new HashMap<>();
-    private List<String> titleOrderKeys = new ArrayList<>();
-    private List<String> artistOrderKeys = new ArrayList<>();
-    private List<String> albumOrderKeys = new ArrayList<>();
 
-    public List<IMusicItem> getData(MusicFragment.ListType musicListType){
+    public List<IMusicItem> getData(){
         List<IMusicItem> items = new ArrayList<>();
 
-        switch (musicListType){
-            case ARTIST:
-                for(String key : artistOrderKeys) {
-                    if(data.containsKey(key)) items.add(data.get(key));
-                }
-                break;
-            case ALBUM:
-                for(String key : albumOrderKeys){
-                    if(data.containsKey(key)) items.add(data.get(key));
-                }
-                break;
-            case FAVORITE:
-                break;
-            case TITLE:
-                for(String key : titleOrderKeys){
-                    if(data.containsKey(key)) items.add(data.get(key));
-                }
-                break;
-        }
+        for(Item item : data.values()) items.add(item);
+
+        return items;
+    }
+
+    public List<Player.ItemData> getItemDatas(){
+        List<Player.ItemData> items = new ArrayList<>();
+
+        for(Item item : data.values()) items.add(item);
 
         return items;
     }
@@ -82,6 +69,19 @@ public class Music {
         return items;
     }
 
+    public List<Player.ItemData> getCheckedData(){
+        List<Player.ItemData> items = new ArrayList<>();
+
+        for(Item item : data.values()){
+            if(item.isChecked) {
+                items.add(item);
+                item.isChecked = false;
+            }
+        }
+
+        return items;
+    }
+
     /**
      * 음악 데이터를 불러오는 함수
      * @param context
@@ -90,9 +90,6 @@ public class Music {
         ContentResolver resolver = context.getContentResolver();
 
         loadData(resolver);
-        if(data.size() != titleOrderKeys.size()) loadTitle(resolver);
-        if(data.size() != artistOrderKeys.size()) loadArtist(resolver);
-        if(data.size() != albumOrderKeys.size()) loadAlbum(resolver);
     }
 
     private void loadData(ContentResolver resolver){
@@ -112,7 +109,7 @@ public class Music {
         String[] args = { "1" };
 
         // 3. 쿼리
-        Cursor cursor = resolver.query(uri, proj, selection, args, null);
+        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.TITLE + " ASC");
 
         // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
         if(cursor != null) {
@@ -145,86 +142,86 @@ public class Music {
             cursor.close();
         }
     }
-    private void loadTitle(ContentResolver resolver){
-        titleOrderKeys.clear();
-
-        // 1. 테이블명 정의
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-        // 2. 불러올 컬럼명 정의
-        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
-
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
-        String[] args = { "1" };
-
-        // 3. 쿼리
-        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.TITLE + " ASC");
-
-        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
-        if(cursor != null) {
-            while (cursor.moveToNext()) {
-                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
-                titleOrderKeys.add(key);
-            }
-
-            cursor.close();
-        }
-    }
-    private void loadArtist(ContentResolver resolver){
-        artistOrderKeys.clear();
-
-        // 1. 테이블명 정의
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-        // 2. 불러올 컬럼명 정의
-        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
-
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
-        String[] args = { "1" };
-
-        // 3. 쿼리
-        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.ARTIST + " ASC");
-
-        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
-        if(cursor != null) {
-            while (cursor.moveToNext()) {
-                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
-                artistOrderKeys.add(key);
-            }
-
-            cursor.close();
-        }
-    }
-    private void loadAlbum(ContentResolver resolver){
-        albumOrderKeys.clear();
-
-        // 1. 테이블명 정의
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-        // 2. 불러올 컬럼명 정의
-        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
-
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
-        String[] args = { "1" };
-
-        // 3. 쿼리
-        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.ALBUM + " ASC");
-
-        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
-        if(cursor != null) {
-            while (cursor.moveToNext()) {
-                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
-                albumOrderKeys.add(key);
-            }
-
-            cursor.close();
-        }
-    }
+//    private void loadTitle(ContentResolver resolver){
+//        titleOrderKeys.clear();
+//
+//        // 1. 테이블명 정의
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//
+//        // 2. 불러올 컬럼명 정의
+//        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
+//
+//        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
+//        String[] args = { "1" };
+//
+//        // 3. 쿼리
+//        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.TITLE + " ASC");
+//
+//        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
+//        if(cursor != null) {
+//            while (cursor.moveToNext()) {
+//                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
+//                titleOrderKeys.add(key);
+//            }
+//
+//            cursor.close();
+//        }
+//    }
+//    private void loadArtist(ContentResolver resolver){
+//        artistOrderKeys.clear();
+//
+//        // 1. 테이블명 정의
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//
+//        // 2. 불러올 컬럼명 정의
+//        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
+//
+//        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
+//        String[] args = { "1" };
+//
+//        // 3. 쿼리
+//        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.ARTIST + " ASC");
+//
+//        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
+//        if(cursor != null) {
+//            while (cursor.moveToNext()) {
+//                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
+//                artistOrderKeys.add(key);
+//            }
+//
+//            cursor.close();
+//        }
+//    }
+//    private void loadAlbum(ContentResolver resolver){
+//        albumOrderKeys.clear();
+//
+//        // 1. 테이블명 정의
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//
+//        // 2. 불러올 컬럼명 정의
+//        String[] proj = { MediaStore.Audio.Media.TITLE_KEY};
+//
+//        String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
+//        String[] args = { "1" };
+//
+//        // 3. 쿼리
+//        Cursor cursor = resolver.query(uri, proj, selection, args, MediaStore.Audio.Media.ALBUM + " ASC");
+//
+//        // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
+//        if(cursor != null) {
+//            while (cursor.moveToNext()) {
+//                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
+//                albumOrderKeys.add(key);
+//            }
+//
+//            cursor.close();
+//        }
+//    }
 
     /**
      * 실제 뮤직 데이터
      */
-    public class Item implements IMusicItem{
+    public class Item implements IMusicItem, Player.ItemData{
         public String key;
         public String title;
         public String albumKey;
@@ -235,6 +232,8 @@ public class Music {
 
         public Uri titleUri;
         public Uri albumUri;
+
+        public boolean isChecked = false;
 
         @Override
         public ItemType getItemType() {
@@ -249,6 +248,31 @@ public class Music {
         @Override
         public String getTitle() {
             return title;
+        }
+
+        @Override
+        public String getArtist() {
+            return artist;
+        }
+
+        @Override
+        public String getAlbum() {
+            return album;
+        }
+
+        @Override
+        public Uri getTitleUri() {
+            return titleUri;
+        }
+
+        @Override
+        public Uri getAlbumUri() {
+            return albumUri;
+        }
+
+        @Override
+        public String getDuration() {
+            return duration;
         }
     }
 }

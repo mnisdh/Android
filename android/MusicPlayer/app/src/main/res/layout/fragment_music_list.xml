@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="android.daehoshin.com.musicplayer.MusicFragment"
+    tools:context="android.daehoshin.com.musicplayer.list.ListFragment"
     tools:listitem="@layout/fragment_music_title" />
