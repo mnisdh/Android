@@ -41,23 +41,27 @@ public class PlayListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
 
-        View list = view.findViewById(R.id.list);
-
-        if (list instanceof RecyclerView) {
-            Context context = view.getContext();
-            recyclerView = (RecyclerView) list;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-
-            recyclerView.setAdapter(new PlayListRecyclerViewAdapter(Player.getInstance().getData(), fragmentListener));
+        Context context = view.getContext();
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
+        else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+
+        recyclerView.setAdapter(new PlayListRecyclerViewAdapter(Player.getInstance().getData(), fragmentListener));
+
+        view.findViewById(R.id.btnClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         return view;
     }
 

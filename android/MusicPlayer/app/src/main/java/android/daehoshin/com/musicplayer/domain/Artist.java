@@ -54,11 +54,10 @@ public class Artist {
         Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
 
         // 2. 불러올 컬럼명 정의
-        String[] proj = { MediaStore.Audio.Artists.ARTIST_KEY
+        String[] proj = { MediaStore.Audio.Artists._ID
                         , MediaStore.Audio.Artists.ARTIST
                         , MediaStore.Audio.Artists.NUMBER_OF_TRACKS
-                        , MediaStore.Audio.Artists.NUMBER_OF_ALBUMS
-                        , MediaStore.Audio.Artists._ID};
+                        , MediaStore.Audio.Artists.NUMBER_OF_ALBUMS};
 
         // 3. 쿼리
         Cursor cursor = resolver.query(uri, proj, null, null, null);
@@ -66,7 +65,7 @@ public class Artist {
         // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
         if(cursor != null) {
             while (cursor.moveToNext()) {
-                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST_KEY));
+                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists._ID));
 
                 if(!data.containsKey(key)) {
                     Item item = new Item();
@@ -134,7 +133,7 @@ public class Artist {
             return Album.getInstance().getData(albumKeys);
         }
 
-        public List<Music.Item> getTitles(){
+        public List<IMusicItem> getTitles(){
             return Music.getInstance().getArtistData(key);
         }
 

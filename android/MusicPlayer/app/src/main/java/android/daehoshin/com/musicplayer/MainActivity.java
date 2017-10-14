@@ -20,7 +20,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.daehoshin.com.musicplayer.list.ListFragment.ListType;
 import static android.daehoshin.com.musicplayer.list.ListFragment.newInstance;
 
 public class MainActivity extends BaseActivity implements ListFragment.OnListFragmentListener, PlayListFragment.OnPlayListFragmentListener, View.OnClickListener, Player.PlayerListener {
@@ -72,10 +71,10 @@ public class MainActivity extends BaseActivity implements ListFragment.OnListFra
         tlType.addTab(tlType.newTab().setText(getString(R.string.tab_album)));
         tlType.addTab(tlType.newTab().setText(getString(R.string.tab_favorite)));
 
-        fragments.add(newInstance(1, ListType.TITLE));
-        fragments.add(newInstance(1, ListType.ARTIST));
-        fragments.add(newInstance(1, ListType.ALBUM));
-        fragments.add(newInstance(1, ListType.FAVORITE));
+        fragments.add(newInstance(1, Music.getInstance().getData(), true));
+        fragments.add(newInstance(1, Artist.getInstance().getData(), false));
+        fragments.add(newInstance(1, Album.getInstance().getData(), false));
+        fragments.add(newInstance(1, new ArrayList<IMusicItem>(), false));
 
         ListPagerAdapter fragmentAdapter = new ListPagerAdapter(getSupportFragmentManager(), fragments);
         vpList.setAdapter(fragmentAdapter);
@@ -111,20 +110,28 @@ public class MainActivity extends BaseActivity implements ListFragment.OnListFra
 
     @Override
     public void onListItemClick(IMusicItem item) {
+        switch (item.getItemType()){
+            case ARTIST:
+                Artist.Item artistItem = (Artist.Item) item;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.listStage, newInstance(1, artistItem.getTitles(), true))
+                        .addToBackStack(null)
+                        .commit();
 
-    }
-
-    @Override
-    public List<IMusicItem> getList(ListType musicListType) {
-        switch (musicListType){
-            case TITLE: return Music.getInstance().getData();
-            case ALBUM: return Album.getInstance().getData();
-            case ARTIST: return Artist.getInstance().getData();
-            case FAVORITE:
                 break;
+            case ALBUM:
+                Album.Item albumItem = (Album.Item) item;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.listStage, newInstance(1, albumItem.getTitles(), true))
+                        .addToBackStack(null)
+                        .commit();
+
+                break;
+            default:
+                return;
         }
 
-        return new ArrayList<IMusicItem>();
+
     }
 
     @Override
@@ -213,13 +220,7 @@ public class MainActivity extends BaseActivity implements ListFragment.OnListFra
     public void onPlayListItemClick(int current) {
         player.setPlayer(this, current);
 
-
         if(isRunningPlayList) {
-
-
-
-            onBackPressed();
-
             btnPlayList.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             isRunningPlayList = false;

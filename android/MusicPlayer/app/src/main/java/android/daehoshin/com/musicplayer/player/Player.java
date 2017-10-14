@@ -161,6 +161,12 @@ public class Player {
         for(PlayerListener listener : playerListeners) listener.playerPaused();
     }
 
+    public void close(){
+        if(mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
 
     private void startProgressThread() {
         new Thread() {

@@ -12,42 +12,48 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static android.daehoshin.com.musicplayer.list.ListFragment.ListType.TITLE;
-
 public class ListFragment extends Fragment {
-    public enum ListType{
-        TITLE("TITLE"), ARTIST("ARTIST"), ALBUM("ALBUM"), FAVORITE("FAVORITE");
-        private String value;
-        ListType(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return value.toString();
-        }
-    }
-    private ListType musicListType = TITLE;
+//    public enum ListType{
+//        TITLE("TITLE"), ARTIST("ARTIST"), ALBUM("ALBUM"), FAVORITE("FAVORITE");
+//        private String value;
+//        ListType(String value) {
+//            this.value = value;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return value.toString();
+//        }
+//    }
     private RecyclerView recyclerView = null;
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentListener fragmentListener;
+    private List<IMusicItem> items = new ArrayList<>();
+    private boolean useCheckedItem = false;
 
     public ListFragment() {
     }
 
-    public static ListFragment newInstance(int columnCount, ListType musicListType) {
+    public static ListFragment newInstance(int columnCount, List<IMusicItem> items, boolean useCheckedItem) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
-        fragment.musicListType = musicListType;
+        fragment.items = items;
+        fragment.useCheckedItem = useCheckedItem;
 
         return fragment;
     }
+
+    public void setItems(List<IMusicItem> items){
+        this.items = items;
+    }
+
 
     public void refresh(){
         if(recyclerView != null) recyclerView.getAdapter().notifyDataSetChanged();
@@ -78,7 +84,7 @@ public class ListFragment extends Fragment {
 
 
 
-            recyclerView.setAdapter(new ListRecyclerViewAdapter(fragmentListener.getList(musicListType), fragmentListener));
+            recyclerView.setAdapter(new ListRecyclerViewAdapter(items, fragmentListener, useCheckedItem));
         }
         return view;
     }
@@ -102,6 +108,5 @@ public class ListFragment extends Fragment {
 
     public interface OnListFragmentListener {
         void onListItemClick(IMusicItem item);
-        List<IMusicItem> getList(ListType musicListType);
     }
 }

@@ -46,6 +46,7 @@ public class PlayerService extends Service {
                         updateNotification();
                         break;
                     case "DELETE":
+                        player.close();
                         stopForeground(true);
                         break;
                     default:

@@ -20,10 +20,12 @@ import java.util.List;
 public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder> {
     private final List<IMusicItem> items;
     private final ListFragment.OnListFragmentListener fragmentListener;
+    private final boolean useCheckedItem;
 
-    public ListRecyclerViewAdapter(List<IMusicItem> items, ListFragment.OnListFragmentListener fragmentListener) {
+    public ListRecyclerViewAdapter(List<IMusicItem> items, ListFragment.OnListFragmentListener fragmentListener, boolean useCheckedItem) {
         this.items = items;
         this.fragmentListener = fragmentListener;
+        this.useCheckedItem = useCheckedItem;
     }
 
     @Override
@@ -96,9 +98,12 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
                     if (null != fragmentListener) {
                         switch (item.getItemType()){
                             case TITLE:
-                                Music.Item musicItem = (Music.Item) item;
-                                musicItem.isChecked = !musicItem.isChecked;
-                                initCardViewColor();
+                                if(useCheckedItem){
+                                    Music.Item musicItem = (Music.Item) item;
+                                    musicItem.isChecked = !musicItem.isChecked;
+                                    initCardViewColor();
+                                }
+                                else fragmentListener.onListItemClick(item);
                                 break;
                             case ARTIST:
                             case ALBUM:

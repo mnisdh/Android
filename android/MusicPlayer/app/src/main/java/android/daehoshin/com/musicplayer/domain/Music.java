@@ -49,21 +49,21 @@ public class Music {
         return data.get(titleKey);
     }
 
-    public List<Item> getArtistData(String artistKey){
-        List<Item> items = new ArrayList<>();
+    public List<IMusicItem> getArtistData(String artistKey){
+        List<IMusicItem> items = new ArrayList<>();
 
         for(Item item : data.values()){
-            if(item.artistKey == artistKey) items.add(item);
+            if(item.artistKey.equals(artistKey)) items.add(item);
         }
 
         return items;
     }
 
-    public List<Item> getAlbumData(String albumKey){
-        List<Item> items = new ArrayList<>();
+    public List<IMusicItem> getAlbumData(String albumKey){
+        List<IMusicItem> items = new ArrayList<>();
 
         for(Item item : data.values()){
-            if(item.albumKey == albumKey) items.add(item);
+            if(item.albumKey.equals(albumKey)) items.add(item);
         }
 
         return items;
@@ -97,13 +97,11 @@ public class Music {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
         // 2. 불러올 컬럼명 정의
-        String[] proj = { MediaStore.Audio.Media.TITLE_KEY
+        String[] proj = { MediaStore.Audio.Media._ID
                         , MediaStore.Audio.Media.TITLE
                         , MediaStore.Audio.Media.ALBUM_KEY
-                        , MediaStore.Audio.Media.ARTIST_KEY
-                        , MediaStore.Audio.Media.DURATION
-
-                        , MediaStore.Audio.Media._ID};
+                        , MediaStore.Audio.Media.ARTIST_ID
+                        , MediaStore.Audio.Media.DURATION};
 
         String selection = MediaStore.Audio.Media.IS_MUSIC + " = ?";
         String[] args = { "1" };
@@ -114,7 +112,7 @@ public class Music {
         // 4. 쿼리결과가 담긴 커서를 통해 데이터 꺼내기
         if(cursor != null) {
             while (cursor.moveToNext()) {
-                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
+                String key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
 
                 if(!data.containsKey(key)) {
                     Item item = new Item();
@@ -126,7 +124,7 @@ public class Music {
                     item.titleUri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, titleID);
 
 
-                    item.artistKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST_KEY));
+                    item.artistKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST_ID));
                     item.artist = Artist.getInstance().getData(item.artistKey).artist;
 
 

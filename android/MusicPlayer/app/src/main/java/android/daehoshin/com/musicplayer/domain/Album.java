@@ -125,7 +125,7 @@ public class Album {
             return album;
         }
 
-        public List<Music.Item> getTitles(){
+        public List<IMusicItem> getTitles(){
             return Music.getInstance().getAlbumData(key);
         }
     }
