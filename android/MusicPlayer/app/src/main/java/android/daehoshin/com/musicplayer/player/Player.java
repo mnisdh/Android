@@ -44,6 +44,8 @@ public class Player {
         return mPlayer.isPlaying();
     }
     public String getMaxTimeDuration(){
+        if(mPlayer == null) return "0:00";
+
         return TypeUtil.miliToSec(mPlayer.getDuration());
     }
     public int getDuration(){

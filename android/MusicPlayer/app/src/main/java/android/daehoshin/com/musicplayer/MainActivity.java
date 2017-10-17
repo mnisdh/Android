@@ -8,6 +8,7 @@ import android.daehoshin.com.musicplayer.domain.Music;
 import android.daehoshin.com.musicplayer.list.ListFragment;
 import android.daehoshin.com.musicplayer.list.ListPagerAdapter;
 import android.daehoshin.com.musicplayer.player.Player;
+import android.daehoshin.com.musicplayer.player.PlayerActivity;
 import android.daehoshin.com.musicplayer.player.PlayerService;
 import android.daehoshin.com.musicplayer.playlist.PlayListFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -165,11 +166,13 @@ public class MainActivity extends BaseActivity implements ListFragment.OnListFra
         switch(v.getId()){
             case R.id.btnPlayList:
                 if(isRunningPlayList) {
-                    onBackPressed();
-
-                    btnPlayList.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-
-                    isRunningPlayList = false;
+                    Intent intent = new Intent(this, PlayerActivity.class);
+                    startActivity(intent);
+//                    onBackPressed();
+//
+//                    btnPlayList.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//
+//                    isRunningPlayList = false;
                 }
                 else{
                     getSupportFragmentManager().beginTransaction()

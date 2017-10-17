@@ -2,7 +2,6 @@ package android.daehoshin.com.musicplayer.player;
 
 import android.content.Context;
 import android.daehoshin.com.musicplayer.R;
-import android.daehoshin.com.musicplayer.domain.Music;
 import android.daehoshin.com.musicplayer.domain.PlayList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,13 +32,13 @@ public class PlayerPagerAdapter extends android.support.v4.view.PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Music.Item item = PlayList.getInstance().getData(position);
+        Player.ItemData item = Player.getInstance().getData().get(position);
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_player, null);
 
-        ((TextView)view.findViewById(R.id.tvTitle)).setText(item.title);
-        ((TextView)view.findViewById(R.id.tvArtist)).setText(item.artist);
-        ((ImageView)view.findViewById(R.id.ivImage)).setImageURI(item.albumUri);
+        ((TextView)view.findViewById(R.id.tvTitle)).setText(item.getTitle());
+        ((TextView)view.findViewById(R.id.tvArtist)).setText(item.getArtist());
+        ((ImageView)view.findViewById(R.id.ivImage)).setImageURI(item.getAlbumUri());
 
         container.addView(view);
 

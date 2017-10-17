@@ -1,9 +1,7 @@
 package android.daehoshin.com.musicplayer.player;
 
-import android.content.Intent;
 import android.daehoshin.com.musicplayer.BaseActivity;
 import android.daehoshin.com.musicplayer.R;
-import android.daehoshin.com.musicplayer.util.Const;
 import android.daehoshin.com.musicplayer.util.TypeUtil;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -24,15 +22,17 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
     public void init() {
         setContentView(R.layout.activity_player);
 
+        player = Player.getInstance();
+        player.addPlayerLitener(this);
+
         bindControl();
         initViewPager();
         initListener();
 
-        player = Player.getInstance();
-        player.addPlayerLitener(this);
+        playerSeted();
 
-        Intent intent = getIntent();
-        player.setPlayer(this, intent.getIntExtra(Const.KEY_POSITION, 0));
+//        Intent intent = getIntent();
+//        player.setPlayer(this, intent.getIntExtra(Const.KEY_POSITION, 0));
     }
 
     private void bindControl() {
@@ -76,6 +76,7 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
         findViewById(R.id.btnNext).setOnClickListener(this);
         findViewById(R.id.btnPrevious).setOnClickListener(this);
         findViewById(R.id.btnRew).setOnClickListener(this);
+        findViewById(R.id.btnClose).setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +105,9 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnRew:
                 break;
+            case R.id.btnClose:
+                onBackPressed();
+                break;
         }
     }
 
@@ -111,6 +115,7 @@ public class PlayerActivity extends BaseActivity implements View.OnClickListener
     public void playerSeted() {
         tvMusicTime.setText(player.getMaxTimeDuration());
         sbPlayTime.setMax(player.getDuration());
+
     }
 
     @Override

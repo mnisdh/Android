@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context="android.daehoshin.com.musicplayer.player.PlayerActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        app:backgroundTint="@android:color/transparent"
+        app:fabSize="mini"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vpContent"
         android:layout_width="0dp"
