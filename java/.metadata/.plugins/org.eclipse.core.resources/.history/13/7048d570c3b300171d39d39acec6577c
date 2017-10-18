@@ -1,0 +1,44 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class HttpServer {
+
+	public static void main(String[] args) {
+		WebServer server = new WebServer(8080);
+		server.start();
+	}
+
+}
+
+class WebServer extends Thread{
+	public boolean runFlag = false;
+	ServerSocket server = null;
+	
+	public WebServer(int port){
+		try {
+			server = new ServerSocket(port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void run(){
+		try{
+			runFlag = true;
+			while(runFlag){
+				// 클라이언트 연결대기
+				Socket client = server.accept();
+				// 요청에대한 처리를 새로운 thread에서 처리해준다
+				new Thread(){
+					public void run(){
+						
+					}
+				}.start();
+			}
+		} catch(Exception e) {
+			
+		}
+	}
+}

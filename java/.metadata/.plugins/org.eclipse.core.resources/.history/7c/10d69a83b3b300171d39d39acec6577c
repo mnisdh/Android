@@ -1,0 +1,20 @@
+
+public class ChatClient {
+	/**
+	 * 특정 ip와 port를 가진 서버에 접속해서 메시지를 전송하는 프로그램
+	 * @param args
+	 */
+	public static void main(String[] args){
+		
+	}
+}
+
+class Client{
+	String ip;
+	int port;
+	
+	public Client(String ip, int port){
+		this.ip = ip;
+		this.port = port;
+	}
+}

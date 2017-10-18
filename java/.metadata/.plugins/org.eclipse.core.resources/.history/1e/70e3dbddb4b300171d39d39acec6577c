@@ -1,0 +1,16 @@
+
+public class ChatServer {
+
+	public static void main(String[] args) {
+		
+	}
+
+}
+
+class Server extends Thread{
+	
+}
+
+class ClientProcess extends Thread{
+	
+}
