@@ -1,7 +1,6 @@
 package android.daehoshin.com.stationarrival;
 
 import android.daehoshin.com.stationarrival.domain.StationManager;
-import android.daehoshin.com.stationarrival.domain.realtimeArrival.RealtimeArrivalList;
 import android.daehoshin.com.stationarrival.list.ListRecyclerAdapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,18 +16,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListRecyclerAdapter adapter = null;
-    StationManager.IStationManagerEvent smEvent = new StationManager.IStationManagerEvent() {
-
-        @Override
-        public void startProgress() {
-
-        }
-
-        @Override
-        public void endProgress() {
-
-        }
-
+    StationManager.IStationLoadedEvent stationLoadedEvent = new StationManager.IStationLoadedEvent() {
         @Override
         public void loadedStation(List<android.daehoshin.com.stationarrival.domain.stationLine.Row> stations) {
             adapter.setData(stations);
@@ -36,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void loadedRealtimeArrival(List<RealtimeArrivalList> arrivalList) {
+        public void startProgress() {
+
+        }
+
+        @Override
+        public void endProgress(boolean isCancel) {
 
         }
     };
@@ -67,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         spLine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                StationManager.getInstance().getStation(smEvent, StationManager.getInstance().getLines().get(position).getKey());
+                StationManager.getInstance().getStation(stationLoadedEvent, StationManager.getInstance().getLines().get(position).getKey());
 
             }
 

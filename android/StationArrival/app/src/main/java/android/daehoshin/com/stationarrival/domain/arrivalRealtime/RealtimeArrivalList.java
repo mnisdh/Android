@@ -1,4 +1,4 @@
-package android.daehoshin.com.stationarrival.domain.realtimeArrival;
+package android.daehoshin.com.stationarrival.domain.arrivalRealtime;
 
 /**
  * Created by daeho on 2017. 10. 19..

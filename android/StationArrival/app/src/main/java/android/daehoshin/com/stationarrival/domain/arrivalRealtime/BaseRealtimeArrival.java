@@ -1,4 +1,4 @@
-package android.daehoshin.com.stationarrival.domain.realtimeArrival;
+package android.daehoshin.com.stationarrival.domain.arrivalRealtime;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.daehoshin.com.stationarrival.R;
 import android.daehoshin.com.stationarrival.detail.DetailActivity;
 import android.daehoshin.com.stationarrival.domain.StationManager;
-import android.daehoshin.com.stationarrival.domain.realtimeArrival.RealtimeArrivalList;
+import android.daehoshin.com.stationarrival.domain.arrivalRealtime.RealtimeArrivalList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,11 +44,12 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
         return data.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder implements StationManager.IStationManagerEvent{
+    public class Holder extends RecyclerView.ViewHolder {
         private TextView tvStationName, tvArrivalTime;
         private ProgressBar progress;
         private android.daehoshin.com.stationarrival.domain.stationLine.Row station;
-        private RealtimeArrivalList arrivalFirst = null;
+        private RealtimeArrivalList upArrival = null;
+        private RealtimeArrivalList downArrival = null;
 
         public Holder(View itemView) {
             super(itemView);
@@ -62,6 +63,7 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), DetailActivity.class);
                     intent.putExtra("STATION_NAME", station.getSTATION_NM());
+                    intent.putExtra("STATION_CODE", station.getSTATION_CD());
 
                     v.getContext().startActivity(intent);
                 }
@@ -76,34 +78,49 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
             tvArrivalTime.setVisibility(View.INVISIBLE);
             progress.setVisibility(View.VISIBLE);
 
-            StationManager.getInstance().getRealtimeArrivalFirst(this, station.getSTATION_NM());
+            StationManager.getInstance().getRealtimeArrivalFirst(simpleArrivalLoadedEvent, station.getSTATION_NM());
         }
 
-        @Override
-        public void startProgress() {
+        StationManager.ISimpleArrivalRealtimeLoadedEvent simpleArrivalLoadedEvent = new StationManager.ISimpleArrivalRealtimeLoadedEvent() {
+            @Override
+            public void loadedSimpleArrival(RealtimeArrivalList upArrivalList, RealtimeArrivalList downArrivalList) {
+                upArrival = upArrivalList;
+                downArrival = downArrivalList;
+            }
 
+            @Override
+            public void startProgress() {
 
-        }
+            }
 
-        @Override
-        public void endProgress() {
-            if(arrivalFirst != null) {
+            @Override
+            public void endProgress(boolean isCancel) {
+                if(isCancel) {
+                    progress.setVisibility(View.INVISIBLE);
+                    return;
+                }
+
+                String text = "";
+                if(upArrival != null){
+                    text += upArrival.getUpdnLine() + " : ";
+
+                    if(upArrival.getBarvlDt().equals("0")) text += upArrival.getArvlMsg2();
+                    else text += StationManager.getChangeBarvlDt(upArrival.getBarvlDt());
+                }
+
+                if(downArrival != null){
+                    if(!text.equals("")) text += " / ";
+                    text += downArrival.getUpdnLine() + " : ";
+
+                    if(downArrival.getBarvlDt().equals("0")) text += downArrival.getArvlMsg2();
+                    else text += StationManager.getChangeBarvlDt(downArrival.getBarvlDt());
+                }
+
                 tvArrivalTime.setVisibility(View.VISIBLE);
-                tvArrivalTime.setText(arrivalFirst.getBarvlDt());
+                tvArrivalTime.setText(text);
                 progress.setVisibility(View.INVISIBLE);
             }
-        }
+        };
 
-        @Override
-        public void loadedStation(List<android.daehoshin.com.stationarrival.domain.stationLine.Row> stations) {
-
-        }
-
-        @Override
-        public void loadedRealtimeArrival(List<RealtimeArrivalList> arrivalList) {
-            if(arrivalList != null && arrivalList.size() > 0) {
-                if(arrivalList.get(0).getStatnNm() == station.getSTATION_NM()) arrivalFirst = arrivalList.get(0);
-            }
-        }
     }
 }
