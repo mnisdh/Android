@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,11 +18,14 @@ import java.util.List;
 public class DetailActivity extends AppCompatActivity {
     String stationName = "";
     String stationCode = "";
+    private android.daehoshin.com.stationarrival.domain.stationLine.Row beforeStation;
+    private android.daehoshin.com.stationarrival.domain.stationLine.Row nextStation;
 
     private List<RealtimeArrivalList> arrivals = new ArrayList<>();
     private ProgressBar pgRealtime;
     private TextView tvBeforeName, tvStationName, tvNextName;
     private TextView tvTitleReal1, tvTitleReal2, tvContentReal1, tvContentReal2;
+    private ImageButton btnBefore, btnNext;
     private TabLayout tl;
     private ViewPager vp;
     private StationInfoAdapter adapter;
@@ -31,20 +35,48 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        stationName = getIntent().getStringExtra("STATION_NAME");
-        stationCode = getIntent().getStringExtra("STATION_CODE");
+        String sName = getIntent().getStringExtra("STATION_NAME");
+        String sCode = getIntent().getStringExtra("STATION_CODE");
+
+        setStation(sName, sCode);
 
         init();
 
 
         tvStationName.setText(stationName);
+        if(beforeStation != null){
+            btnBefore.setVisibility(View.VISIBLE);
+            tvBeforeName.setText(beforeStation.getSTATION_NM());
+        }
+        else{
+            btnBefore.setVisibility(View.INVISIBLE);
+        }
+
+        if(nextStation != null){
+            btnNext.setVisibility(View.VISIBLE);
+            tvNextName.setText(nextStation.getSTATION_NM());
+        }
+        else{
+            btnNext.setVisibility(View.INVISIBLE);
+        }
 
         loadArrivalRealtime(stationName);
+    }
+
+    private void setStation(String stationName, String stationCode){
+        this.stationName = stationName;
+        this.stationCode = stationCode;
+
+        beforeStation = StationManager.getInstance().getBeforeStation(stationCode);
+        nextStation = StationManager.getInstance().getNextStation(stationCode);
     }
 
     private void init(){
         pgRealtime = (ProgressBar) findViewById(R.id.pgRealtime);
         pgRealtime.setVisibility(View.INVISIBLE);
+
+        btnBefore = (ImageButton) findViewById(R.id.btnBefore);
+        btnNext = (ImageButton) findViewById(R.id.btnNext);
 
         tvBeforeName = (TextView) findViewById(R.id.tvBeforeName);
         tvBeforeName.setText("");

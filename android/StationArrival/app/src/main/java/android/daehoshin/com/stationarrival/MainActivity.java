@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         public void loadedStation(List<android.daehoshin.com.stationarrival.domain.stationLine.Row> stations) {
             adapter.setData(stations);
             adapter.notifyDataSetChanged();
+
+            StationManager.getInstance().setCurrentStations(stations);
         }
 
         @Override

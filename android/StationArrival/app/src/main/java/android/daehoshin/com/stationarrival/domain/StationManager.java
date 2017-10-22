@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class StationManager {
-    private final boolean useRealtimeArrival = false;
+    private final boolean useRealtimeArrival = true;
     private static final String API_KEY = "4478666e6b6d6e693533506667536b";
 
     private static StationManager sm = null;
@@ -29,6 +29,27 @@ public class StationManager {
     }
 
     private List<LineItem> lines = new ArrayList<>();
+
+    private List<android.daehoshin.com.stationarrival.domain.stationLine.Row> currentStations = new ArrayList<>();
+    public void setCurrentStations(List<android.daehoshin.com.stationarrival.domain.stationLine.Row> currentStations){
+        this.currentStations = currentStations;
+    }
+    public List<android.daehoshin.com.stationarrival.domain.stationLine.Row> getCurrentStations(){
+        return currentStations;
+    }
+
+    public android.daehoshin.com.stationarrival.domain.stationLine.Row getBeforeStation(String stationCode){
+        for(int i = 1; i < currentStations.size(); i++){
+            if(currentStations.get(i).getSTATION_CD().equals(stationCode)) return currentStations.get(i - 1);
+        }
+        return null;
+    }
+    public android.daehoshin.com.stationarrival.domain.stationLine.Row getNextStation(String stationCode){
+        for(int i = currentStations.size() - 2; i >= 0; i--){
+            if(currentStations.get(i).getSTATION_CD().equals(stationCode)) return currentStations.get((i + 1));
+        }
+        return null;
+    }
 
     private StationManager(){
         initData();
