@@ -1,0 +1,32 @@
+
+public class LinkedList<T> {
+	private Node first;
+	private Node last;
+	private int count;
+	
+	
+	public void add(Node node){
+		if(count == 0){
+			first = node;
+			last = node;
+		}
+		else{
+			
+			last.next = node;
+		last = node;
+		}
+		
+		count++;
+	}
+	
+	
+	
+	class Node{
+		Node next;
+		T data;
+		
+		public Node(T data){
+			this.data = data;
+		}
+	}
+}

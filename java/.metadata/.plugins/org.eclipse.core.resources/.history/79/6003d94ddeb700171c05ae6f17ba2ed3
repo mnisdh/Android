@@ -1,0 +1,17 @@
+
+public class LinkedList<T> {
+	private Node first;
+	private Node last;
+	private int count;
+	
+	
+	
+	class Node{
+		Node next;
+		T data;
+		
+		public Node(T data){
+			this.data = data;
+		}
+	}
+}
