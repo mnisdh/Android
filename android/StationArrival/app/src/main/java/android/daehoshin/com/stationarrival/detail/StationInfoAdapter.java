@@ -5,7 +5,6 @@ import android.daehoshin.com.stationarrival.R;
 import android.daehoshin.com.stationarrival.domain.StationManager;
 import android.daehoshin.com.stationarrival.domain.arrival.Row;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,13 @@ public class StationInfoAdapter extends PagerAdapter {
     public StationInfoAdapter(String stationCode, int count){
         data.clear();
         for(int i = 0; i < count; i++) data.add(stationCode);
+    }
+
+    public void setData(String stationCode, int count){
+        data.clear();
+        for(int i = 0; i < count; i++) data.add(stationCode);
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -60,7 +66,7 @@ public class StationInfoAdapter extends PagerAdapter {
 
         String stationCode = data.get(position);
         String week = (position + 1) + "";
-        Log.d("WEEK:",week);
+
         container.addView(view);
 
         loadData(progress1, tvContent1, stationCode, "1", week);

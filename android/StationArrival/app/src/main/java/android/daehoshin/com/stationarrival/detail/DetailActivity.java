@@ -38,10 +38,20 @@ public class DetailActivity extends AppCompatActivity {
         String sName = getIntent().getStringExtra("STATION_NAME");
         String sCode = getIntent().getStringExtra("STATION_CODE");
 
-        setStation(sName, sCode);
-
         init();
 
+        setStation(sName, sCode);
+    }
+
+    private void setStation(String stationName, String stationCode){
+        this.stationName = stationName;
+        this.stationCode = stationCode;
+
+        beforeStation = StationManager.getInstance().getBeforeStation(stationCode);
+        nextStation = StationManager.getInstance().getNextStation(stationCode);
+
+        adapter.setData(stationCode, tl.getTabCount());
+        loadArrivalRealtime(stationName);
 
         tvStationName.setText(stationName);
         if(beforeStation != null){
@@ -59,16 +69,6 @@ public class DetailActivity extends AppCompatActivity {
         else{
             btnNext.setVisibility(View.INVISIBLE);
         }
-
-        loadArrivalRealtime(stationName);
-    }
-
-    private void setStation(String stationName, String stationCode){
-        this.stationName = stationName;
-        this.stationCode = stationCode;
-
-        beforeStation = StationManager.getInstance().getBeforeStation(stationCode);
-        nextStation = StationManager.getInstance().getNextStation(stationCode);
     }
 
     private void init(){
@@ -165,12 +165,10 @@ public class DetailActivity extends AppCompatActivity {
         StationManager.getInstance().getRealtimeArrival(arrivalLoadedEvent, stationName);
     }
 
-
-
     public void goBefore(View v){
-
+        setStation(beforeStation.getSTATION_NM(), beforeStation.getSTATION_CD());
     }
     public void goNext(View v){
-
+        setStation(nextStation.getSTATION_NM(), nextStation.getSTATION_CD());
     }
 }
