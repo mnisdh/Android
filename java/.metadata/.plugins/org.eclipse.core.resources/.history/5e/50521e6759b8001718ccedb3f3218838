@@ -55,25 +55,6 @@ public class LinkedList<T> {
 		}
 	}
 	
-	public void remove(int index){
-		if(index == 0){
-			if(first == last) last = null;
-			first = first.next;
-		}
-		else if(index == count -1){
-			last = getNode(index - 1);
-			last.next = null;
-		}
-		else{
-			Node temp = getNode(index - 1);
-			Node tempR = getNode(index);
-			
-			temp.next = tempR.next;
-		}
-		
-		count--;
-	}
-	
 	public T getData(int index){
 		return getNode(index).data;
 	}
