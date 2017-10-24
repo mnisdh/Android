@@ -72,3 +72,17 @@ function ClassName(param1) {
 var num = new Num("Hello", 157);
 num.b = 500;
 num.c("a", 3241);
+
+
+// javascript의 object
+var request = {
+	one : "hello",
+	two : 123,
+	three : {
+		one : "hello2",
+		two : 1233
+	},
+	sum : function(){
+	   return one + threee;
+	}
+};

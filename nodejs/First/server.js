@@ -45,7 +45,7 @@ var server = http.createServer(function(request, response){
 
 // 3. 서버 실행
 server.listen(port, function(){
-    console.log("server is running...");
+    console.log(port + " server is running...");
 });
 
 function getFibonacci(cnt) {
