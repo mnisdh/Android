@@ -37,13 +37,9 @@ var s = h.createServer(function(request, response){
                             console.log("count : " + count++);
                         });
                         // 3. stream 완료 이벤트 등록
-                        stream.on('end', function(){
-                            response.end();
-                        });
+                        stream.on('end', function(){ response.end(); });
                         // 4. stream 에러 이벤트 등록
-                        stream.on('error', function(error){
-                            response.end(error + "");
-                        });
+                        stream.on('error', function(error){ response.end(error + ""); });
                     }
                     else{
                         // path에 해당되는 파일을 읽는다  파일경로, 콜백함수
@@ -75,48 +71,68 @@ var s = h.createServer(function(request, response){
                 }
             });
         break;
-        case "file":
-        var filepath = path.substring(1);
-        var mType = m.getType(filepath);
-        if(mType == "video/mp4"){
-            response.writeHead(200, { 'Content-Type' : mType });
-
-            // 1. stream 생성
-            var stream = fs.createReadStream(filepath);
-
-            var count = 0;
-            // 2. stream 전송 이벤트 등록
-            stream.on('data', function(fragment){
-                // 데이터를 읽을 수 있는 최소 단위의 조각이 콜백함수로 전달된다
-                response.write(fragment);
-                console.log("count : " + count++);
-            });
-            // 3. stream 완료 이벤트 등록
-            stream.on('end', function(){
-                response.end();
-            });
-            // 4. stream 에러 이벤트 등록
-            stream.on('error', function(error){
-                response.end(error + "");
-            });
-        }
-        else{
-            var file = fs.readFile(filepath, function(error, data){
-                if(error){
-                    response.writeHead(500,{'Content-Type' : 'text/html'});
-                    response.end("<H1>404 Page not found!</H1>");
+        case "signin":
+            // request.url은 위에서 parsing해서 url 변수에 담아둔 상태
+            var id = "mnisdh";
+            var pw = "1234";
+            var sign = q.parse(url.query);
+            
+            var postData = "";
+            request.on("data", function(data){ postData += data; });
+            request.on("end", function(){ 
+                var sign = q.parse(postData);
+                console.log(sign.id + " / " + sign.pw);
+                if(sign.id == id || sign.pw == pw){
+                    response.writeHead(200,{'Content-Type' : 'text/html'});
+                    response.end("OK");
                 }
                 else{
-                    response.writeHead(200, { 'Content-Type' : mType });
-
-                    response.end(data);
+                    response.writeHead(200,{'Content-Type' : 'text/html'});
+                    response.end("FAIL");
                 }
             });
-        }
-    break;
+        break;
+        case "file":
+            var filepath = path.substring(1);
+            var mType = m.getType(filepath);
+            if(mType == "video/mp4"){
+                response.writeHead(200, { 'Content-Type' : mType });
+
+                // 1. stream 생성
+                var stream = fs.createReadStream(filepath);
+
+                var count = 0;
+                // 2. stream 전송 이벤트 등록
+                stream.on('data', function(fragment){
+                    // 데이터를 읽을 수 있는 최소 단위의 조각이 콜백함수로 전달된다
+                    response.write(fragment);
+                    console.log("count : " + count++);
+                });
+                // 3. stream 완료 이벤트 등록
+                stream.on('end', function(){
+                    response.end();
+                });
+                // 4. stream 에러 이벤트 등록
+                stream.on('error', function(error){
+                    response.end(error + "");
+                });
+            }
+            else{
+                var file = fs.readFile(filepath, function(error, data){
+                    if(error){
+                        response.writeHead(500,{'Content-Type' : 'text/html'});
+                        response.end("<H1>404 Page not found!</H1>");
+                    }
+                    else{
+                        response.writeHead(200, { 'Content-Type' : mType });
+                        response.end(data);
+                    }
+                });
+            }
+        break;
         default:
-            response.writeHead(500,{'Content-Type' : 'text/html'});
-            response.end("<H1>404 Page not found!</H1>");
+            response.writeHead(404,{'Content-Type' : 'text/html'});
+            response.end("404 Page not found!");
         break;
     }
 });
