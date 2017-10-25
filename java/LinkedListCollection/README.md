@@ -1,3 +1,6 @@
+# Linked list collection
+
+```java
 public class LinkedList<T> {
 	private Node first;
 	private Node last;
@@ -92,3 +95,4 @@ public class LinkedList<T> {
 		}
 	}
 }
+```
