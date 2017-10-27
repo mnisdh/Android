@@ -3,6 +3,7 @@ var m = require("mongodb").MongoClient;
 var dbname = "bbsdb";
 var dburl = "mongodb://localhost:27017/" + dbname;
 var table = "bbs";
+var page_count = 20;
 
 /*
     bbs = {
@@ -67,6 +68,7 @@ exports.Search = function(){
 };
 
 exports.create = function(bbs, callback){
+    console.log(bbs);
     conn(function(db){
         db.collection(table).insert(bbs, function(err, inserted){
             if(!err) callback(200);
@@ -88,7 +90,16 @@ exports.select = function(search, callback){
             case "user_id": query = { user_id : search.user_id };   break;
         }
 
-        db.collection(table).find(query).toArray(function(err, documents){
+        var start = 0;
+        if(search.page) start = (parseInt(search.page) - 1) * page_count;
+
+        // sort 1:오름차순 / -1:내림차순
+
+        // 집합
+        // skip  - 카운트를 시작할 index의 위치
+        // limit - 가져올 갯수
+
+        db.collection(table).find(query).sort({ no : -1 }).skip(start).limit(page_count).toArray(function(err, documents){
             if(!err) callback(documents);
         });
 

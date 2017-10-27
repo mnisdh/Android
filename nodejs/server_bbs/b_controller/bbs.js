@@ -3,7 +3,6 @@ var bbs = require("../c_dao/bbs");
 
 exports.select = function(request, response, query){
     bbs.select(query, function(dataset){
-        console.log(dataset);
         var result = {
             code : 200,
             msg : "입력완료",
