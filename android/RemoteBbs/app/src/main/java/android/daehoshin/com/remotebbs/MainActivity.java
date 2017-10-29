@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        load();
+        //load();
     }
 
     private void init(){
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected Result doInBackground(Void... voids) {
-                String result = Remote.getData("http://192.168.0.2:8090/bbs?type=all&page=" + page);
+                String result = Remote.getData("http://192.168.0.11:8090/bbs?type=all&page=" + page);
                 Gson gson = new Gson();
                 Result data = gson.fromJson(result, Result.class);
                 return data;

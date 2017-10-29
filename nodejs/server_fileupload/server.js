@@ -7,10 +7,13 @@ var fs = require("fs");
 
 var s = h.createServer(function(request, response){
     var url = u.parse(request.url);
+    
     if(url.pathname === "/upload"){
         var form = new formidable.IncomingForm();
         form.multiples = true;
         form.parse(request, function(err, names, files){ // 임시폴더에 저장
+            console.log(files);
+
             for(i in files){
                 var oldPath = files[i].path;
                 var realPath = "/Users/daeho/Documents/android/nodejs/server_fileupload/upload/" + files[i].name;
@@ -27,7 +30,7 @@ var s = h.createServer(function(request, response){
     }
 });
 
-s.listen(8090, function(){ console.log("Server is running..."); });
+s.listen(8091, function(){ console.log("Server is running..."); });
 
 function renameFile(oldFile, newFile, index){
     var checkName = newFile;
