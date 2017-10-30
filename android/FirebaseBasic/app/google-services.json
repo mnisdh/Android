@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1038145239639",
+    "firebase_url": "https://basic-c4de9.firebaseio.com",
+    "project_id": "basic-c4de9",
+    "storage_bucket": "basic-c4de9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038145239639:android:0477c3a1d93bd079",
+        "android_client_info": {
+          "package_name": "android.daehoshin.com.firebasebasic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038145239639-jgscegl5hddnufcc5n39cgcbhns5bo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTnqvultyTYpAcUBbQ_VD2Z-g9fdhhpTU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
