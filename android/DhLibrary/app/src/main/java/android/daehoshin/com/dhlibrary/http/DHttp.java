@@ -1,35 +1,72 @@
-package android.daehoshin.com.remotebbs;
+package android.daehoshin.com.dhlibrary.http;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.Primitives;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 /**
- * Created by daeho on 2017. 10. 16..
+ * Created by daeho on 2017. 10. 30..
  */
 
-public class Remote {
-    public static String attachmentName = "bitmap";
-    public static String attachmentFileName = "bitmap.bmp";
-    public static String crlf = "\r\n";
-    public static String twoHyphens = "--";
-    public static String boundary =  "*****";
+public class DHttp {
+    private static final String attachmentName = "bitmap";
+    private static final String attachmentFileName = "bitmap.bmp";
+    private static final String crlf = "\r\n";
+    private static final String twoHyphens = "--";
+    private static final String boundary =  "*****";
 
+    private static void writeFile(DataOutputStream request, File file) throws IOException {
 
-    public static String sendData2(String address, Bitmap bitmap){
+        request.writeBytes(twoHyphens + boundary + crlf);
+        request.writeBytes("Content-Disposition: form-data; name=\"" +
+                file.getName() + "\";filename=\"" +
+                file.getName() + "\"" + crlf);
+        request.writeBytes(crlf);
+
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        request.write(bytes);
+
+        request.writeBytes(crlf);
+        request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
+
+        request.flush();
+        request.close();
+    }
+
+    public static String send(String address, List<File> files){
         StringBuilder result = new StringBuilder();
         try {
-            HttpURLConnection httpUrlConnection = null;
             URL url =  new URL(address);
 
-            httpUrlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
             httpUrlConnection.setUseCaches(false);
             httpUrlConnection.setDoOutput(true);
 
@@ -37,24 +74,10 @@ public class Remote {
             httpUrlConnection.setRequestProperty("Connection", "Keep-Alive");
             httpUrlConnection.setRequestProperty("Cache-Control", "no-cache");
             httpUrlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+
             DataOutputStream request = new DataOutputStream(httpUrlConnection.getOutputStream());
 
-            request.writeBytes(twoHyphens + boundary + crlf);
-            request.writeBytes("Content-Disposition: form-data; name=\"" +
-                    attachmentName + "\";filename=\"" +
-                    attachmentFileName + "\"" + crlf);
-            request.writeBytes(crlf);
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-            bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
-            byte[] byteArray = stream.toByteArray() ;
-            request.write(byteArray);
-
-            request.writeBytes(crlf);
-            request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
-
-            request.flush();
-            request.close();
+            for(File file : files) writeFile(request, file);
 
             if(httpUrlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 InputStreamReader isr = new InputStreamReader(httpUrlConnection.getInputStream());
@@ -197,4 +220,44 @@ public class Remote {
         return sb.toString();
     }
 
+    public static String getStringData(String string){
+        StringBuilder sb = new StringBuilder();
+        try {
+            URL url = new URL(string);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            // 통신이 성공인지 체크
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                // 여기서 부터는 파일에서 데이터를 가져오는 것과 동일
+                InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(isr);
+
+                String temp = "";
+                while ((temp = br.readLine()) != null) {
+                    sb.append(temp);
+                }
+
+                br.close();
+                isr.close();
+
+            } else Log.e("ServerError", conn.getResponseCode() + "");
+
+            conn.disconnect();
+        }
+        catch (Exception e){
+            Log.e("Error", e.toString());
+        }
+
+        return sb.toString();
+    }
+
+    public static <T>T getData(String string, Class<T> cls){
+        String result = getData(string);
+
+        Gson gson = new Gson();
+
+        Object object = gson.fromJson(result, (Type) cls);
+        return Primitives.wrap(cls).cast(object);
+    }
 }

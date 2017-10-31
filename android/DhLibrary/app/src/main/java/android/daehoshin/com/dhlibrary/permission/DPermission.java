@@ -1,4 +1,4 @@
-package android.daehoshin.com.remotebbs;
+package android.daehoshin.com.dhlibrary.permission;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -9,31 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by daeho on 2017. 10. 27..
+ * Created by daeho on 2017. 10. 30..
  */
 
-public class PermissionUtil {
-    // 1. 권한 정의
-    private String[] permissions = { android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private int REQ_CODE = 99;
+public class DPermission {
+    private final int REQ_CODE;
+    private final String[] permissions;
 
-    public PermissionUtil(int REQ_CODE, String[] permissions){
+    public DPermission(int REQ_CODE, String[] permissions){
         this.REQ_CODE = REQ_CODE;
         this.permissions = permissions;
     }
 
-    public void checkPermission(Activity activity, PermissionGrant permissionGrant){
+    public void check(Activity activity, IPermissionGrant pGrant){
         // 2. 버전 체크후 권한 요청
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermission(activity, permissionGrant);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermission(activity, pGrant);
         else {
-            permissionGrant.run();
+            pGrant.run();
             //init();
             //loadList();
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestPermission(Activity activity, PermissionGrant permissionGrant){
+    private void requestPermission(Activity activity, IPermissionGrant pGrant){
         // 3. 권한에 대한 승인여부
         List<String> requires = new ArrayList<>();
         for(String perm : permissions){
@@ -49,11 +48,11 @@ public class PermissionUtil {
             activity.requestPermissions(perms, REQ_CODE);
         }
         else {
-            permissionGrant.run();
+            pGrant.run();
         }
     }
 
-    public boolean afterPermissionResult(int requestCode, int[] grantResults, PermissionGrant permissionGrant){
+    public boolean afterPermissionResult(int requestCode, int[] grantResults, IPermissionGrant pGrant){
         if(requestCode == REQ_CODE){
             boolean granted = true;
             for(int result : grantResults){
@@ -61,11 +60,11 @@ public class PermissionUtil {
             }
 
             if(granted){
-                permissionGrant.run();
+                pGrant.run();
                 return true;
             }
             else{
-                permissionGrant.fail();
+                pGrant.fail();
                 // 승인이 안된경우 finish() 처리한다
             }
         }
@@ -73,7 +72,7 @@ public class PermissionUtil {
         return false;
     }
 
-    public interface PermissionGrant{
+    public interface IPermissionGrant{
         void run();
         void fail();
     }

@@ -22,8 +22,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PostActivity extends AppCompatActivity {
@@ -151,6 +152,7 @@ public class PostActivity extends AppCompatActivity {
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                         //ivImage.setImageURI(fileUri);
                         try {
+                            //bMap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
                             bMap = bitmapResize(MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri), 300);
 
                         } catch (IOException e) {
@@ -159,6 +161,7 @@ public class PostActivity extends AppCompatActivity {
                     }
                     else {
                         try {
+                            //bMap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                             bMap = bitmapResize(MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()), 300);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -166,15 +169,21 @@ public class PostActivity extends AppCompatActivity {
                     }
 
                     if(bMap != null){
+
+//                        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+//                        bMap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+//                        byte[] byteArray = stream.toByteArray() ;
+
+
+                        //saveBitmaptoJpeg(bMap, getApplicationContext().getFilesDir().getAbsolutePath(), "test");
+                        //bMap.recycle();
+                        //File file = new File(getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + "test.jpg");
+
                         //서버로 전송
                         new AsyncTask<Bitmap, Void, String>(){
                             @Override
                             protected String doInBackground(Bitmap... params) {
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-                                params[0].compress(Bitmap.CompressFormat.PNG, 100, stream) ;
-                                byte[] byteArray = stream.toByteArray() ;
-
-                                return Remote.sendData("http://192.168.0.11:8091/upload", byteArray);
+                                return Remote.sendData2("http://192.168.0.2:8091/upload", params[0]);
                             }
 
                             @Override
@@ -185,6 +194,31 @@ public class PostActivity extends AppCompatActivity {
                     }
                 }
                 break;
+        }
+    }
+
+    public static void saveBitmaptoJpeg(Bitmap bitmap,String folder, String name){
+        //String ex_storage =Environment.getExternalStorageDirectory().getAbsolutePath();
+        // Get Absolute Path in External Sdcard
+        //String foler_name = "/"+folder+"/";
+        String file_name = name+".jpg";
+        String string_path = folder + "/";
+
+        File file_path;
+        try{
+            file_path = new File(string_path);
+            if(!file_path.isDirectory()){
+                file_path.mkdirs();
+            }
+            FileOutputStream out = new FileOutputStream(string_path + file_name);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+
+        }catch(FileNotFoundException exception){
+            Log.e("FileNotFoundException", exception.getMessage());
+        }catch(IOException exception){
+            Log.e("IOException", exception.getMessage());
         }
     }
 
