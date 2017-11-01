@@ -184,9 +184,9 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "이메일을 확인해주세요", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                User u = new User(user.getEmail(), FirebaseInstanceId.getInstance().getToken());
                                 String key = userRef.push().getKey();
-                                userRef.child(key).setValue(u);
+                                User u = new User(user.getUid(), user.getEmail(), FirebaseInstanceId.getInstance().getToken());
+                                userRef.child(user.getUid()).setValue(u);
 
                                 Intent intent = new Intent(MainActivity.this, StorageActivity.class);
                                 startActivity(intent);

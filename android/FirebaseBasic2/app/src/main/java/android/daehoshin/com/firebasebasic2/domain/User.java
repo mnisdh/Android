@@ -5,6 +5,7 @@ package android.daehoshin.com.firebasebasic2.domain;
  */
 
 public class User {
+    private String id;
     private String email;
     private String token;
     private boolean isChecked = false;
@@ -13,7 +14,8 @@ public class User {
 
     }
 
-    public User(String email, String token){
+    public User(String id, String email, String token){
+        this.id = id;
         this.email = email;
         this.token = token;
     }

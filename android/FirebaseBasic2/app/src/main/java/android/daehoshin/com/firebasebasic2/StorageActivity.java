@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class StorageActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private FirebaseDatabase database;
@@ -35,6 +44,7 @@ public class StorageActivity extends AppCompatActivity {
     private RecyclerView rvText;
     private TextView tvId, tvToken;
     private UserAdapter userAdapter;
+    private EditText etMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +65,7 @@ public class StorageActivity extends AppCompatActivity {
         rvText = findViewById(R.id.rvText);
         tvId = findViewById(R.id.tvId);
         tvToken = findViewById(R.id.tvToken);
+        etMsg = findViewById(R.id.etMsg);
 
         userAdapter = new UserAdapter(new UserAdapter.ICallback() {
             @Override
@@ -95,6 +106,52 @@ public class StorageActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/*"); // 갤러리 "image/*" , 동영상 "video/*"
         startActivityForResult(intent.createChooser(intent, "Select App"), 999);
+    }
+
+    public void send(View v){
+        String token = tvToken.getText().toString();
+        String msg = etMsg.getText().toString();
+
+        if(token == null || "".equals(token)){
+            Toast.makeText(this, "Token is null", Toast.LENGTH_SHORT).show();
+        }
+
+        if(msg == null || "".equals(msg)){
+            Toast.makeText(this, "Message is null", Toast.LENGTH_SHORT).show();
+        }
+
+        String json = "{ \"to\":\"" + token + "\", \"msg\":\"" + msg + "\" }";
+
+        // 레트로핏 선언
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://us-central1-fir-basic2-ecf84.cloudfunctions.net/sendNotification/").build();
+
+        // 인터페이스와 결합
+        IRetro service = retrofit.create(IRetro.class);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+
+        // 서비스로 서버연결준비
+        Call<ResponseBody> remote = service.sendNotification(body);
+
+        // 실제 연결후 데이터 처리
+        remote.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    try {
+                        Toast.makeText(StorageActivity.this, response.body().string(), Toast.LENGTH_SHORT).show();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
     }
 
     /**
