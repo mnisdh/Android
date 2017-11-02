@@ -38,6 +38,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: 내 데이터베이스의 사용자 token 값을 여기서 갱신
+        // TODO: 내 데이터베이스의 사용자 token 값을 여기서 갱신 토큰이 바뀌면 자동호출
     }
 }

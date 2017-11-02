@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -11,6 +12,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -32,6 +35,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
+
+        String type = "";
+        Map map = remoteMessage.getData();
+        if(map != null && map.get("type") != null) type = (String)map.get("type");
+
+        MediaPlayer player = null;
+
+        switch(type){
+            case "one":
+                player = MediaPlayer.create(getBaseContext(), R.raw.sound1);
+                break;
+            case "two":
+                player = MediaPlayer.create(getBaseContext(), R.raw.sound2);
+                break;
+        }
+
+        if(player != null){
+            player.setLooping(false);
+            player.start();
         }
     }
 
