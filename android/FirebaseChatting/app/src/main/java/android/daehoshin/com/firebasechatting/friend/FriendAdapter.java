@@ -1,6 +1,7 @@
 package android.daehoshin.com.firebasechatting.friend;
 
 import android.daehoshin.com.firebasechatting.R;
+import android.daehoshin.com.firebasechatting.common.domain.User;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,20 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by daeho on 2017. 11. 2..
  */
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
+    List<User> data = new ArrayList<>();
+
+    public void setData(List<User> data){
+        this.data = data;
+        notifyDataSetChanged();
+    }
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,7 +34,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-
+        holder.setData(data.get(position));
     }
 
     @Override
@@ -36,6 +46,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
         private ImageView ivImage;
         private TextView tvName;
         private CheckBox chkUse;
+        private User user;
 
         public Holder(View itemView) {
             super(itemView);
@@ -43,6 +54,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
             ivImage = itemView.findViewById(R.id.ivImage);
             tvName = itemView.findViewById(R.id.tvName);
             chkUse = itemView.findViewById(R.id.chkUse);
+        }
+
+        public void setData(User user){
+            this.user = user;
+
+            tvName.setText(user.getEmail());
         }
     }
 }

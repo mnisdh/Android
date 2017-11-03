@@ -9,4 +9,7 @@
     <string name="sign_check_pass">Invalid password</string>
     <string name="sign_signin">Sign in</string>
     <string name="sign_signup_message">Unregistered e-mail.\nWould you like to register</string>
+    <string name="sign_emailcheck_message">Sended e-mail.\nE-mail check please</string>
+    <string name="sign_signupfail_message">Signup failed.\nE-mail and password check please</string>
+    <string name="friend_find_fail">Not found user</string>
 </resources>

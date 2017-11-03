@@ -1,14 +1,11 @@
 package android.daehoshin.com.firebasechatting;
 
 import android.content.Context;
-import android.daehoshin.com.firebasechatting.friend.FriendRecyclerView;
-import android.daehoshin.com.firebasechatting.room.RoomListRecyclerView;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,11 +16,9 @@ public class MainPagerAdapter extends PagerAdapter {
     private Map<String, View> data = new HashMap<>();
     private Context context;
 
-    public MainPagerAdapter(Context context, List<String> data){
+    public MainPagerAdapter(Context context, Map<String, View> data){
         this.context = context;
-
-        this.data.clear();
-        for(String item : data) this.data.put(item, null);
+        this.data = data;
     }
 
     private String getKey(int position){
@@ -37,22 +32,19 @@ public class MainPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View v = null;
-
         String key = getKey(position);
-        View value = data.get(key);
-        if(value == null) {
-            if (context.getResources().getString(R.string.tab_friend).equals(key)) {
-                v = new FriendRecyclerView(context);
-            } else if (context.getResources().getString(R.string.tab_rooms).equals(key)) {
-                v = new RoomListRecyclerView(context);
-            }
+        View v = data.get(key);
 
-            if(v != null) container.addView(v);
+        if(!contains(container, v)) container.addView(v);
 
-            return v;
+        return v;
+    }
+
+    private boolean contains(ViewGroup container, View findView){
+        for(int i = 0; i < container.getChildCount(); i++){
+            if(container.getChildAt(i) == findView) return true;
         }
-        else return value;
+        return false;
     }
 
     @Override

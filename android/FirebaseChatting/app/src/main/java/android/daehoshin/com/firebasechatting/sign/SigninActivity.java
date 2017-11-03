@@ -2,6 +2,8 @@ package android.daehoshin.com.firebasechatting.sign;
 
 import android.daehoshin.com.firebasechatting.R;
 import android.daehoshin.com.firebasechatting.common.SignInfo;
+import android.daehoshin.com.firebasechatting.common.domain.Manager;
+import android.daehoshin.com.firebasechatting.common.domain.User;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -12,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +33,7 @@ public class SigninActivity extends AppCompatActivity {
     TextView tvEmailMsg, tvPassMsg;
     Button btnSignin;
     ConstraintLayout dialogSignup;
+    TextView tvSignupMsg;
     CardView cardView;
     ProgressBar progress;
 
@@ -58,7 +63,9 @@ public class SigninActivity extends AppCompatActivity {
         btnSignin = findViewById(R.id.btnSignin);
 
         dialogSignup = findViewById(R.id.dialogSignup);
-        //cardView = findViewById(R.id);
+        tvSignupMsg = findViewById(R.id.tvSignupMsg);
+        cardView = findViewById(R.id.cv);
+        progress = findViewById(R.id.progress);
     }
 
     public void signin(View v){
@@ -73,14 +80,31 @@ public class SigninActivity extends AppCompatActivity {
         if(checkEmail && checkPassword) signin(email, password);
     }
     private void signin(String email, String password){
+        progress.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progress.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
+                            FirebaseUser fUser = mAuth.getCurrentUser();
+
+                            if(!fUser.isEmailVerified()){
+                                String msg = SigninActivity.this.getResources().getString(R.string.sign_emailcheck_message);
+                                Toast.makeText(SigninActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                User user = new User(fUser.getUid(), fUser.getEmail(), FirebaseInstanceId.getInstance().getToken());
+                                user.setName(fUser.getDisplayName());
+                                user.setPhone_number(fUser.getPhoneNumber());
+
+                                Manager.addUser(user);
+
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        }
+                        else {
                             showDialogSignup();
                         }
                     }
@@ -89,8 +113,6 @@ public class SigninActivity extends AppCompatActivity {
 
     public void showDialogSignup(){
         dialogSignup.setVisibility(View.VISIBLE);
-        btnSignin.setVisibility(View.GONE);
-
     }
 
     public void signup(View v){
@@ -101,19 +123,28 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void signup(String email, String password){
-
-
+        progress.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+                            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    progress.setVisibility(View.GONE);
+                                    dialogSignup.setVisibility(View.GONE);
+
+                                    String msg = SigninActivity.this.getResources().getString(R.string.sign_emailcheck_message);
+                                    Toast.makeText(SigninActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else {
+                            progress.setVisibility(View.GONE);
+                            String msg = SigninActivity.this.getResources().getString(R.string.sign_signupfail_message);
+                            Toast.makeText(SigninActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -121,7 +152,6 @@ public class SigninActivity extends AppCompatActivity {
 
     public void signupCancel(View v){
         dialogSignup.setVisibility(View.GONE);
-        btnSignin.setVisibility(View.VISIBLE);
     }
 
     public static boolean isValidEmail(String email) {
