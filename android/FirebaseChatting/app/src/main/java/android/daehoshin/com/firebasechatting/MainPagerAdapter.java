@@ -35,7 +35,7 @@ public class MainPagerAdapter extends PagerAdapter {
         String key = getKey(position);
         View v = data.get(key);
 
-        if(!contains(container, v)) container.addView(v);
+        if(v != null && !contains(container, v)) container.addView(v);
 
         return v;
     }
@@ -59,6 +59,6 @@ public class MainPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
+        //container.removeView((View)object);
     }
 }

@@ -3,13 +3,13 @@ package android.daehoshin.com.firebasechatting.room;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.widget.FrameLayout;
 
 /**
  * Created by daeho on 2017. 11. 2..
  */
 
-public class RoomListRecyclerView extends View {
+public class RoomListRecyclerView extends FrameLayout {
     private RecyclerView rv;
     private RoomListAdapter adapter;
     private LinearLayoutManager lManager;
@@ -28,5 +28,7 @@ public class RoomListRecyclerView extends View {
 
         lManager = new LinearLayoutManager(this.getContext());
         rv.setLayoutManager(lManager);
+
+        addView(rv);
     }
 }

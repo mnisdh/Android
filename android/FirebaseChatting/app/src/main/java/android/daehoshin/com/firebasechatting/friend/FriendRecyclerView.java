@@ -3,7 +3,9 @@ package android.daehoshin.com.firebasechatting.friend;
 import android.content.Context;
 import android.daehoshin.com.firebasechatting.common.domain.User;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.FrameLayout;
 
 import java.util.List;
 
@@ -11,8 +13,8 @@ import java.util.List;
  * Created by daeho on 2017. 11. 2..
  */
 
-public class FriendRecyclerView extends RecyclerView {
-    //private RecyclerView rv;
+public class FriendRecyclerView extends FrameLayout {
+    private RecyclerView rv;
     private FriendAdapter adapter;
     private GridLayoutManager lManager;
 
@@ -23,13 +25,16 @@ public class FriendRecyclerView extends RecyclerView {
     }
 
     private void init(){
-        //rv = new RecyclerView(this.getContext());
+        rv = new RecyclerView(this.getContext());
 
         adapter = new FriendAdapter();
-        this.setAdapter(adapter);
+        rv.setAdapter(adapter);
 
-        lManager = new GridLayoutManager(this.getContext(), 3);
-        this.setLayoutManager(lManager);
+//        lManager = new GridLayoutManager(this.getContext(), 3);
+//        rv.setLayoutManager(lManager);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        addView(rv);
     }
 
     public void setData(List<User> data){

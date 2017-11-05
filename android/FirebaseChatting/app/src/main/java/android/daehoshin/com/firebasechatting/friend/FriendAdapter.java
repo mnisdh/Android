@@ -27,7 +27,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item, parent);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item, parent, false);
 
         return new Holder(v);
     }
@@ -54,12 +54,25 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
             ivImage = itemView.findViewById(R.id.ivImage);
             tvName = itemView.findViewById(R.id.tvName);
             chkUse = itemView.findViewById(R.id.chkUse);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.setChecked(!user.isChecked());
+                    setChecked();
+                }
+            });
+        }
+
+        private void setChecked(){
+            chkUse.setChecked(user.isChecked());
         }
 
         public void setData(User user){
             this.user = user;
 
             tvName.setText(user.getEmail());
+            setChecked();
         }
     }
 }
