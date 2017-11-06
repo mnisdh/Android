@@ -12,4 +12,7 @@
     <string name="sign_emailcheck_message">Sended e-mail.\nE-mail check please</string>
     <string name="sign_signupfail_message">Signup failed.\nE-mail and password check please</string>
     <string name="friend_find_fail">Not found user</string>
+    <string name="room_create_fail">Non selected user</string>
+    <string name="input_find_friend">Input friend id</string>
+    <string name="input_room_name">Input room name</string>
 </resources>

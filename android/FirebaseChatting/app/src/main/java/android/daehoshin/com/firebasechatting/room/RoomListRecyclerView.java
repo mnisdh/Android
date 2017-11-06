@@ -1,16 +1,17 @@
 package android.daehoshin.com.firebasechatting.room;
 
 import android.content.Context;
+import android.daehoshin.com.firebasechatting.common.domain.Room;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.FrameLayout;
+
+import java.util.List;
 
 /**
  * Created by daeho on 2017. 11. 2..
  */
 
-public class RoomListRecyclerView extends FrameLayout {
-    private RecyclerView rv;
+public class RoomListRecyclerView extends RecyclerView {
     private RoomListAdapter adapter;
     private LinearLayoutManager lManager;
 
@@ -21,14 +22,14 @@ public class RoomListRecyclerView extends FrameLayout {
     }
 
     private void init(){
-        rv = new RecyclerView(this.getContext());
-
         adapter = new RoomListAdapter();
-        rv.setAdapter(adapter);
+        setAdapter(adapter);
 
         lManager = new LinearLayoutManager(this.getContext());
-        rv.setLayoutManager(lManager);
+        setLayoutManager(lManager);
+    }
 
-        addView(rv);
+    public void setData(List<Room> room){
+        adapter.setData(room);
     }
 }

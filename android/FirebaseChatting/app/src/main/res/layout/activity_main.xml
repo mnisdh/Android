@@ -23,15 +23,6 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:onClick="add"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/popupAddFriend"
         android:layout_width="match_parent"
@@ -47,7 +38,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="Input friend id"
+            android:hint="@string/input_find_friend"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnAddFriend"
@@ -88,18 +79,89 @@
         android:background="#ddaaddff"
         android:visibility="gone">
 
+        <EditText
+            android:id="@+id/etRoomName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/input_room_name"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddRoom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageButton
-            android:id="@+id/btnCloseAddRoom"
+            android:id="@+id/btnAddRoom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:onClick="addRoom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/search" />
+
+        <ImageButton
+            android:id="@+id/btnAddRoomClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:onClick="closeAddRoom"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/close" />
     </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="showAddRoom"
+            android:visibility="gone"
+            app:backgroundTint="@android:color/holo_orange_light"
+            app:srcCompat="@drawable/addchatting" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="showAddFriend"
+            android:visibility="gone"
+            app:backgroundTint="@android:color/holo_orange_light"
+            app:srcCompat="@drawable/addfriend" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:onClick="showMenu"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progress"
@@ -108,5 +170,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
+
 
 </android.support.design.widget.CoordinatorLayout>

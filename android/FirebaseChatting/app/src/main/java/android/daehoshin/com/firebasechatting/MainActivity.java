@@ -3,6 +3,7 @@ package android.daehoshin.com.firebasechatting;
 import android.content.Intent;
 import android.daehoshin.com.firebasechatting.common.SignInfo;
 import android.daehoshin.com.firebasechatting.common.domain.Manager;
+import android.daehoshin.com.firebasechatting.common.domain.Room;
 import android.daehoshin.com.firebasechatting.common.domain.User;
 import android.daehoshin.com.firebasechatting.friend.FriendRecyclerView;
 import android.daehoshin.com.firebasechatting.room.RoomListRecyclerView;
@@ -30,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tl;
     private ViewPager vp;
+    MainPagerAdapter adapter;
     FriendRecyclerView friendListView;
     RoomListRecyclerView roomListView;
 
-    FloatingActionButton fab;
+    FloatingActionButton fabMenu, fabAddFriend, fabAddRoom;
     ConstraintLayout popupAddFriend, popupAddRoom;
-    EditText etFindName;
+    EditText etFindName, etRoomName;
     ProgressBar progress;
 
     @Override
@@ -100,10 +102,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        fab = findViewById(R.id.fab);
+        fabMenu = findViewById(R.id.fabMenu);
+        fabAddFriend = findViewById(R.id.fabAddFriend);
+        fabAddRoom = findViewById(R.id.fabAddRoom);
+
         popupAddFriend = findViewById(R.id.popupAddFriend);
         popupAddRoom = findViewById(R.id.popupAddRoom);
         etFindName = findViewById(R.id.etFindName);
+        etRoomName = findViewById(R.id.etRoomName);
         progress = findViewById(R.id.progress);
     }
 
@@ -116,26 +122,10 @@ public class MainActivity extends AppCompatActivity {
         data.put(this.getResources().getString(R.string.tab_rooms), roomListView);
 
         tl = findViewById(R.id.tl);
-        tl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
         for(String key : data.keySet()) tl.addTab(tl.newTab().setText(key));
 
         vp = findViewById(R.id.vp);
-        MainPagerAdapter adapter = new MainPagerAdapter(this, data);
+        adapter = new MainPagerAdapter(this, data);
         vp.setAdapter(adapter);
 
         // 탭레이아웃을 뷰페이저에 연결
@@ -144,7 +134,31 @@ public class MainActivity extends AppCompatActivity {
         // ViewPager의 변경사항을 탭레이아웃에 전달
         vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
 
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                switch (position){
+//                    case 0:
+//                        fabAddRoom.setVisibility(View.GONE);
+//                        fabAddFriend.setVisibility(View.VISIBLE);
+//                        break;
+//                    case 1:
+//                        fabAddFriend.setVisibility(View.GONE);
+//                        fabAddRoom.setVisibility(View.VISIBLE);
+//                        break;
+//                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void loadData(){
@@ -152,8 +166,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void getFriendList(List<User> friends) {
                 friendListView.setData(friends);
+
+                Manager.getInstance().getRoom(true, new Manager.Room_Callback() {
+                    @Override
+                    public void getRooms(List<Room> rooms) {
+                        roomListView.setData(rooms);
+                    }
+                });
             }
         });
+    }
+
+    public void showMenu(View v){
+        if(fabAddFriend.getVisibility() == View.VISIBLE){
+            fabAddFriend.setVisibility(View.GONE);
+            fabAddRoom.setVisibility(View.GONE);
+        }
+        else{
+            fabAddFriend.setVisibility(View.VISIBLE);
+            fabAddRoom.setVisibility(View.VISIBLE);
+        }
     }
 
     public void addFriend(View v){
@@ -180,19 +212,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void addRoom(View v){
+        User currentUser = Manager.getInstance().getCurrentUser();
 
-    private void showAddFriend(){
+        Room room = new Room();
+        room.setCreate_dt(System.currentTimeMillis());
+        room.setCreate_user_id(currentUser.getId());
+        room.setMsg_count(0);
+        room.setTitle(etRoomName.getText().toString());
+
+        Manager.getInstance().addRoom(room, friendListView.getCheckedUser());
+
+        Manager.getInstance().getRoom(true, new Manager.Room_Callback() {
+            @Override
+            public void getRooms(List<Room> rooms) {
+                roomListView.setData(rooms);
+            }
+        });
+
+        closeAddRoom();
+    }
+
+    public void showAddFriend(View v){
         popupAddFriend.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.GONE);
     }
-    private void showAddRoom(){
-        popupAddRoom.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.GONE);
-    }
-    public void add(View v){
-        switch (tl.getSelectedTabPosition()){
-            case 0: showAddFriend(); break;
-            default: showAddRoom(); break;
+    public void showAddRoom(View v) {
+        if (friendListView.getCheckedUser().size() == 0) {
+            Toast.makeText(this, MainActivity.this.getResources().getString(R.string.room_create_fail), Toast.LENGTH_SHORT).show();
+        } else {
+            popupAddRoom.setVisibility(View.VISIBLE);
         }
     }
 
@@ -201,14 +249,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void closeAddFriend(){
         popupAddFriend.setVisibility(View.GONE);
-        fab.setVisibility(View.VISIBLE);
     }
-
     public void closeAddRoom(View v){
         closeAddRoom();
     }
     private void closeAddRoom(){
         popupAddRoom.setVisibility(View.GONE);
-        fab.setVisibility(View.VISIBLE);
     }
 }

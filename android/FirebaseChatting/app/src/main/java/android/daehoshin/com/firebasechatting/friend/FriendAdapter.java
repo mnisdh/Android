@@ -2,6 +2,8 @@ package android.daehoshin.com.firebasechatting.friend;
 
 import android.daehoshin.com.firebasechatting.R;
 import android.daehoshin.com.firebasechatting.common.domain.User;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,16 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
 
     public void setData(List<User> data){
         this.data = data;
-        notifyDataSetChanged();
+        this.notifyDataSetChanged();
+    }
+
+    public List<User> getCheckedUser(){
+        List<User> users = new ArrayList<>();
+        for(User user : data){
+            if(user.isChecked()) users.add(user);
+        }
+
+        return users;
     }
 
     @Override
@@ -39,13 +50,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     public class Holder extends RecyclerView.ViewHolder{
         private ImageView ivImage;
         private TextView tvName;
         private CheckBox chkUse;
+        private CardView cv;
         private User user;
 
         public Holder(View itemView) {
@@ -54,6 +66,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
             ivImage = itemView.findViewById(R.id.ivImage);
             tvName = itemView.findViewById(R.id.tvName);
             chkUse = itemView.findViewById(R.id.chkUse);
+            cv = itemView.findViewById(R.id.cv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,12 +78,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
         }
 
         private void setChecked(){
-            chkUse.setChecked(user.isChecked());
+            //chkUse.setChecked(user.isChecked());
+            if(user.isChecked()) cv.setBackgroundColor(Color.GRAY);
+            else cv.setBackgroundColor(Color.WHITE);
         }
 
         public void setData(User user){
             this.user = user;
 
+            //tvName.setText(user.getEmail().substring(0,user.getEmail().indexOf("@")));
             tvName.setText(user.getEmail());
             setChecked();
         }

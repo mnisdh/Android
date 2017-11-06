@@ -25,6 +25,7 @@ public class MainPagerAdapter extends PagerAdapter {
         int cnt = 0;
         for(String key : data.keySet()){
             if(cnt == position) return key;
+            cnt++;
         }
 
         return "";
@@ -35,7 +36,9 @@ public class MainPagerAdapter extends PagerAdapter {
         String key = getKey(position);
         View v = data.get(key);
 
-        if(v != null && !contains(container, v)) container.addView(v);
+        if(v != null && !contains(container, v)) {
+            container.addView(v);
+        }
 
         return v;
     }
