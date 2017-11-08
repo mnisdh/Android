@@ -1,5 +1,6 @@
 package android.daehoshin.com.locationsharechat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.daehoshin.com.locationsharechat.common.AuthManager;
 import android.daehoshin.com.locationsharechat.domain.UserInfo;
@@ -20,7 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class RoomListActivity extends FragmentActivity implements OnMapReadyCallback {
     public static final int LOGIN_REQ = 900;
     public static final int PERMISSION_REQ = 901;
-    public static final String[] Permission = new String[] { "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION" };
+    public static final String[] Permission = new String[] {
+              Manifest.permission.ACCESS_FINE_LOCATION
+            , Manifest.permission.ACCESS_COARSE_LOCATION
+            , android.Manifest.permission.CAMERA
+            , android.Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
     private GoogleMap mMap;
     private PermissionUtil pUtil;

@@ -3,6 +3,7 @@ package android.daehoshin.com.locationsharechat.user;
 import android.daehoshin.com.locationsharechat.R;
 import android.daehoshin.com.locationsharechat.common.AuthManager;
 import android.daehoshin.com.locationsharechat.domain.UserInfo;
+import android.daehoshin.com.locationsharechat.util.PermissionUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -14,6 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SigninActivity extends AppCompatActivity {
+    public static final int CAMERA_PERMISSION_REQ = 902;
+    public static final String[] Permission = new String[] {
+              android.Manifest.permission.CAMERA
+            , android.Manifest.permission.WRITE_EXTERNAL_STORAGE };
+
+    private PermissionUtil pUtil;
+
     private ImageView ivProfile;
     private ImageButton btnAddProfile;
     private EditText etNickname;
@@ -42,9 +50,26 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     public void addProfile(View v){
+        checkPermission();
 
 
-        btnAddProfile.setVisibility(View.GONE);
+    }
+    /**
+     * 권한 체크
+     */
+    private void checkPermission(){
+        pUtil = new PermissionUtil(CAMERA_PERMISSION_REQ, Permission);
+        pUtil.check(this, new PermissionUtil.IPermissionGrant() {
+            @Override
+            public void run() {
+                btnAddProfile.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void fail() {
+                btnAddProfile.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void signin(View v){

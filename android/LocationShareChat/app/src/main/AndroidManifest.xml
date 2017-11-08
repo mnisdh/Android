@@ -9,6 +9,8 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -40,6 +42,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".user.SigninActivity"></activity>
+
+        <!-- 사진을 저장하기 위해 파일에 대한 권한 획득 설정 -->
+        <provider
+            android:authorities= "${applicationId}.provider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <!-- 프로바이더가 사용하는 파일의 경로 -->
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"/>
+
+        </provider>
     </application>
 
 </manifest>
