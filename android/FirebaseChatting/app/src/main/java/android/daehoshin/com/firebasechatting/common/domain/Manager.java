@@ -171,6 +171,10 @@ public class Manager {
         // user room 추가
         DatabaseReference nRoomRef = Db.getInstance().getReference("user_room/" + currentUser.getId() + "/" + room.getId());
         nRoomRef.setValue(room);
+        for(User friend : friends){
+            DatabaseReference nFriendRoomRef = Db.getInstance().getReference("user_room/" + friend.getId() + "/" + room.getId());
+            nFriendRoomRef.setValue(room);
+        }
 
         // room member 추가
         DatabaseReference temp = Db.getInstance().getReference("room_member/" + room.getId() + "/" + currentUser.getId());

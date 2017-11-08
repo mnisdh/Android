@@ -94,12 +94,6 @@ public class SigninActivity extends AppCompatActivity {
                                 Toast.makeText(SigninActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                User user = new User(fUser.getUid(), fUser.getEmail(), FirebaseInstanceId.getInstance().getToken());
-                                user.setName(fUser.getDisplayName());
-                                user.setPhone_number(fUser.getPhoneNumber());
-
-                                Manager.addUser(user);
-
                                 setResult(RESULT_OK);
                                 finish();
                             }
@@ -138,6 +132,13 @@ public class SigninActivity extends AppCompatActivity {
 
                                     String msg = SigninActivity.this.getResources().getString(R.string.sign_emailcheck_message);
                                     Toast.makeText(SigninActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+                                    FirebaseUser fUser = mAuth.getCurrentUser();
+                                    User user = new User(fUser.getUid(), fUser.getEmail(), FirebaseInstanceId.getInstance().getToken());
+                                    user.setName(fUser.getDisplayName());
+                                    user.setPhone_number(fUser.getPhoneNumber());
+
+                                    Manager.addUser(user);
                                 }
                             });
                         }

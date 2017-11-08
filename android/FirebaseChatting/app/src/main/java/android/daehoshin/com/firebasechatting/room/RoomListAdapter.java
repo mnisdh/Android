@@ -1,5 +1,6 @@
 package android.daehoshin.com.firebasechatting.room;
 
+import android.content.Intent;
 import android.daehoshin.com.firebasechatting.R;
 import android.daehoshin.com.firebasechatting.common.domain.Room;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +55,15 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.Holder
             tvLastMsg = itemView.findViewById(R.id.tvLastMsg);
             tvNewMsg = itemView.findViewById(R.id.tvNewMsg);
             tvLastMsgDt = itemView.findViewById(R.id.tvLastMsgDt);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), RoomActivity.class);
+                    intent.putExtra("ROOM_ID", room.getId());
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void setData(Room room){

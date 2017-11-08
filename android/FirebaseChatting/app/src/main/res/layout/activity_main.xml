@@ -129,6 +129,17 @@
         android:orientation="vertical">
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSignout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="signout"
+            android:visibility="gone"
+            app:backgroundTint="@android:color/holo_orange_light"
+            app:srcCompat="@drawable/exit" />
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddRoom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,6 +173,8 @@
             app:srcCompat="@android:drawable/ic_input_add" />
 
     </LinearLayout>
+
+
 
     <ProgressBar
         android:id="@+id/progress"

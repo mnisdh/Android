@@ -64,7 +64,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder> {
             super(itemView);
 
             ivImage = itemView.findViewById(R.id.ivImage);
-            tvName = itemView.findViewById(R.id.tvName);
+            tvName = itemView.findViewById(R.id.leftTvName);
             chkUse = itemView.findViewById(R.id.chkUse);
             cv = itemView.findViewById(R.id.cv);
 

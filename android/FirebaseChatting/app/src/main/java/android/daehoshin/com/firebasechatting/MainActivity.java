@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     FriendRecyclerView friendListView;
     RoomListRecyclerView roomListView;
 
-    FloatingActionButton fabMenu, fabAddFriend, fabAddRoom;
+    FloatingActionButton fabMenu, fabAddFriend, fabAddRoom, fabSignout;
     ConstraintLayout popupAddFriend, popupAddRoom;
     EditText etFindName, etRoomName;
     ProgressBar progress;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -66,11 +66,20 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = SignInfo.getInstance().getAuth().getCurrentUser();
 
-        if(currentUser == null || !currentUser.isEmailVerified()){
+        if(currentUser == null || currentUser.getUid() == null || !currentUser.isEmailVerified()){
             Intent intent = new Intent(this, SigninActivity.class);
             startActivityForResult(intent, SIGNIN_REQ_CD);
         }
+        else setCurrentUser();
 
+//        User user = new User(currentUser.getUid(), currentUser.getEmail(), FirebaseInstanceId.getInstance().getToken());
+//        user.setName(currentUser.getDisplayName());
+//        user.setPhone_number(currentUser.getPhoneNumber());
+//
+//        Manager.addUser(user);
+    }
+
+    private void setCurrentUser(){
         Manager.getUser(SignInfo.getInstance().getAuth().getCurrentUser(), new Manager.User_Callback() {
             @Override
             public void getUser(User user) {
@@ -78,14 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 loadData();
             }
         });
-
-
-
-//        User user = new User(currentUser.getUid(), currentUser.getEmail(), FirebaseInstanceId.getInstance().getToken());
-//        user.setName(currentUser.getDisplayName());
-//        user.setPhone_number(currentUser.getPhoneNumber());
-//
-//        Manager.addUser(user);
     }
 
     @Override
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             case SIGNIN_REQ_CD:
                 switch (resultCode){
                     case RESULT_CANCELED: finish(); break;
+                    case RESULT_OK: setCurrentUser(); break;
                 }
                 break;
         }
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         fabMenu = findViewById(R.id.fabMenu);
         fabAddFriend = findViewById(R.id.fabAddFriend);
         fabAddRoom = findViewById(R.id.fabAddRoom);
+        fabSignout = findViewById(R.id.fabSignout);
 
         popupAddFriend = findViewById(R.id.popupAddFriend);
         popupAddRoom = findViewById(R.id.popupAddRoom);
@@ -177,14 +180,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void signout(View v){
+        SignInfo.getInstance().getAuth().signOut();
+
+        Intent intent = new Intent(this, SigninActivity.class);
+        startActivityForResult(intent, SIGNIN_REQ_CD);
+    }
+
     public void showMenu(View v){
         if(fabAddFriend.getVisibility() == View.VISIBLE){
             fabAddFriend.setVisibility(View.GONE);
             fabAddRoom.setVisibility(View.GONE);
+            fabSignout.setVisibility(View.GONE);
         }
         else{
             fabAddFriend.setVisibility(View.VISIBLE);
             fabAddRoom.setVisibility(View.VISIBLE);
+            fabSignout.setVisibility(View.VISIBLE);
         }
     }
 
