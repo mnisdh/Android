@@ -12,8 +12,10 @@ var s = h.createServer(function(request, response){
         var form = new formidable.IncomingForm();
         form.multiples = true;
         form.parse(request, function(err, names, files){ // 임시폴더에 저장
+            if(err) console.log(err);
+            else console.log(files);
+            console.log("files=");
             console.log(files);
-
             for(i in files){
                 var oldPath = files[i].path;
                 var realPath = "/Users/daeho/Documents/android/nodejs/server_fileupload/upload/" + files[i].name;
