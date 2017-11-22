@@ -64,59 +64,36 @@ function runRequest(){
                     var section = sections[idx];
 
                     var html = cheerio.load(section);
-                    var zone_info_popup = html('.arti .zone_info_popup').text();
-                    var desc = html('.carInfo .desc').text();
-                    var spec = html('.carInfo .spec').text();
 
-                    console.log(zone_info_popup);
-                    console.log(desc);
-                    console.log(spec);
+                    var zone_name = html('.arti > h4').text();
+                    if(zone_name === "") continue;
+
+                    var zone_id = html('.arti > em').text();
+                    var car_name = html('.carInfo .desc > h5').text();
+                    var car_id = html('.carInfo .desc > em').text();
+                    var oil_type = html('.carInfo .desc .spec > em').text();
+                    var option = html('.carInfo .desc .spec').text();
+                    option = option.split("옵션 : ");
+                    option = option[1].split("\n")[0];
+
+                    var price_name = html('.price > dl > dt').text();
+                    var price = html('.price > dl > dd').text();
+                    var driving_fee = html('.oil').text();
+
+                    // db에 연결하고 obj.result 에 있는 모든 값을 insert
+                    var query_str = "insert into crawl_car( zone_id,zone_name";
+                    query_str += ",car_name,car_id,oil_type,price_name";
+                    query_str += ",price,driving_fee)";
+                    query_str += " values(?,?,?,?,?,?,?,?)";
+                    var values = [zone_id,zone_name,car_name,car_id,oil_type,price_name,price,driving_fee];
+                    con.query(query_str, values, function(error,result){
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log("insertion completed! : "+ car_name);
+                        }
+                    });
                 }
-
-
-                // var html = cheerio.load(body.substring(start, end));
-                // var sections = html('.section');
-                // for(sectionIdx in sections){
-                //     var arti = sections[sectionIdx]('.arti');
-                // }
-
-
-                //console.log(html('.section').text());
-
-                // var sections = body.substring(start, end).split(/<div class="section/);
-
-                // for(var idx in sections){
-                //     var section = sections[idx];
-
-                //     var name = section.substring(section.indexOf("<H5>"), section.indexOf("</H5>"));
-                //     var spec = section.substring(section.indexOf("spec"), section.indexOf("more carDetail view_detail_car"));
-                //     var name = section.substring(section.indexOf("<H5>"), section.indexOf("</H5>"));
-                // }
-                
-
-                // console.log(body);
-
-
-                // //var text = unescape(replaceAll(body, "\\", "%"))
-                // var obj = JSON.parse(body).result;
-                // // db에 연결하고 obj.result 에 있는 모든 값을 insert
-                // var query_str = "insert into crawl_car( zone_id,zone_name";
-                // query_str += ",zone_attr,zone_alias,zone_addr,zone_props";
-                // query_str += ",oper_time,oper_way,state,albe_num,total_num";
-                // query_str += ",lat,lng,visit,visit_link,link,notice,notice_oneway)";
-                // query_str += " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                // var values = [obj.zone_id, obj.zone_name,obj.zone_attr
-                //     ,obj.zone_alias,obj.zone_addr,obj.zone_props,obj.oper_time
-                //     ,obj.oper_way,obj.state,obj.albe_num,obj.total_num
-                //     ,obj.lat,obj.lng,obj.visit,obj.visit_link,obj.link
-                //     ,obj.notice,obj.notice_oneway];
-                // con.query(query_str, values, function(error,result){
-                //     if(error){
-                //         console.log(error);
-                //     }else{
-                //         console.log("insertion completed! : "+ obj.zone_id);
-                //     }
-                // });
             }
         }
     );
